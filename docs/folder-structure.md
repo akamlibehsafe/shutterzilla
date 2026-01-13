@@ -102,20 +102,20 @@ All documentation, design assets, and mockups are organized in the `docs/` folde
 
 ```
 docs/
-├── docs/               # All markdown documentation files
-│   ├── tech-stack-guide.md      # Comprehensive tech stack guide
-│   ├── tech-stack-final.md      # Finalized tech stack reference
-│   ├── design-system.md         # Color palette, typography, spacing
-│   ├── functional-requirements.md # Feature requirements
-│   ├── data-models.md           # Database schema and models
-│   ├── component-library.md      # UI component reference
-│   ├── page-inventory.md        # Complete page list and sitemap
-│   ├── key-decisions-log.md     # Design and architecture decisions
-│   ├── folder-structure.md      # Folder structure guide
-│   ├── presentation-script.md    # Presentation script
-│   ├── session-summary-full.md   # Project summary
-│   ├── release-notes-v0.1.md    # Release notes
-│   └── README.md                 # Documentation index
+├── tech-stack-guide.md      # Comprehensive tech stack guide
+├── tech-stack-final.md      # Finalized tech stack reference
+├── design-system.md         # Color palette, typography, spacing
+├── functional-requirements.md # Feature requirements
+├── data-models.md           # Database schema and models
+├── component-library.md      # UI component reference
+├── page-inventory.md        # Complete page list and sitemap
+├── key-decisions-log.md     # Design and architecture decisions
+├── folder-structure.md      # Folder structure guide
+├── presentation-script.md    # Presentation script
+├── session-summary-full.md   # Project summary
+├── release-notes-v0.1.md    # Release notes
+├── release-notes-v0.2.md    # Release notes
+├── README.md                 # Documentation index
 │
 ├── mockupsv1/          # Original desktop-focused HTML/CSS mockups
 │   ├── css/
@@ -140,7 +140,7 @@ docs/
 │           └── v2_accent_blade/
 │
 ├── presentation.html   # Interactive presentation
-└── index.html          # Documentation home page
+└── index.html          # GitHub Pages landing page
 ```
 
 **Rationale:**
