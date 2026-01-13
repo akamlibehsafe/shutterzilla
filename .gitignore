@@ -81,6 +81,9 @@ env/
 logs/
 *.log
 
+# Test results and validation output
+validation/results/
+
 # OS
 Thumbs.db
 ehthumbs.db
