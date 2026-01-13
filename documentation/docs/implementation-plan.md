@@ -25,6 +25,31 @@ All planning and implementation documentation will be stored in `documentation/d
 - [x] Create implementation plan document
 - [x] Define mockup-to-code migration process
 
+### Phase 0.1: High-Level Behavior & Requirements Discussion
+**Goal:** Define overall app behavior and user flows at a high level
+
+- [ ] Define user journeys (Scraper App, Collection App, Auth, Admin)
+- [ ] Define core features for each app
+- [ ] Define basic data requirements
+- [ ] Document in `implementation-validation-notes.md`
+
+**Deliverable:** High-level understanding of app behavior and basic data needs
+
+### Phase 0.2: Scraping Feasibility Validation
+**Goal:** Test if we can successfully scrape from all four target sources
+
+- [ ] Create validation test scripts for each source
+- [ ] Test Mercari Japan scraping
+- [ ] Test Buyee scraping
+- [ ] Test Yahoo Japan Auctions scraping
+- [ ] Test eBay USA scraping (or evaluate API)
+- [ ] Document results in `implementation-validation-notes.md`
+- [ ] Make go/no-go decision based on results
+
+**Deliverable:** Validation results and decision on scraping feasibility
+
+**Note:** See `implementation-validation-plan.md` for detailed validation steps.
+
 ### Phase 1: Complete Stack Setup
 **Goal:** Set up all infrastructure and services before writing any code
 

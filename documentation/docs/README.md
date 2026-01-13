@@ -21,6 +21,8 @@ This folder contains comprehensive documentation for the ShutterZilla platform, 
 | **[implementation-data-models-refinement.md](./implementation-data-models-refinement.md)** | Working document for refining data models screen-by-screen. |
 | **[implementation-screen-specifications.md](./implementation-screen-specifications.md)** | Detailed specifications for each screen's behavior and requirements. |
 | **[implementation-scraper-behavior-specification.md](./implementation-scraper-behavior-specification.md)** | Specification for how the scraper service works and behaves. |
+| **[implementation-validation-plan.md](./implementation-validation-plan.md)** | Validation and feasibility testing plan, including scraping tests. |
+| **[implementation-validation-notes.md](./implementation-validation-notes.md)** | Notes and results from validation testing phase. |
 
 ## How to Use with Cursor AI
 
