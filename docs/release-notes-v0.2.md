@@ -27,7 +27,7 @@ This release marks the completion of the planning and preparation phase for Shut
   - `documentation/` - All docs, mockups, and branding
 - Moved all mockups to `documentation/` folder
 - Renamed `mockups/` to `mockupsv1/` for clarity
-- Consolidated all markdown documentation in `documentation/docs/`
+- Consolidated all markdown documentation in `docs/`
 - Moved `index.html` to `documentation/` as documentation home page
 
 ### 📚 Comprehensive Documentation
@@ -84,7 +84,7 @@ This release marks the completion of the planning and preparation phase for Shut
 ### Project Organization
 - Clean root directory (only essential config files)
 - Clear separation: code (`apps/`), infrastructure, documentation
-- All markdown docs in `documentation/docs/`
+- All markdown docs in `docs/`
 - All design assets (mockups, branding) in `documentation/`
 
 ### Git & Repository
@@ -97,31 +97,31 @@ This release marks the completion of the planning and preparation phase for Shut
 ## Files Changed
 
 ### New Files
-- `documentation/docs/implementation-plan.md`
-- `documentation/docs/implementation-notes.md`
-- `documentation/docs/implementation-validation-plan.md`
-- `documentation/docs/implementation-validation-notes.md`
-- `documentation/docs/implementation-data-models-refinement.md`
-- `documentation/docs/implementation-screen-specifications.md`
-- `documentation/docs/implementation-scraper-behavior-specification.md`
-- `documentation/docs/implementation-mockup-to-code-changes.md`
-- `documentation/docs/folder-structure.md`
-- `documentation/docs/tech-stack-guide.md`
-- `documentation/docs/tech-stack-final.md`
+- `docs/implementation-plan.md`
+- `docs/implementation-notes.md`
+- `docs/implementation-validation-plan.md`
+- `docs/implementation-validation-notes.md`
+- `docs/implementation-data-models-refinement.md`
+- `docs/implementation-screen-specifications.md`
+- `docs/implementation-scraper-behavior-specification.md`
+- `docs/implementation-mockup-to-code-changes.md`
+- `docs/folder-structure.md`
+- `docs/tech-stack-guide.md`
+- `docs/tech-stack-final.md`
 - `documentation/index.html` (moved from root)
 - `.gitignore`
 
 ### Moved/Reorganized
-- `mockups/` → `documentation/mockupsv1/`
-- `mockupsv2/` → `documentation/mockupsv2/`
+- `mockups/` → `mockupsv1/`
+- `mockupsv2/` → `mockupsv2/`
 - `branding/` → `documentation/branding/`
-- All `.md` files → `documentation/docs/`
+- All `.md` files → `docs/`
 - `index.html` → `documentation/index.html`
 
 ### Updated Files
 - `README.md` - Comprehensive project overview
-- `documentation/docs/README.md` - Updated with new structure
-- `documentation/docs/key-decisions-log.md` - Added tech stack decisions
+- `docs/README.md` - Updated with new structure
+- `docs/key-decisions-log.md` - Added tech stack decisions
 - All documentation files with updated references
 
 ---
@@ -147,21 +147,21 @@ This release marks the completion of the planning and preparation phase for Shut
 
 ## Live Mockups
 
-- **[Mockups v2 (Mobile-Responsive)](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv2/landing-page.html)**
-- **[Mockups v1 (Original Desktop)](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html)**
-- **[Documentation Home](https://akamlibehsafe.github.io/shutterzilla/documentation/index.html)**
+- **[Mockups v2 (Mobile-Responsive)](https://akamlibehsafe.github.io/shutterzilmockupsv2/landing-page.html)**
+- **[Mockups v1 (Original Desktop)](https://akamlibehsafe.github.io/shutterzilmockupsv1/landing-page.html)**
+- **[Documentation Home](https://akamlibehsafe.github.io/shutterzilindex.html)**
 
 ---
 
 ## Documentation
 
-All documentation is available in the [`documentation/docs/`](./documentation/docs/) folder:
+All documentation is available in the [`docs/`](./docs/) folder:
 
-- [Implementation Plan](./documentation/docs/implementation-plan.md)
-- [Tech Stack Guide](./documentation/docs/tech-stack-guide.md)
-- [Folder Structure](./documentation/docs/folder-structure.md)
-- [Validation Plan](./documentation/docs/implementation-validation-plan.md)
-- [Full Documentation Index](./documentation/docs/README.md)
+- [Implementation Plan](./docs/implementation-plan.md)
+- [Tech Stack Guide](./docs/tech-stack-guide.md)
+- [Folder Structure](./docs/folder-structure.md)
+- [Validation Plan](./docs/implementation-validation-plan.md)
+- [Full Documentation Index](./docs/README.md)
 
 ---
 

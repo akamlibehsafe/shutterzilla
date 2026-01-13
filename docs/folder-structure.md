@@ -96,12 +96,12 @@ infrastructure/
 
 ---
 
-### `documentation/` - Project Documentation
+### `docs/` - Project Documentation
 
-All documentation, design assets, and mockups are organized in the `documentation/` folder.
+All documentation, design assets, and mockups are organized in the `docs/` folder.
 
 ```
-documentation/
+docs/
 ├── docs/               # All markdown documentation files
 │   ├── tech-stack-guide.md      # Comprehensive tech stack guide
 │   ├── tech-stack-final.md      # Finalized tech stack reference
@@ -174,9 +174,9 @@ documentation/
 
 **Starting development:**
 1. Read `README.md` at root for project overview
-2. Check `documentation/docs/README.md` for documentation index
-3. Review `documentation/docs/tech-stack-guide.md` for setup instructions
-4. View `documentation/mockupsv2/` for design reference
+2. Check `docs/README.md` for documentation index
+3. Review `docs/tech-stack-guide.md` for setup instructions
+4. View `mockupsv2/` for design reference
 
 **Finding code:**
 - Frontend code: `apps/frontend/`
@@ -184,9 +184,9 @@ documentation/
 - Scrapers: `apps/scraper/scrapers/`
 
 **Finding documentation:**
-- All docs: `documentation/docs/`
-- Design system: `documentation/docs/design-system.md`
-- Mockups: `documentation/mockupsv2/` (use v2 for mobile-responsive)
+- All docs: `docs/`
+- Design system: `docs/design-system.md`
+- Mockups: `mockupsv2/` (use v2 for mobile-responsive)
 
 **Finding infrastructure:**
 - Database migrations: `infrastructure/supabase/migrations/`
@@ -195,16 +195,16 @@ documentation/
 ### For Designers
 
 **Design assets:**
-- Branding: `documentation/branding/`
-- Mockups: `documentation/mockupsv2/` (latest version)
-- Design system: `documentation/design-system.md`
+- Branding: `docs/branding/`
+- Mockups: `mockupsv2/` (latest version)
+- Design system: `docs/design-system.md`
 
 ---
 
 ## Benefits of This Structure
 
 ### 1. Clear Separation of Concerns
-- **Code** (`apps/`) is separate from **documentation** (`documentation/`)
+- **Code** (`apps/`) is separate from **documentation** (`docs/`)
 - **Infrastructure** (`infrastructure/`) is separate from application code
 - Easy to understand what goes where
 
@@ -216,7 +216,7 @@ documentation/
 ### 3. Professional Organization
 - Follows modern monorepo best practices
 - Similar to structures used by Turborepo, Nx, and other monorepo tools
-- Clear mental model: "code in apps/, docs in documentation/"
+- Clear mental model: "code in apps/, docs in docs/"
 
 ### 4. Clean Root Directory
 - Root contains only essential files
@@ -225,8 +225,8 @@ documentation/
 
 ### 5. Easy Navigation
 - Developers know where to find code: `apps/`
-- Designers know where to find mockups: `documentation/mockupsv2/`
-- Everyone knows where docs are: `documentation/`
+- Designers know where to find mockups: `mockupsv2/`
+- Everyone knows where docs are: `docs/`
 
 ---
 
@@ -235,14 +235,14 @@ documentation/
 This structure was adopted after the initial design phase. The following changes were made:
 
 1. **Mockups reorganized:**
-   - `mockups/` → `documentation/mockupsv1/` (renamed for clarity)
-   - `mockupsv2/` → `documentation/mockupsv2/` (moved to documentation)
+   - `mockups/` → `mockupsv1/` (renamed for clarity)
+   - `mockupsv2/` → `mockupsv2/` (moved to documentation)
 
 2. **Branding moved:**
-   - `branding/` → `documentation/branding/` (design assets belong with docs)
+   - `branding/` → `docs/branding/` (design assets belong with docs)
 
 3. **Documentation organized:**
-   - All `.md` files → `documentation/docs/` (centralized documentation)
+   - All `.md` files → `docs/` (centralized documentation)
 
 4. **Code structure planned:**
    - Future code will go in `apps/` folder
@@ -281,9 +281,9 @@ The current structure supports these additions without major reorganization.
 | Scrapers | `apps/scraper/scrapers/` |
 | Database migrations | `infrastructure/supabase/migrations/` |
 | CI/CD workflows | `infrastructure/.github/workflows/` |
-| Documentation | `documentation/docs/*.md` |
-| Mockups (latest) | `documentation/mockupsv2/` |
-| Branding assets | `documentation/branding/` |
+| Documentation | `docs/*.md` |
+| Mockups (latest) | `mockupsv2/` |
+| Branding assets | `docs/branding/` |
 | Project config | Root directory |
 
 ---

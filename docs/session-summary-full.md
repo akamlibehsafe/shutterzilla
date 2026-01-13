@@ -17,8 +17,8 @@ The project was developed through a series of iterative steps, starting with ini
 The project is permanently deployed and publicly accessible via GitHub Pages.
 
 - **Homepage:** [https://akamlibehsafe.github.io/shutterzilla/](https://akamlibehsafe.github.io/shutterzilla/)
-- **Presentation:** [https://akamlibehsafe.github.io/shutterzilla/documentation/presentation.html](https://akamlibehsafe.github.io/shutterzilla/documentation/presentation.html)
-- **Mockups:** [https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html)
+- **Presentation:** [https://akamlibehsafe.github.io/shutterzilpresentation.html](https://akamlibehsafe.github.io/shutterzilpresentation.html)
+- **Mockups:** [https://akamlibehsafe.github.io/shutterzilmockupsv1/landing-page.html](https://akamlibehsafe.github.io/shutterzilmockupsv1/landing-page.html)
 
 ## 3. Scope of Work: 26 Mockups
 

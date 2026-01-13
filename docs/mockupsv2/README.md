@@ -144,4 +144,4 @@ When testing these mockups:
 
 ## Original Mockups
 
-The original, non-mobile-optimized mockups remain in the `../mockupsv1/` folder and are unchanged.
+The original, non-mobile-optimized mockups remain in the `mockupsv1/` folder and are unchanged.

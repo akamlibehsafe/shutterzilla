@@ -9,7 +9,7 @@ This document tracks the step-by-step implementation plan for building ShutterZi
 
 ## Planning Documentation Structure
 
-All planning and implementation documentation will be stored in `documentation/docs/`:
+All planning and implementation documentation will be stored in `docs/`:
 
 - **`implementation-plan.md`** (this file) - Master plan with detailed steps to follow
 - **`implementation-notes.md`** - Same structure as plan, with space for notes and observations for each step

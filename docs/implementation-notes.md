@@ -14,7 +14,7 @@ This document mirrors the structure of `implementation-plan.md` and provides spa
 **Notes:**
 - Established planning documentation structure
 - All implementation docs use `implementation-` prefix
-- All docs stored in `documentation/docs/`
+- All docs stored in `docs/`
 
 ### Create implementation plan document
 **Notes:**
