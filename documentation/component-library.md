@@ -1,59 +1,53 @@
 # Component Library Reference
 
-This document provides a reference for the reusable components in the ShutterZilla platform.
+This document provides a reference for the reusable UI components in the ShutterZilla platform, based on the `styles.css` file.
 
-## 1. Top Bar (`.topbar`)
+## 1. Core Layout
 
-The top bar is a consistent header across all app pages.
+| Component | CSS Class | Description |
+|---|---|---|
+| **Top Bar** | `.topbar` | The main header navigation bar present on all application pages. It has a fixed height of 70px and a teal bottom border. |
+| **Footer** | `.footer` | The main footer present on all application pages. It has a dark slate background and contains branding and navigation links. |
+| **Page Content** | `.page-content` | A wrapper for the main content area of a page, providing consistent padding. |
 
-- **Structure:** `div.topbar` > `div.topbar__logo`, `div.topbar__title`, `div.topbar__right`
-- **Styling:** White background, teal bottom border, 70px height.
+## 2. Navigation
 
-## 2. Footer (`.footer`)
+| Component | CSS Class | Description |
+|---|---|---|
+| **Tabs** | `.tabs` | A tab-based navigation element used within apps (e.g., Scraper, Collection). The active tab is indicated by a teal bottom border. |
+| **View Toggle** | `.view-toggle` | A two-button toggle to switch between views, such as the Grid and List views in the Scraper feed. |
 
-The footer is a consistent footer across all app pages.
+## 3. Cards
 
-- **Structure:** `footer.footer` > `div.footer__container` > `div.footer__brand`, `div.footer__section`
-- **Styling:** Dark slate background, white/gray text.
+| Component | CSS Class | Description |
+|---|---|---|
+| **Card** | `.card` | The base component for displaying individual items like camera listings or collection entries. It features a white background, rounded corners, and a subtle shadow. |
+| **Card Image** | `.card__image` | The container for the main image within a card. |
+| **Card Body** | `.card__body` | The container for the text content within a card, including title, price, and metadata. |
 
-## 3. Tabs (`.tabs`)
+## 4. Buttons & Interactive Elements
 
-Tabs are used for navigation within an app.
+| Component | CSS Class | Description |
+|---|---|---|
+| **Button** | `.btn` | The base class for all buttons. |
+| **Primary Button** | `.btn--primary` | A solid teal button used for primary actions (e.g., "Add Camera"). |
+| **Outline Button** | `.btn--outline` | A button with a gray border and transparent background, used for secondary actions. |
+| **Select/Dropdown** | `.select` | A styled dropdown element used in forms and for sorting controls. |
 
-- **Structure:** `div.tabs` > `a.tabs__item`
-- **Styling:** Active tab has a teal bottom border.
+## 5. Badges, Pills & Icons
 
-## 4. Cards (`.card`)
+| Component | CSS Class | Description |
+|---|---|---|
+| **Badge** | `.badge` | Small, colored indicators used for status. Variants include `.badge--success`, `.badge--new`, and `.badge--sold`. |
+| **Pill** | `.pill` | Rounded, tag-like elements used for filters and categories. Variants include `.pill--primary`, `.pill--secondary`, and `.pill--outline`. |
+| **Ribbon** | `.ribbon` | An angled banner, typically used to indicate a "SOLD" status on a camera listing. |
+| **Source Icon** | `.source-icon` | Small, colored icons that indicate the source of a scraper listing. Variants include `.source-icon--mercari`, `.source-icon--buyee`, and `.source-icon--ebay`. |
 
-Cards are used to display camera listings and other content.
+## 6. Grid System
 
-- **Structure:** `div.card` > `div.card__image`, `div.card__body`
-- **Styling:** White background, rounded corners, subtle shadow.
-
-## 5. Badges (`.badge`)
-
-Badges are used to display status and other information.
-
-- **Classes:** `.badge--success`, `.badge--new`, `.badge--sold`
-- **Styling:** Colored background with rounded corners.
-
-## 6. Buttons (`.btn`)
-
-Buttons are used for actions.
-
-- **Classes:** `.btn--primary`, `.btn--outline`
-- **Styling:** Teal primary button, gray outline button.
-
-## 7. Pills (`.pill`)
-
-Pills are used for tags and filters.
-
-- **Classes:** `.pill--primary`, `.pill--secondary`, `.pill--outline`
-- **Styling:** Colored background with rounded corners.
-
-## 8. Source Icons (`.source-icon`)
-
-Source icons are used to indicate the source of a camera listing.
-
-- **Classes:** `.source-icon--mercari`, `.source-icon--buyee`, `.source-icon--ebay`
-- **Styling:** Colored background with a single letter.
+| Component | CSS Class | Description |
+|---|---|---|
+| **Grid** | `.grid` | The base class for creating a grid layout. |
+| **3-Column Grid** | `.grid--3` | A grid with three equally-sized columns. |
+| **4-Column Grid** | `.grid--4` | A grid with four equally-sized columns. |
+| **5-Column Grid** | `.grid--5` | A grid with five equally-sized columns, used for the camera collection view. |
