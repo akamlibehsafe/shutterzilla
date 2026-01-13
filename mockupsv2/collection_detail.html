@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Nikon FM2</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .detail-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .detail-image {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 250px;
+    }
+    
+    .detail-image img {
+      max-width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+    }
+    
+    .detail-info {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .detail-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .detail-title {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .detail-subtitle {
+      font-size: var(--font-size-base);
+      color: var(--color-slate-light);
+    }
+    
+    .detail-actions {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    
+    .detail-actions .btn--icon {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      min-width: var(--touch-target-min);
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      cursor: pointer;
+      color: var(--color-slate);
+      transition: all 0.2s ease;
+    }
+    
+    .detail-actions .btn--icon:active {
+      background: var(--color-gray-100);
+    }
+    
+    .detail-section {
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    
+    .detail-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .detail-section__title {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-slate-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+    
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .detail-item:last-child {
+      border-bottom: none;
+    }
+    
+    .detail-item__label {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+      margin-bottom: 4px;
+    }
+    
+    .detail-item__value {
+      font-size: var(--font-size-base);
+      font-weight: 500;
+      color: var(--color-slate-dark);
+    }
+    
+    .detail-value {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--color-teal);
+    }
+    
+    .detail-notes {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+      line-height: 1.6;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      color: var(--color-slate-light);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--spacing-lg);
+      min-height: var(--touch-target-min);
+    }
+    
+    .back-link:active {
+      color: var(--color-teal);
+    }
+    
+    @media (min-width: 768px) {
+      .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+      }
+      
+      .detail-image {
+        min-height: 400px;
+        padding: var(--spacing-xl);
+      }
+      
+      .detail-image img {
+        max-height: 350px;
+      }
+      
+      .detail-info {
+        padding: var(--spacing-xl);
+      }
+      
+      .detail-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      
+      .detail-title {
+        font-size: var(--font-size-2xl);
+      }
+      
+      .detail-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .detail-item {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      
+      .detail-actions .btn--icon:hover {
+        background: var(--color-gray-100);
+      }
+      
+      .back-link:hover {
+        color: var(--color-teal);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Collection</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="collection_home.html" class="tabs__item tabs__item--active">My Cameras</a>
+    <a href="collection_add.html" class="tabs__item">Add Camera</a>
+    <a href="collection_stats.html" class="tabs__item">Statistics</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <a href="collection_home.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Collection
+    </a>
+    
+    <div class="detail-container">
+      <!-- Image Section -->
+      <div class="detail-image">
+        <img src="assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+      </div>
+      
+      <!-- Info Section -->
+      <div class="detail-info">
+        <div class="detail-header">
+          <div>
+            <h1 class="detail-title">Nikon FM2</h1>
+            <p class="detail-subtitle">1982 • Black</p>
+          </div>
+          <div class="detail-actions">
+            <button class="btn--icon" title="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn--icon" title="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <div class="detail-section__title">Value</div>
+          <div class="detail-value">$345</div>
+        </div>
+        
+        <div class="detail-section">
+          <div class="detail-section__title">Details</div>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-item__label">Brand</span>
+              <span class="detail-item__value">Nikon</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Model</span>
+              <span class="detail-item__value">FM2</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Year</span>
+              <span class="detail-item__value">1982</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Color</span>
+              <span class="detail-item__value">Black</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Condition</span>
+              <span class="detail-item__value">
+                <span class="badge badge--success">✓ Excellent</span>
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Serial Number</span>
+              <span class="detail-item__value">N8234567</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Purchase Date</span>
+              <span class="detail-item__value">March 15, 2023</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-item__label">Status</span>
+              <span class="detail-item__value">
+                <span class="badge" style="background: var(--color-teal); color: white;">OWNED</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <div class="detail-section__title">Notes</div>
+          <p class="detail-notes">
+            Purchased from a local camera shop in excellent working condition. Shutter speeds are accurate, meter works perfectly. Comes with original body cap and strap. Minor brassing on the edges adds character. One of my favorite cameras for street photography.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

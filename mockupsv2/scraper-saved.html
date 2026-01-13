@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Saved Searches</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .saved-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .saved-header__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .saved-card {
+      background-color: var(--color-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-gray-200);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      transition: box-shadow 0.2s ease;
+    }
+    
+    .saved-card:active {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .saved-card__info {
+      flex: 1;
+    }
+    
+    .saved-card__name {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .saved-card__filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: 2px var(--spacing-sm);
+      background-color: var(--color-gray-100);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--color-slate);
+    }
+    
+    .saved-card__meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .saved-card__stat {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    
+    .saved-card__stat--new {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+    
+    .saved-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-gray-200);
+    }
+    
+    .saved-card__toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: var(--touch-target-min);
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      min-width: 44px;
+      min-height: 24px;
+      background-color: var(--color-gray-300);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    .toggle-switch--active {
+      background-color: var(--color-teal);
+    }
+    
+    .toggle-switch__knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--color-white);
+      border-radius: var(--radius-full);
+      transition: transform 0.2s ease;
+    }
+    
+    .toggle-switch--active .toggle-switch__knob {
+      transform: translateX(20px);
+    }
+    
+    .toggle-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+    }
+    
+    .icon-btn {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      min-width: var(--touch-target-min);
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      background-color: var(--color-white);
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    
+    .icon-btn:active {
+      background-color: var(--color-gray-100);
+    }
+    
+    .icon-btn--danger:active {
+      background-color: #fef2f2;
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+    
+    .action-buttons-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    
+    .action-buttons-row .icon-btn {
+      flex: 1;
+    }
+    
+    @media (min-width: 768px) {
+      .saved-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .saved-card {
+        flex-direction: row;
+        align-items: center;
+        padding: var(--spacing-lg);
+      }
+      
+      .saved-card__actions {
+        flex-direction: row;
+        align-items: center;
+        padding-top: 0;
+        border-top: none;
+        border-left: 1px solid var(--color-gray-200);
+        padding-left: var(--spacing-lg);
+      }
+      
+      .saved-card__meta {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+      }
+      
+      .saved-card__toggle {
+        justify-content: flex-start;
+      }
+      
+      .action-buttons-row {
+        flex-direction: row;
+      }
+      
+      .saved-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      .icon-btn:hover {
+        background-color: var(--color-gray-100);
+      }
+      
+      .icon-btn--danger:hover {
+        background-color: #fef2f2;
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Scraper</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="scraper-feed.html" class="tabs__item">Feed</a>
+    <a href="scraper-search.html" class="tabs__item">Search</a>
+    <a href="scraper-saved.html" class="tabs__item tabs__item--active">Saved</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <!-- Header -->
+    <div class="saved-header">
+      <h1 class="saved-header__title">Saved Searches</h1>
+      <a href="scraper-search.html" class="btn btn--primary">+ New Search</a>
+    </div>
+    
+    <!-- Saved Searches List -->
+    <div class="saved-list">
+      <!-- Saved Search 1 - Nikon FM2 -->
+      <div class="saved-card">
+        <div class="saved-card__info">
+          <h3 class="saved-card__name">Nikon FM2</h3>
+          <div class="saved-card__filters">
+            <span class="filter-tag">Brand: Nikon</span>
+            <span class="filter-tag">$100 - $500</span>
+            <span class="filter-tag">Excellent+</span>
+            <span class="filter-tag">Mercari, Yahoo</span>
+          </div>
+          <div class="saved-card__meta">
+            <span class="saved-card__stat saved-card__stat--new">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8"></circle>
+              </svg>
+              12 new matches
+            </span>
+            <span class="saved-card__stat">Last checked: 5 min ago</span>
+          </div>
+        </div>
+        <div class="saved-card__actions">
+          <div class="saved-card__toggle">
+            <span class="toggle-label">Notifications</span>
+            <div class="toggle-switch toggle-switch--active">
+              <div class="toggle-switch__knob"></div>
+            </div>
+          </div>
+          <div class="action-buttons-row">
+            <a href="scraper-search.html" class="icon-btn" title="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </a>
+            <button class="icon-btn icon-btn--danger" title="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Saved Search 2 - Leica M3 -->
+      <div class="saved-card">
+        <div class="saved-card__info">
+          <h3 class="saved-card__name">Leica M3</h3>
+          <div class="saved-card__filters">
+            <span class="filter-tag">Brand: Leica</span>
+            <span class="filter-tag">$1000 - $3000</span>
+            <span class="filter-tag">Any condition</span>
+            <span class="filter-tag">All sources</span>
+          </div>
+          <div class="saved-card__meta">
+            <span class="saved-card__stat saved-card__stat--new">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8"></circle>
+              </svg>
+              3 new matches
+            </span>
+            <span class="saved-card__stat">Last checked: 12 min ago</span>
+          </div>
+        </div>
+        <div class="saved-card__actions">
+          <div class="saved-card__toggle">
+            <span class="toggle-label">Notifications</span>
+            <div class="toggle-switch toggle-switch--active">
+              <div class="toggle-switch__knob"></div>
+            </div>
+          </div>
+          <div class="action-buttons-row">
+            <a href="scraper-search.html" class="icon-btn" title="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </a>
+            <button class="icon-btn icon-btn--danger" title="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Saved Search 3 - Canon AE-1 -->
+      <div class="saved-card">
+        <div class="saved-card__info">
+          <h3 class="saved-card__name">Canon AE-1</h3>
+          <div class="saved-card__filters">
+            <span class="filter-tag">Brand: Canon</span>
+            <span class="filter-tag">Under $200</span>
+            <span class="filter-tag">Good+</span>
+            <span class="filter-tag">eBay only</span>
+          </div>
+          <div class="saved-card__meta">
+            <span class="saved-card__stat">No new matches</span>
+            <span class="saved-card__stat">Last checked: 1 hour ago</span>
+          </div>
+        </div>
+        <div class="saved-card__actions">
+          <div class="saved-card__toggle">
+            <span class="toggle-label">Notifications</span>
+            <div class="toggle-switch">
+              <div class="toggle-switch__knob"></div>
+            </div>
+          </div>
+          <div class="action-buttons-row">
+            <a href="scraper-search.html" class="icon-btn" title="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </a>
+            <button class="icon-btn icon-btn--danger" title="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Saved Search 4 - Pentax K1000 -->
+      <div class="saved-card">
+        <div class="saved-card__info">
+          <h3 class="saved-card__name">Pentax K1000</h3>
+          <div class="saved-card__filters">
+            <span class="filter-tag">Brand: Pentax</span>
+            <span class="filter-tag">$50 - $150</span>
+            <span class="filter-tag">Any condition</span>
+            <span class="filter-tag">Mercari, Buyee</span>
+          </div>
+          <div class="saved-card__meta">
+            <span class="saved-card__stat saved-card__stat--new">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8"></circle>
+              </svg>
+              8 new matches
+            </span>
+            <span class="saved-card__stat">Last checked: 30 min ago</span>
+          </div>
+        </div>
+        <div class="saved-card__actions">
+          <div class="saved-card__toggle">
+            <span class="toggle-label">Notifications</span>
+            <div class="toggle-switch toggle-switch--active">
+              <div class="toggle-switch__knob"></div>
+            </div>
+          </div>
+          <div class="action-buttons-row">
+            <a href="scraper-search.html" class="icon-btn" title="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </a>
+            <button class="icon-btn icon-btn--danger" title="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

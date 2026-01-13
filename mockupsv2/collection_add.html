@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Add Camera</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .form-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .form-card__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+    
+    .form-group {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: var(--spacing-md);
+      min-height: var(--touch-target-min);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      color: var(--color-slate-dark);
+      background: var(--color-white);
+      box-sizing: border-box;
+    }
+    
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--color-teal);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .image-upload {
+      border: 2px dashed var(--color-gray-300);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: var(--touch-target-min);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .image-upload:active {
+      border-color: var(--color-teal);
+      background: rgba(13, 148, 136, 0.05);
+    }
+    
+    .image-upload__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--spacing-md);
+      color: var(--color-slate-light);
+    }
+    
+    .image-upload__text {
+      color: var(--color-slate-light);
+      font-size: var(--font-size-sm);
+    }
+    
+    .image-upload__link {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+    
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-gray-200);
+    }
+    
+    .form-actions .btn {
+      width: 100%;
+    }
+    
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      cursor: pointer;
+      min-height: var(--touch-target-min);
+    }
+    
+    .radio-option input {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      accent-color: var(--color-teal);
+    }
+    
+    @media (min-width: 768px) {
+      .form-card {
+        padding: var(--spacing-xl);
+      }
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-lg);
+      }
+      
+      .form-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+      }
+      
+      .form-actions .btn {
+        width: auto;
+      }
+      
+      .radio-group {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+      }
+      
+      .image-upload:hover {
+        border-color: var(--color-teal);
+        background: rgba(13, 148, 136, 0.05);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Collection</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="collection_home.html" class="tabs__item">My Cameras</a>
+    <a href="collection_add.html" class="tabs__item tabs__item--active">Add Camera</a>
+    <a href="collection_stats.html" class="tabs__item">Statistics</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="form-card">
+      <h1 class="form-card__title">Add New Camera</h1>
+      
+      <form>
+        <!-- Status -->
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="status" value="owned" checked>
+              <span>Owned</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="status" value="wishlist">
+              <span>Wishlist</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Basic Info -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="brand">Brand</label>
+            <select id="brand" class="form-select">
+              <option value="">Select brand...</option>
+              <option value="nikon">Nikon</option>
+              <option value="canon">Canon</option>
+              <option value="leica">Leica</option>
+              <option value="pentax">Pentax</option>
+              <option value="olympus">Olympus</option>
+              <option value="minolta">Minolta</option>
+              <option value="hasselblad">Hasselblad</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="model">Model</label>
+            <input type="text" id="model" class="form-input" placeholder="e.g., FM2, AE-1, M3">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="year">Year</label>
+            <input type="number" id="year" class="form-input" placeholder="e.g., 1982">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="color">Color / Finish</label>
+            <input type="text" id="color" class="form-input" placeholder="e.g., Black, Chrome, Silver">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="condition">Condition</label>
+            <select id="condition" class="form-select">
+              <option value="">Select condition...</option>
+              <option value="mint">Mint</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="poor">Poor</option>
+              <option value="for-parts">For Parts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="value">Value ($)</label>
+            <input type="number" id="value" class="form-input" placeholder="e.g., 350">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="serial">Serial Number</label>
+            <input type="text" id="serial" class="form-input" placeholder="Optional">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="purchase-date">Purchase Date</label>
+            <input type="date" id="purchase-date" class="form-input">
+          </div>
+        </div>
+        
+        <!-- Notes -->
+        <div class="form-group">
+          <label class="form-label" for="notes">Notes</label>
+          <textarea id="notes" class="form-textarea" placeholder="Any additional details about this camera..."></textarea>
+        </div>
+        
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label class="form-label">Photos</label>
+          <div class="image-upload">
+            <div class="image-upload__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <p class="image-upload__text">
+              <span class="image-upload__link">Click to upload</span> or drag and drop<br>
+              PNG, JPG up to 10MB
+            </p>
+          </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="form-actions">
+          <a href="collection_home.html" class="btn btn--outline">Cancel</a>
+          <button type="submit" class="btn btn--primary">Add Camera</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300">
+  <!-- Version 1: All Gray Aperture -->
+  
+  <!-- Aperture Icon -->
+  <g id="aperture-icon">
+    <!-- Outer Circle -->
+    <circle cx="150" cy="150" r="100" fill="none" stroke="#334155" stroke-width="8"/>
+    
+    <!-- Aperture Blades (8 blades) - All Gray -->
+    <g id="blades" fill="#334155">
+      <!-- Blade 1 (top) -->
+      <path d="M 150 60 L 180 90 L 150 120 L 120 90 Z"/>
+      
+      <!-- Blade 2 (top-right) -->
+      <path d="M 192.43 77.57 L 210 110 L 180 130 L 162.43 97.57 Z"/>
+      
+      <!-- Blade 3 (right) -->
+      <path d="M 240 150 L 210 180 L 180 150 L 210 120 Z"/>
+      
+      <!-- Blade 4 (bottom-right) -->
+      <path d="M 192.43 222.43 L 180 190 L 210 170 L 222.43 202.43 Z"/>
+      
+      <!-- Blade 5 (bottom) -->
+      <path d="M 150 240 L 120 210 L 150 180 L 180 210 Z"/>
+      
+      <!-- Blade 6 (bottom-left) -->
+      <path d="M 107.57 222.43 L 120 190 L 90 170 L 77.57 202.43 Z"/>
+      
+      <!-- Blade 7 (left) -->
+      <path d="M 60 150 L 90 120 L 120 150 L 90 180 Z"/>
+      
+      <!-- Blade 8 (top-left) -->
+      <path d="M 107.57 77.57 L 120 110 L 90 130 L 77.57 97.57 Z"/>
+    </g>
+    
+    <!-- Center white space -->
+    <circle cx="150" cy="150" r="40" fill="white"/>
+  </g>
+  
+  <!-- Text: SHUTTER (Gray) -->
+  <text x="320" y="180" font-family="Arial, Helvetica, sans-serif" font-size="100" font-weight="bold" fill="#334155">SHUTTER</text>
+  
+  <!-- Text: ZILLA (Teal) -->
+  <text x="800" y="180" font-family="Arial, Helvetica, sans-serif" font-size="100" font-weight="bold" fill="#0d9488">ZILLA</text>
+</svg>

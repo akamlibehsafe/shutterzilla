@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Admin System Logs</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .filters-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .filters-row .form-input,
+    .filters-row .select {
+      width: 100%;
+    }
+    
+    .table-container {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+    }
+    
+    .data-table th {
+      text-align: left;
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-slate-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--color-gray-50);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    
+    .data-table td {
+      padding: var(--spacing-md);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-dark);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .log-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+    }
+    
+    .log-type--info {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    
+    .log-type--warning {
+      background: #fef3c7;
+      color: #b45309;
+    }
+    
+    .log-type--error {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .log-type--success {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .log-message {
+      max-width: 100%;
+      word-break: break-word;
+    }
+    
+    .log-source {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--color-gray-100);
+      border-radius: 4px;
+      font-size: var(--font-size-xs);
+      color: var(--color-slate);
+    }
+    
+    .log-timestamp {
+      font-family: monospace;
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+    }
+    
+    .pagination {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: var(--color-gray-50);
+      border-top: 1px solid var(--color-gray-200);
+    }
+    
+    .pagination__info {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+      text-align: center;
+    }
+    
+    .pagination__controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      justify-content: center;
+    }
+    
+    .pagination__btn {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      min-height: var(--touch-target-min);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+      cursor: pointer;
+    }
+    
+    .pagination__btn:active {
+      background: var(--color-gray-100);
+    }
+    
+    .pagination__btn--active {
+      background: var(--color-teal);
+      color: white;
+      border-color: var(--color-teal);
+    }
+    
+    @media (min-width: 768px) {
+      .page-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .filters-row {
+        flex-direction: row;
+        gap: var(--spacing-md);
+      }
+      
+      .filters-row .form-input {
+        width: 250px;
+      }
+      
+      .table-container {
+        overflow-x: visible;
+      }
+      
+      .data-table {
+        min-width: auto;
+      }
+      
+      .data-table tr:hover {
+        background: var(--color-gray-50);
+      }
+      
+      .log-message {
+        max-width: 400px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .pagination {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .pagination__info {
+        text-align: left;
+      }
+      
+      .pagination__btn:hover {
+        background: var(--color-gray-100);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Admin</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="admin_dashboard.html" class="tabs__item">Dashboard</a>
+    <a href="admin_users.html" class="tabs__item">Users</a>
+    <a href="admin_scraper.html" class="tabs__item">Scraper Config</a>
+    <a href="admin_logs.html" class="tabs__item tabs__item--active">System Logs</a>
+    <a href="admin_settings.html" class="tabs__item">Settings</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1 class="page-header__title">System Logs</h1>
+      <button class="btn btn--outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Export Logs
+      </button>
+    </div>
+    
+    <!-- Filters -->
+    <div class="filters-row">
+      <input type="text" class="form-input" placeholder="Search logs...">
+      <select class="select">
+        <option>All Types</option>
+        <option>Info</option>
+        <option>Warning</option>
+        <option>Error</option>
+        <option>Success</option>
+      </select>
+      <select class="select">
+        <option>All Sources</option>
+        <option>Mercari Scraper</option>
+        <option>Buyee Scraper</option>
+        <option>eBay USA Scraper</option>
+        <option>JD Direct Scraper</option>
+        <option>Authentication</option>
+        <option>System</option>
+      </select>
+      <select class="select">
+        <option>Last 24 hours</option>
+        <option>Last 7 days</option>
+        <option>Last 30 days</option>
+        <option>All time</option>
+      </select>
+    </div>
+    
+    <!-- Logs Table -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Source</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="log-type log-type--success">✓ Success</span></td>
+            <td><span class="log-message">Mercari scraper completed successfully. 156 new items found.</span></td>
+            <td><span class="log-source">Mercari Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 14:32:15</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--info">ℹ Info</span></td>
+            <td><span class="log-message">User john.doe@email.com logged in successfully</span></td>
+            <td><span class="log-source">Authentication</span></td>
+            <td><span class="log-timestamp">2026-01-12 14:28:42</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--warning">⚠ Warning</span></td>
+            <td><span class="log-message">Rate limit approaching on eBay USA API (85% of limit)</span></td>
+            <td><span class="log-source">eBay USA Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 14:15:33</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--error">✕ Error</span></td>
+            <td><span class="log-message">Connection timeout while fetching page 23 from JD Direct</span></td>
+            <td><span class="log-source">JD Direct Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 13:58:07</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--success">✓ Success</span></td>
+            <td><span class="log-message">Buyee scraper completed successfully. 89 new items found.</span></td>
+            <td><span class="log-source">Buyee Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 13:45:22</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--info">ℹ Info</span></td>
+            <td><span class="log-message">System backup completed successfully</span></td>
+            <td><span class="log-source">System</span></td>
+            <td><span class="log-timestamp">2026-01-12 13:00:00</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--info">ℹ Info</span></td>
+            <td><span class="log-message">New user registered: sarah.m@email.com</span></td>
+            <td><span class="log-source">Authentication</span></td>
+            <td><span class="log-timestamp">2026-01-12 12:42:18</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--warning">⚠ Warning</span></td>
+            <td><span class="log-message">Duplicate item detected and skipped: Camera ID #45892</span></td>
+            <td><span class="log-source">Mercari Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 12:32:45</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--success">✓ Success</span></td>
+            <td><span class="log-message">eBay USA scraper completed successfully. 234 new items found.</span></td>
+            <td><span class="log-source">eBay USA Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 12:15:08</span></td>
+          </tr>
+          <tr>
+            <td><span class="log-type log-type--error">✕ Error</span></td>
+            <td><span class="log-message">Failed to parse price for item: Invalid currency format</span></td>
+            <td><span class="log-source">Buyee Scraper</span></td>
+            <td><span class="log-timestamp">2026-01-12 11:58:33</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <div class="pagination__info">Showing 1-10 of 2,847 logs</div>
+        <div class="pagination__controls">
+          <button class="pagination__btn">Previous</button>
+          <button class="pagination__btn pagination__btn--active">1</button>
+          <button class="pagination__btn">2</button>
+          <button class="pagination__btn">3</button>
+          <button class="pagination__btn">...</button>
+          <button class="pagination__btn">285</button>
+          <button class="pagination__btn">Next</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>
