@@ -1489,17 +1489,30 @@ Key relationships between data entities:
 **Test Results (Playwright):**
 - Access Test: ✅ PASS
 - Search Test: ✅ PASS  
-- Extraction Test: ✅ PASS
-- Listings Found: 10+ listings successfully extracted
-- Sample data extracted with titles, prices, URLs
+- Extraction Test: ❌ **FAIL** - Virtual Scrolling Limitation
+- Listings Found: Only 12 items extracted (expected: 101 items)
+- Root Cause: **Virtual Scrolling** - Only ~10-15 items exist in DOM at any time, even though 101 are visually rendered
+
+**Critical Issue - Virtual Scrolling:**
+- **Problem:** Mercari uses aggressive virtual scrolling. Only items currently in viewport (or slightly outside) exist in the DOM.
+- **Evidence:** HTML snapshot shows only 9 `merListItem-container` elements and 11 item links, despite 101 items being visually present in a 20×5+1 grid layout.
+- **Impact:** Traditional DOM-based extraction fails because items are dynamically added/removed as user scrolls.
+- **Attempted Solutions:**
+  1. ❌ Aggressive scrolling (600+ scrolls with waits) - Only found 12 items
+  2. ❌ Collecting items during scroll - Still only found 12 items
+  3. ⏳ API response interception - In progress (may contain all 101 items)
+  4. ⏳ __NEXT_DATA__ extraction - In progress (React state may contain all items)
+
+**Current Status:** ❌ **FAIL** - Cannot reliably extract all 101 items using DOM-based methods
 
 **Next Steps:**
-1. ✅ Implement Playwright-based scraper - **COMPLETED AND TESTED**
+1. ✅ Implement Playwright-based scraper - **COMPLETED**
 2. ✅ Wait for listings to load - **WORKING**
-3. ✅ Extract listing data from rendered DOM - **WORKING**
-4. Refine image extraction (images found, need to extract URLs properly)
-5. Extract additional fields: condition, seller info
-6. Handle pagination for more listings
+3. ❌ Extract listing data from rendered DOM - **FAILING due to virtual scrolling**
+4. ⏳ **PRIORITY:** Extract items from API response (`api.mercari.jp/v2/entities:search`) - May contain all 101 items
+5. ⏳ **PRIORITY:** Extract items from `__NEXT_DATA__` script tag - React state may contain all items
+6. ⚠️ **Alternative:** Accept limitation and extract only visible items (~10-15 per page load)
+7. ⚠️ **Alternative:** Implement pagination/scroll-based collection (slow but may work)
 
 ---
 

@@ -9,6 +9,7 @@ import json
 import time
 import os
 import requests
+import re
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -243,20 +244,184 @@ def extract_listing_detail(page, listing_url):
         traceback.print_exc()
         return {}
 
+def extract_items_from_api_response(api_data):
+    """Extract items from API response JSON"""
+    items = []
+    if not api_data:
+        return items
+    
+    try:
+        # Common API response structures
+        if isinstance(api_data, dict):
+            # Try different keys that might contain items
+            for key in ['items', 'results', 'data', 'entities', 'products', 'listings', 'hits']:
+                if key in api_data:
+                    data = api_data[key]
+                    if isinstance(data, list):
+                        for item in data:
+                            if isinstance(item, dict):
+                                # Extract item data
+                                href = item.get('id') or item.get('itemId') or item.get('href') or ''
+                                if not href and 'url' in item:
+                                    href = item['url']
+                                if not href and 'link' in item:
+                                    href = item['link']
+                                
+                                # Try to construct href from item ID
+                                if not href and 'id' in item:
+                                    item_id = str(item['id'])
+                                    if item_id.startswith('m') or item_id.isdigit():
+                                        href = f"/en/item/m{item_id}" if not item_id.startswith('m') else f"/en/item/{item_id}"
+                                
+                                if href and '/item/m' in str(href):
+                                    items.append({
+                                        'href': href.split('?')[0],
+                                        'title': item.get('name') or item.get('title') or item.get('itemName') or '',
+                                        'price': item.get('price') or item.get('itemPrice') or '',
+                                        'imageUrl': item.get('thumbnails') or item.get('imageUrl') or item.get('thumbnail') or item.get('image') or ''
+                                    })
+                    elif isinstance(data, dict):
+                        # Nested structure, recurse
+                        items.extend(extract_items_from_api_response(data))
+            
+            # Also search for item patterns in the JSON string
+            json_str = json.dumps(api_data)
+            item_id_matches = re.findall(r'/item/m(\d+)', json_str)
+            if item_id_matches and len(items) == 0:
+                # Found item IDs but couldn't extract full data - create minimal items
+                for item_id in set(item_id_matches):
+                    items.append({
+                        'href': f"/en/item/m{item_id}",
+                        'title': '',
+                        'price': '',
+                        'imageUrl': ''
+                    })
+    except Exception as e:
+        print(f"    Error extracting from API response: {e}")
+    
+    return items
+
+def extract_items_from_next_data(page):
+    """Extract items from __NEXT_DATA__ script tag"""
+    items = []
+    try:
+        result = page.evaluate('''
+            () => {
+                try {
+                    const nextDataScript = document.querySelector('script#__NEXT_DATA__');
+                    if (!nextDataScript) return null;
+                    
+                    const nextData = JSON.parse(nextDataScript.textContent);
+                    
+                    // Search for items in the data structure
+                    const findItems = (obj, path = '') => {
+                        if (!obj || typeof obj !== 'object') return [];
+                        
+                        let results = [];
+                        
+                        // Check if this object looks like an item
+                        const objStr = JSON.stringify(obj);
+                        if (objStr.includes('/item/m') && (obj.id || obj.itemId || obj.href)) {
+                            const href = obj.href || obj.id || obj.itemId || '';
+                            if (href && (href.includes('/item/m') || (typeof href === 'string' && href.match(/^m\\d+$/)))) {
+                                let itemHref = href;
+                                if (!itemHref.includes('/')) {
+                                    itemHref = `/en/item/${itemHref}`;
+                                }
+                                results.push({
+                                    href: itemHref.split('?')[0],
+                                    title: obj.name || obj.title || obj.itemName || '',
+                                    price: obj.price || obj.itemPrice || '',
+                                    imageUrl: obj.thumbnails || obj.imageUrl || obj.thumbnail || obj.image || ''
+                                });
+                            }
+                        }
+                        
+                        // Recursively search nested objects
+                        for (const key in obj) {
+                            if (key.toLowerCase().includes('item') || key.toLowerCase().includes('product') || key.toLowerCase().includes('listing')) {
+                                const value = obj[key];
+                                if (Array.isArray(value)) {
+                                    for (const item of value) {
+                                        if (item && typeof item === 'object') {
+                                            results = results.concat(findItems(item, path + '.' + key));
+                                        }
+                                    }
+                                } else if (value && typeof value === 'object') {
+                                    results = results.concat(findItems(value, path + '.' + key));
+                                }
+                            } else if (obj[key] && typeof obj[key] === 'object') {
+                                results = results.concat(findItems(obj[key], path + '.' + key));
+                            }
+                        }
+                        
+                        return results;
+                    };
+                    
+                    const foundItems = findItems(nextData);
+                    
+                    // Also try to extract item IDs from the JSON string
+                    const dataStr = JSON.stringify(nextData);
+                    const itemMatches = dataStr.match(/\\/item\\/m\\d+/g);
+                    if (itemMatches && foundItems.length === 0) {
+                        // Create minimal items from IDs
+                        const uniqueIds = [...new Set(itemMatches)];
+                        return uniqueIds.map(href => ({
+                            href: href.split('?')[0],
+                            title: '',
+                            price: '',
+                            imageUrl: ''
+                        }));
+                    }
+                    
+                    return foundItems;
+                } catch (e) {
+                    console.error('Error parsing __NEXT_DATA__:', e);
+                    return null;
+                }
+            }
+        ''')
+        
+        if result:
+            items = result
+    except Exception as e:
+        print(f"    Error extracting from __NEXT_DATA__: {e}")
+    
+    return items
+
 def extract_listing_data_playwright(page):
     """Extract listing data from rendered page using Playwright - simplified version"""
     try:
         # Wait for page to load
         page.wait_for_selector('main', timeout=10000)
         
-        # Intercept network requests to see API calls
+        # Intercept network requests and responses to find the search API
+        # CRITICAL: Extract items directly from API response instead of DOM
         api_requests = []
+        search_responses = []
+        api_response_data = None  # Store the API response JSON
+        
         def handle_request(request):
             url = request.url
             if 'api' in url.lower() or 'search' in url.lower() or 'item' in url.lower():
                 api_requests.append(url)
         
+        search_api_ready = {'ready': False}
+        api_responses_to_process = []  # Store responses to process asynchronously
+        
+        def handle_response(response):
+            url = response.url
+            # Look for the main search API that returns all items
+            if 'api.mercari.jp/v2/entities:search' in url or ('api.mercari.jp' in url and 'search' in url.lower()):
+                print(f"  📡 Found search API response: {url[:100]}")
+                api_responses_to_process.append(response)
+                search_api_ready['ready'] = True
+            # Also track other search API responses
+            if 'api.mercari.jp' in url and ('search' in url.lower() or 'items' in url.lower() or 'products' in url.lower()):
+                search_responses.append(url)
+        
         page.on('request', handle_request)
+        page.on('response', handle_response)
         
         # Wait for network to be idle (all API calls to complete)
         print("Waiting for all listings to load...")
@@ -265,151 +430,578 @@ def extract_listing_data_playwright(page):
         except:
             pass
         
-        # Additional wait for React to fully render - wait longer for initial items
-        print("Waiting for initial listings to load...")
-        time.sleep(5)  # Give more time for initial batch
+        # Wait a bit more for any delayed API responses
+        time.sleep(3)
         
-        # Check initial count
-        initial_count = page.evaluate('''
-            () => {
-                const links = Array.from(document.querySelectorAll('a'));
-                return links.filter(link => {
-                    const href = link.getAttribute('href') || '';
-                    return href.match(/\\/item\\/m\\d+/);
-                }).length;
-            }
-        ''')
-        print(f"  Initial items found: {initial_count}")
+        # Wait for the main search API response
+        print("Waiting for search API to complete...")
+        max_wait = 15
+        waited = 0
+        while not search_api_ready['ready'] and waited < max_wait:
+            time.sleep(1)
+            waited += 1
+            if waited % 3 == 0:
+                print(f"  Waiting for search API... ({waited}s)")
         
-        # The page likely uses virtual scrolling - we need to scroll to load all items
-        print("Scrolling to load all items (virtual scrolling)...")
-        previous_count = initial_count
-        scroll_attempts = 0
-        max_scrolls = 100  # More scrolls to ensure we get all items
-        consecutive_no_change = 0
+        # Process API responses to extract items
+        if api_responses_to_process:
+            print(f"\n📦 Processing {len(api_responses_to_process)} API response(s)...")
+            for response in api_responses_to_process:
+                try:
+                    # In Playwright, response.json() needs to be awaited, but we're in a callback
+                    # So we'll process it synchronously here
+                    response_body = response.json()
+                    if response_body:
+                        api_response_data = response_body
+                        print(f"  ✅ Successfully parsed API response")
+                        # Try to count items
+                        items_count = 0
+                        if isinstance(response_body, dict):
+                            for key in ['items', 'results', 'data', 'entities', 'products', 'listings', 'hits']:
+                                if key in response_body and isinstance(response_body[key], list):
+                                    items_count = len(response_body[key])
+                                    print(f"    Found {items_count} items in response['{key}']")
+                                    break
+                            if items_count == 0:
+                                response_str = json.dumps(response_body)
+                                item_matches = re.findall(r'/item/m\d+', response_str)
+                                if item_matches:
+                                    print(f"    Found {len(set(item_matches))} unique item references in response")
+                except Exception as e:
+                    print(f"    Could not parse API response: {e}")
+                    # Try alternative: read as text and parse
+                    try:
+                        response_text = response.text()
+                        if response_text:
+                            response_body = json.loads(response_text)
+                            api_response_data = response_body
+                            print(f"  ✅ Parsed API response from text (length: {len(response_text)})")
+                    except Exception as e2:
+                        print(f"    Also failed to parse as text: {e2}")
         
-        while scroll_attempts < max_scrolls:
-            # Scroll gradually - scroll down by viewport height
-            page.evaluate('window.scrollBy(0, window.innerHeight * 0.8)')
-            time.sleep(1)  # Wait for items to load
-            
-            # Also scroll to bottom periodically to ensure we trigger all loading
-            if scroll_attempts % 5 == 0:
-                page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-                time.sleep(1.5)
-            
-            # Check current count
-            item_count = page.evaluate('''
+        # Additional wait for React to fully render after API response
+        print("Waiting for listings to render in DOM...")
+        time.sleep(3)  # Give React time to render all items from API response
+        
+        # Poll for items to appear - wait up to 15 seconds for items to load
+        # Use data-testid="merListItem-container" as the primary selector (most reliable)
+        initial_count = 0
+        max_wait_time = 15
+        start_time = time.time()
+        
+        while time.time() - start_time < max_wait_time:
+            initial_count = page.evaluate('''
                 () => {
-                    const links = Array.from(document.querySelectorAll('a'));
-                    return links.filter(link => {
-                        const href = link.getAttribute('href') || '';
+                    // Primary method: Use data-testid (most reliable)
+                    const containers = document.querySelectorAll('[data-testid="merListItem-container"]').length;
+                    
+                    // Fallback methods
+                    const pattern1 = document.querySelectorAll('a[href*="/en/item/m"]').length;
+                    const pattern2 = document.querySelectorAll('a[href*="/item/m"]').length;
+                    const pattern3 = Array.from(document.querySelectorAll('a')).filter(a => {
+                        const href = a.getAttribute('href') || '';
                         return href.match(/\\/item\\/m\\d+/);
                     }).length;
+                    
+                    // Return the maximum count found
+                    return Math.max(containers, pattern1, pattern2, pattern3);
                 }
             ''')
             
+            if initial_count >= 95:  # If we have close to 101 items, likely all are loaded
+                print(f"  ✅ Found {initial_count} items after {int(time.time() - start_time)}s - likely all loaded!")
+                break
+            elif initial_count > 0 and (time.time() - start_time) % 2 < 1:  # Print every ~2 seconds
+                print(f"  Found {initial_count} items so far... (waiting {int(time.time() - start_time)}s)")
+            
+            time.sleep(0.5)
+        
+        print(f"  Initial items found: {initial_count}")
+        
+        # NEW APPROACH: Try to extract items from API response first (contains all 101 items)
+        items_from_api = []
+        if api_response_data:
+            print("\n🔍 Attempting to extract items from API response...")
+            try:
+                # Try different possible structures in the API response
+                items_from_api = extract_items_from_api_response(api_response_data)
+                if items_from_api:
+                    print(f"  ✅ Extracted {len(items_from_api)} items from API response!")
+                    # If we got items from API, use those instead of scrolling
+                    if len(items_from_api) >= 95:
+                        print(f"  ✅ API response contains {len(items_from_api)} items - using API data instead of DOM!")
+                        # Convert API items to our format and return early
+                        all_listings_data = []
+                        for item in items_from_api:
+                            href = item.get('href', '')
+                            if not href.startswith('http'):
+                                if href.startswith('/en/'):
+                                    href = BASE_URL + href
+                                elif href.startswith('/item/'):
+                                    href = BASE_URL + '/en' + href
+                                else:
+                                    href = BASE_URL + '/en/' + href
+                            
+                            all_listings_data.append({
+                                'title': item.get('title', ''),
+                                'title_translated': translate_japanese(item.get('title', '')) if item.get('title') else None,
+                                'price': item.get('price', ''),
+                                'image_url': item.get('imageUrl', '') or item.get('image_url', ''),
+                                'listing_url': href,
+                            })
+                        
+                        html_content = page.content()
+                        # Use first 5 for detailed extraction
+                        listings = all_listings_data[:5]
+                        return listings, html_content, len(items_from_api), all_listings_data
+            except Exception as e:
+                print(f"  ⚠️ Could not extract items from API response: {e}")
+                import traceback
+                traceback.print_exc()
+        
+        # FALLBACK: If API extraction failed, try __NEXT_DATA__ extraction
+        print("\n🔍 Attempting to extract items from __NEXT_DATA__...")
+        items_from_next_data = extract_items_from_next_data(page)
+        if items_from_next_data and len(items_from_next_data) >= 95:
+            print(f"  ✅ Extracted {len(items_from_next_data)} items from __NEXT_DATA__!")
+            all_listings_data = []
+            for item in items_from_next_data:
+                href = item.get('href', '')
+                if not href.startswith('http'):
+                    if href.startswith('/en/'):
+                        href = BASE_URL + href
+                    elif href.startswith('/item/'):
+                        href = BASE_URL + '/en' + href
+                    else:
+                        href = BASE_URL + '/en/' + href
+                
+                all_listings_data.append({
+                    'title': item.get('title', ''),
+                    'title_translated': translate_japanese(item.get('title', '')) if item.get('title') else None,
+                    'price': item.get('price', ''),
+                    'image_url': item.get('imageUrl', '') or item.get('image_url', ''),
+                    'listing_url': href,
+                })
+            
+            html_content = page.content()
+            listings = all_listings_data[:5]
+            return listings, html_content, len(items_from_next_data), all_listings_data
+        
+        # LAST RESORT: Use scrolling collection (your updated approach)
+        print("\n⚠️ API and __NEXT_DATA__ extraction failed, falling back to scrolling collection...")
+        previous_count = initial_count
+        scroll_attempts = 0
+        max_scrolls = 200
+        consecutive_no_change = 0
+        target_items = 101
+        
+        # Get viewport info
+        viewport_info = page.evaluate('''
+            () => {
+                return {
+                    height: window.innerHeight,
+                    width: window.innerWidth,
+                    scrollHeight: document.body.scrollHeight,
+                    scrollTop: window.pageYOffset || window.scrollY
+                };
+            }
+        ''')
+        viewport_height = viewport_info['height']
+        scroll_height = viewport_info['scrollHeight']
+        
+        print(f"  Viewport: {viewport_height}px, Page height: {scroll_height}px")
+        estimated_viewports = max(1, scroll_height // viewport_height) if scroll_height > 0 else 20
+        print(f"  Need to scroll through ~{estimated_viewports} viewports to cover all rows")
+        
+        # CRITICAL: With virtual scrolling, we must collect items DURING scrolling, not at the end
+        # Strategy: Scroll through page and collect unique items at each position
+        print("  Collecting items during scroll (virtual scrolling requires this approach)...")
+        collected_items = {}  # Dictionary to store unique items by href
+        scroll_positions_checked = set()
+        
+        # Scroll systematically through the page and collect items at each position
+        while scroll_attempts < max_scrolls:
+            # Get current scroll position
+            current_scroll = page.evaluate('window.pageYOffset || window.scrollY')
+            max_scroll = page.evaluate('document.body.scrollHeight - window.innerHeight')
+            
+            # Scroll in increments - scroll down by 1/4 viewport at a time
+            scroll_increment = viewport_height * 0.25
+            target_scroll = min(current_scroll + scroll_increment, max_scroll)
+            
+            page.evaluate(f'window.scrollTo(0, {target_scroll})')
+            time.sleep(1.5)  # Wait for items to load
+            
+            # COLLECT ITEMS at this scroll position (critical for virtual scrolling)
+            items_at_position = page.evaluate('''
+                () => {
+                    const items = [];
+                    // Use data-testid containers (most reliable)
+                    const containers = Array.from(document.querySelectorAll('[data-testid="merListItem-container"]'));
+                    
+                    containers.forEach(container => {
+                        const link = container.querySelector('a[href*="/item/m"]') || container.querySelector('a[href*="/en/item/m"]');
+                        if (!link) return;
+                        
+                        const href = link.getAttribute('href') || '';
+                        if (!href || !href.match(/\\/item\\/m\\d+/)) return;
+                        
+                        const normalizedHref = href.split('?')[0];
+                        
+                        // Extract data from container
+                        const containerText = (container.textContent || '').trim();
+                        let price = '';
+                        let title = '';
+                        
+                        const priceMatch = containerText.match(/(BRL|¥|円|USD|\\$)[\\d,]+\.?\\d*/);
+                        if (priceMatch) {
+                            price = priceMatch[0];
+                            title = containerText.replace(price, '').trim().split('\\n')[0];
+                        } else {
+                            title = (link.textContent || '').trim() || containerText.split('\\n')[0];
+                        }
+                        
+                        const img = container.querySelector('img');
+                        const imageUrl = img ? (img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || '') : '';
+                        
+                        items.push({
+                            href: normalizedHref,
+                            title: title,
+                            price: price,
+                            imageUrl: imageUrl
+                        });
+                    });
+                    
+                    return items;
+                }
+            ''')
+            
+            # Add items to our collection (tracking by href to avoid duplicates)
+            for item in items_at_position:
+                if item['href'] not in collected_items:
+                    collected_items[item['href']] = item
+            
+            # Check current count of unique items collected
+            item_count = len(collected_items)
+            
+            # Every 10 scrolls, also scroll to bottom to ensure we trigger all loading
+            if scroll_attempts % 10 == 0:
+                page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                time.sleep(2.5)  # Wait at bottom
+                # Collect items at bottom
+                items_at_bottom = page.evaluate('''
+                    () => {
+                        const items = [];
+                        const containers = Array.from(document.querySelectorAll('[data-testid="merListItem-container"]'));
+                        containers.forEach(container => {
+                            const link = container.querySelector('a[href*="/item/m"]') || container.querySelector('a[href*="/en/item/m"]');
+                            if (!link) return;
+                            const href = (link.getAttribute('href') || '').split('?')[0];
+                            if (!href || !href.match(/\\/item\\/m\\d+/)) return;
+                            const containerText = (container.textContent || '').trim();
+                            let price = '';
+                            const priceMatch = containerText.match(/(BRL|¥|円|USD|\\$)[\\d,]+\.?\\d*/);
+                            if (priceMatch) price = priceMatch[0];
+                            const img = container.querySelector('img');
+                            const imageUrl = img ? (img.src || img.getAttribute('data-src') || '') : '';
+                            items.push({
+                                href: href,
+                                title: (link.textContent || '').trim() || containerText.split('\\n')[0],
+                                price: price,
+                                imageUrl: imageUrl
+                            });
+                        });
+                        return items;
+                    }
+                ''')
+                for item in items_at_bottom:
+                    if item['href'] not in collected_items:
+                        collected_items[item['href']] = item
+                item_count = len(collected_items)
+                
+                # Scroll back up a bit to trigger more loading
+                page.evaluate(f'window.scrollTo(0, {max_scroll * 0.8})')
+                time.sleep(1.5)
+            
             if item_count != previous_count:
-                print(f"  Scroll {scroll_attempts + 1}: Found {item_count} items")
+                print(f"  Scroll {scroll_attempts + 1}: Collected {item_count} unique items")
                 consecutive_no_change = 0
                 previous_count = item_count
                 
+                # Early exit if we found the target number of items
+                if item_count >= target_items:
+                    print(f"  ✅ Collected {item_count} unique items (target: {target_items})! Stopping scroll.")
+                    break
+                
                 if item_count >= 100:
-                    print(f"  ✅ Found {item_count} items! Continuing to ensure we have all...")
-                    # Continue scrolling to get remaining items
-                    for _ in range(15):
+                    print(f"  ✅ Collected {item_count} items! Continuing to ensure we have all...")
+                    # Continue scrolling to get remaining items - collect at each position
+                    for attempt in range(20):  # Attempts to get the last item
                         page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-                        time.sleep(1.5)
-                        # Check again
-                        new_count = page.evaluate('''
+                        time.sleep(1.8)  # Wait for items
+                        # Collect items at this position
+                        items_at_pos = page.evaluate('''
                             () => {
-                                const links = Array.from(document.querySelectorAll('a'));
-                                return links.filter(link => {
-                                    const href = link.getAttribute('href') || '';
-                                    return href.match(/\\/item\\/m\\d+/);
-                                }).length;
+                                const items = [];
+                                const containers = Array.from(document.querySelectorAll('[data-testid="merListItem-container"]'));
+                                containers.forEach(container => {
+                                    const link = container.querySelector('a[href*="/item/m"]') || container.querySelector('a[href*="/en/item/m"]');
+                                    if (!link) return;
+                                    const href = (link.getAttribute('href') || '').split('?')[0];
+                                    if (!href || !href.match(/\\/item\\/m\\d+/)) return;
+                                    const containerText = (container.textContent || '').trim();
+                                    let price = '';
+                                    const priceMatch = containerText.match(/(BRL|¥|円|USD|\\$)[\\d,]+\.?\\d*/);
+                                    if (priceMatch) price = priceMatch[0];
+                                    const img = container.querySelector('img');
+                                    const imageUrl = img ? (img.src || img.getAttribute('data-src') || '') : '';
+                                    items.push({
+                                        href: href,
+                                        title: (link.textContent || '').trim() || containerText.split('\\n')[0],
+                                        price: price,
+                                        imageUrl: imageUrl
+                                    });
+                                });
+                                return items;
                             }
                         ''')
-                        if new_count > item_count:
-                            item_count = new_count
-                            print(f"    Found more items: {item_count} total")
+                        # Add new items
+                        new_items_found = 0
+                        for item in items_at_pos:
+                            if item['href'] not in collected_items:
+                                collected_items[item['href']] = item
+                                new_items_found += 1
+                        
+                        item_count = len(collected_items)
+                        if new_items_found > 0:
+                            print(f"    Collected {new_items_found} more items: {item_count} total")
                             consecutive_no_change = 0
                         else:
                             consecutive_no_change += 1
                             if consecutive_no_change >= 3:
                                 break
+                        
+                        if item_count >= target_items:
+                            print(f"  ✅ Reached target of {target_items} items!")
+                            break
                     break
             else:
                 consecutive_no_change += 1
-                # Only stop after many attempts with no change
-                if consecutive_no_change >= 8:  # No change for 8 scrolls
-                    print(f"  No new items after {consecutive_no_change} scrolls, stopping at {item_count} items")
-                    # Try a few more aggressive scrolls to bottom
-                    for _ in range(3):
+                # Only stop after many attempts with no change - be persistent but not excessive
+                if consecutive_no_change >= 15:  # No change for 15 scrolls
+                    print(f"  No new items after {consecutive_no_change} scrolls, trying final aggressive scroll...")
+                    # Try aggressive scrolls to bottom
+                    for attempt in range(10):  # Final attempts
                         page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-                        time.sleep(2)
+                        time.sleep(2.5)  # Wait
+                        # Check if we found target
+                        quick_check = page.evaluate('document.querySelectorAll(\'[data-testid="merListItem-container"]\').length');
+                        if quick_check >= target_items:
+                            print(f"  ✅ Found {quick_check} items during final scroll!")
+                            item_count = quick_check
+                            break
+                        # Also try scrolling up and down to trigger loading
+                        page.evaluate('window.scrollTo(0, 0)')
+                        time.sleep(1.5)
+                        page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                        time.sleep(2.5)
+                        
                         final_check = page.evaluate('''
                             () => {
-                                const links = Array.from(document.querySelectorAll('a'));
-                                return links.filter(link => {
-                                    const href = link.getAttribute('href') || '';
+                                // Primary method: Use data-testid (most reliable)
+                                const containers = document.querySelectorAll('[data-testid="merListItem-container"]').length;
+                                
+                                // Fallback methods
+                                const pattern1 = document.querySelectorAll('a[href*="/en/item/m"]').length;
+                                const pattern2 = document.querySelectorAll('a[href*="/item/m"]').length;
+                                const pattern3 = Array.from(document.querySelectorAll('a')).filter(a => {
+                                    const href = a.getAttribute('href') || '';
                                     return href.match(/\\/item\\/m\\d+/);
                                 }).length;
+                                
+                                return Math.max(containers, pattern1, pattern2, pattern3);
                             }
                         ''')
                         if final_check > item_count:
-                            print(f"  Found {final_check} items after final scroll!")
+                            print(f"  Found {final_check} items after final scroll attempt {attempt + 1}!")
                             item_count = final_check
+                            previous_count = item_count
                             consecutive_no_change = 0
-                        else:
+                            if item_count >= target_items:
+                                print(f"  ✅ Reached target of {target_items} items!")
+                                break
                             break
-                    if consecutive_no_change >= 3:
+                    if consecutive_no_change >= 5:
+                        print(f"  Stopping at {item_count} items after exhaustive scrolling")
+                        break
+                    # Check if we reached target during final scrolls
+                    if item_count >= target_items:
                         break
             
             scroll_attempts += 1
+        
+        # Check for "Load More" button or pagination
+        print("Checking for 'Load More' button or pagination...")
+        load_more_info = page.evaluate('''
+            () => {
+                const buttons = Array.from(document.querySelectorAll('button, [role="button"], a[class*="load"], a[class*="more"], a[class*="next"]'));
+                const loadMoreButtons = buttons.filter(btn => {
+                    const text = (btn.textContent || '').toLowerCase();
+                    return text.includes('load more') || text.includes('show more') || text.includes('next') || text.includes('more items');
+                });
+                
+                const pagination = Array.from(document.querySelectorAll('[class*="pagination"], [class*="page"]'));
+                
+                return {
+                    loadMoreButtons: loadMoreButtons.length,
+                    pagination: pagination.length,
+                    buttonTexts: loadMoreButtons.slice(0, 3).map(b => b.textContent.trim())
+                };
+            }
+        ''')
+        
+        if load_more_info['loadMoreButtons'] > 0:
+            print(f"  Found {load_more_info['loadMoreButtons']} 'Load More' buttons: {load_more_info['buttonTexts']}")
+            # Try clicking load more buttons
+            for i in range(5):  # Try clicking up to 5 times
+                clicked = page.evaluate('''
+                    () => {
+                        const buttons = Array.from(document.querySelectorAll('button, [role="button"], a[class*="load"], a[class*="more"]'));
+                        const loadMore = buttons.find(btn => {
+                            const text = (btn.textContent || '').toLowerCase();
+                            return text.includes('load more') || text.includes('show more') || text.includes('more items');
+                        });
+                        if (loadMore && !loadMore.disabled) {
+                            loadMore.click();
+                            return true;
+                        }
+                        return false;
+                    }
+                ''')
+                if clicked:
+                    print(f"    Clicked 'Load More' button (attempt {i+1})")
+                    time.sleep(3)  # Wait for items to load
+                else:
+                    break
+        else:
+            print(f"  No 'Load More' buttons found (pagination elements: {load_more_info['pagination']})")
         
         # Scroll back to top to ensure all items are in DOM
         page.evaluate('window.scrollTo(0, 0)')
         time.sleep(1)
         
-        # Final count
-        final_count = page.evaluate('''
-            () => {
-                const links = Array.from(document.querySelectorAll('a'));
-                return links.filter(link => {
-                    const href = link.getAttribute('href') || '';
-                    return href.match(/\\/item\\/m\\d+/);
-                }).length;
-            }
-        ''')
-        print(f"  Final count after scrolling: {final_count} items")
+        # Final count - use the collected items count (more accurate for virtual scrolling)
+        final_count = item_count  # Use the count from our collection strategy
+        print(f"  Final count after scrolling: {final_count} items (collected from virtual scrolling)")
         
         if api_requests:
             print(f"  Detected {len(api_requests)} API requests")
             # Show first few API URLs for debugging
-            for url in api_requests[:3]:
+            for url in api_requests[:5]:
                 print(f"    - {url[:100]}")
+        
+        if search_responses:
+            print(f"  Found {len(search_responses)} search API responses")
         
         # Additional wait for React to fully render
         time.sleep(2)
         
-        # Extract all listings using JavaScript - try multiple methods
+        # Extract all listings using JavaScript - use data-testid as primary method
         print("Extracting all listings from page...")
         result = page.evaluate('''
             () => {
-                // Method 1: Find all links with /item/m pattern
+                // Debug: Check what's actually in the DOM
+                const debug = {
+                    containers: document.querySelectorAll('[data-testid="merListItem-container"]').length,
+                    linksWithEnItem: document.querySelectorAll('a[href*="/en/item/m"]').length,
+                    linksWithItem: document.querySelectorAll('a[href*="/item/m"]').length,
+                    imagesWithMercdn: document.querySelectorAll('img[src*="mercdn.net/thumb/item"]').length,
+                    allImages: document.querySelectorAll('img').length,
+                    bodyHeight: document.body.scrollHeight,
+                    windowHeight: window.innerHeight
+                };
+                console.log('DOM Debug:', JSON.stringify(debug, null, 2));
+                
+                // Since we're using virtual scrolling collection strategy, we need to scroll through
+                // and collect all items. But for final extraction, we'll get what's currently in DOM
+                // plus use the collected item IDs to reconstruct the full list.
+                
+                // Method 1: Use data-testid="merListItem-container" (most reliable)
+                const containers = Array.from(document.querySelectorAll('[data-testid="merListItem-container"]'));
+                
+                // Method 2: Find all links with /en/item/m or /item/m pattern (fallback)
+                const pattern1 = Array.from(document.querySelectorAll('a[href*="/en/item/m"]'));
+                const pattern2 = Array.from(document.querySelectorAll('a[href*="/item/m"]'));
                 const allLinks = Array.from(document.querySelectorAll('a'));
-                const itemLinks = allLinks.filter(link => {
+                const itemLinks = [...new Set([...pattern1, ...pattern2, ...allLinks.filter(link => {
                     const href = link.getAttribute('href') || '';
                     return href.match(/\/item\/m\d+/);
-                });
+                })])];
                 
-                // Method 2: Also check for data attributes or other patterns
+                console.log(`Found ${containers.length} item containers in DOM`);
+                console.log(`Found ${itemLinks.length} item links in DOM`);
+                
+                // Get all unique item IDs we've seen (from collected_items if available in page context)
+                // Note: collected_items is in Python scope, so we'll need to pass it or reconstruct
+                
+                // Try to find items in React/Next.js state or window data
+                let itemsInState = 0;
+                let itemsFromNextData = [];
+                try {
+                    // Check if there's a __NEXT_DATA__ script tag with items
+                    const nextDataScript = document.querySelector('script#__NEXT_DATA__');
+                    if (nextDataScript) {
+                        const nextData = JSON.parse(nextDataScript.textContent);
+                        // Try to find items in the data structure
+                        const dataStr = JSON.stringify(nextData);
+                        const itemMatches = dataStr.match(/\/item\/m\d+/g);
+                        if (itemMatches) {
+                            itemsInState = new Set(itemMatches).size;
+                            console.log(`Found ${itemsInState} items in __NEXT_DATA__`);
+                            
+                            // Try to extract item data from __NEXT_DATA__
+                            // Look for items array in various possible locations
+                            const findItemsInObject = (obj, path = '') => {
+                                if (!obj || typeof obj !== 'object') return [];
+                                if (Array.isArray(obj)) {
+                                    return obj.filter(item => 
+                                        item && typeof item === 'object' && 
+                                        (item.id || item.itemId || item.href || JSON.stringify(item).includes('/item/m'))
+                                    );
+                                }
+                                let results = [];
+                                for (const key in obj) {
+                                    if (key.toLowerCase().includes('item') || key.toLowerCase().includes('product') || key.toLowerCase().includes('listing')) {
+                                        const value = obj[key];
+                                        if (Array.isArray(value)) {
+                                            results = results.concat(value);
+                                        } else if (value && typeof value === 'object') {
+                                            results = results.concat(findItemsInObject(value, path + '.' + key));
+                                        }
+                                    } else {
+                                        results = results.concat(findItemsInObject(obj[key], path + '.' + key));
+                                    }
+                                }
+                                return results;
+                            };
+                            
+                            itemsFromNextData = findItemsInObject(nextData);
+                            if (itemsFromNextData.length > 0) {
+                                console.log(`Found ${itemsFromNextData.length} potential items in __NEXT_DATA__ structure`);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log('Could not parse __NEXT_DATA__:', e);
+                }
+                
+                // Method 3: Also check for data attributes or other patterns (fallback)
                 const allElements = Array.from(document.querySelectorAll('[href*="/item/m"], [data-href*="/item/m"]'));
                 
-                // Combine both methods
-                const allItemElements = [...new Set([...itemLinks, ...allElements])];
+                // Combine all methods - prioritize containers, then links
+                const allItemElements = [...new Set([...containers, ...itemLinks, ...allElements])];
                 
+                console.log(`Found ${containers.length} containers with data-testid`);
                 console.log(`Found ${itemLinks.length} links with /item/m pattern`);
                 console.log(`Found ${allItemElements.length} total item elements`);
                 
@@ -417,7 +1009,53 @@ def extract_listing_data_playwright(page):
                 const seen = new Set();
                 const listings = [];
                 
-                allItemElements.forEach(link => {
+                // Process containers first (most reliable)
+                containers.forEach(container => {
+                    // Find the link within the container
+                    const link = container.querySelector('a[href*="/item/m"]') || container.querySelector('a[href*="/en/item/m"]');
+                    if (!link) return;
+                    
+                    const href = link.getAttribute('href') || '';
+                    if (!href) return;
+                    
+                    const normalizedHref = href.split('?')[0];
+                    
+                    if (!seen.has(normalizedHref)) {
+                        seen.add(normalizedHref);
+                        
+                        // Extract title and price from container
+                        const containerText = (container.textContent || '').trim();
+                        let price = '';
+                        let title = '';
+                        
+                        // Try to find price in container text
+                        const priceMatch = containerText.match(/(BRL|¥|円|USD|\\$)[\\d,]+\.?\\d*/);
+                        if (priceMatch) {
+                            price = priceMatch[0];
+                            title = containerText.replace(price, '').trim().split('\\n')[0]; // Get first line as title
+                        } else {
+                            // Try to find title in link or nearby elements
+                            title = (link.textContent || '').trim() || containerText.split('\\n')[0];
+                        }
+                        
+                        // Find image in container
+                        let imageUrl = '';
+                        const img = container.querySelector('img');
+                        if (img) {
+                            imageUrl = img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || '';
+                        }
+                        
+                        listings.push({
+                            href: normalizedHref,
+                            title: title,
+                            price: price,
+                            imageUrl: imageUrl
+                        });
+                    }
+                });
+                
+                // Process remaining links (fallback for items not in containers)
+                itemLinks.forEach(link => {
                     const href = link.getAttribute('href') || link.getAttribute('data-href') || '';
                     if (!href) return;
                     
@@ -475,11 +1113,26 @@ def extract_listing_data_playwright(page):
                     }
                 });
                 
-                return { count: listings.length, listings: listings };
+                // If we found items in __NEXT_DATA__ and have fewer in DOM, try to use those
+                if (itemsInState > listings.length && itemsInState >= 95) {
+                    console.log(`__NEXT_DATA__ has ${itemsInState} items but DOM only has ${listings.length} - virtual scrolling confirmed`);
+                }
+                
+                return { 
+                    count: listings.length, 
+                    listings: listings,
+                    debug: debug,
+                    itemsInState: itemsInState || 0,
+                    itemsFromNextData: itemsFromNextData.length || 0
+                };
             }
         ''')
         
         total_count = result['count']
+        if 'debug' in result:
+            print(f"  DOM Debug: {result['debug']}")
+        if result.get('itemsInState', 0) > 0:
+            print(f"  Found {result['itemsInState']} items in React/Next.js state")
         all_listings_js = result['listings']
         
         print(f"Found {total_count} unique listings")
