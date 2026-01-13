@@ -208,7 +208,7 @@ validation/
 │   ├── buyee_results.md
 │   ├── yahoo_auctions_results.md
 │   └── ebay_results.md
-└── README.md
+└── ../README.md
 ```
 
 ---

@@ -613,7 +613,7 @@ shutterzilla/
 ├── .env.local             # Local environment variables (gitignored)
 ├── .gitignore
 ├── package.json           # Root package.json (monorepo)
-└── README.md
+└── ../README.md
 ```
 
 **Question:** "When developing the real code, there will be changes to both the Vue, React etc code but also to Supabase DB, right? Where do you keep the DB logic? On Github? Separate on Supabase?"

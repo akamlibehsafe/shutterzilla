@@ -15,7 +15,7 @@ shutterzilla/
 ├── .env.local          # Local environment variables (gitignored)
 ├── .gitignore          # Git ignore rules
 ├── package.json        # Root package.json (monorepo workspace config)
-└── README.md           # Project overview and quick start
+└── ../README.md           # Project overview and quick start
 ```
 
 **Rationale:** Keeping the root clean makes it easy to find configuration files and understand the project at a glance.
@@ -113,9 +113,9 @@ docs/
 ├── folder-structure.md      # Folder structure guide
 ├── presentation-script.md    # Presentation script
 ├── session-summary-full.md   # Project summary
-├── release-notes-v0.1.md    # Release notes
-├── release-notes-v0.2.md    # Release notes
-├── README.md                 # Documentation index
+├── ../release-notes-v0.1.md    # Release notes
+├── ../release-notes-v0.2.md    # Release notes
+├── ../README.md                 # Documentation index
 │
 ├── mockupsv1/          # Original desktop-focused HTML/CSS mockups
 │   ├── css/
@@ -173,8 +173,8 @@ docs/
 ### For Developers
 
 **Starting development:**
-1. Read `README.md` at root for project overview
-2. Check `docs/README.md` for documentation index
+1. Read `../README.md` at root for project overview
+2. Check `docs/../README.md` for documentation index
 3. Review `docs/tech-stack-guide.md` for setup instructions
 4. View `mockupsv2/` for design reference
 

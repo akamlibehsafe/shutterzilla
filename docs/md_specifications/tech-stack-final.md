@@ -159,7 +159,7 @@ shutterzilla/
 │   ├── mockupsv2/        # Mobile-responsive mockups
 │   └── branding/         # Logo and brand assets
 │
-└── README.md
+└── ../README.md
 ```
 
 ---
