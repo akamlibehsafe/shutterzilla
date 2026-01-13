@@ -265,13 +265,19 @@ def extract_listing_data_playwright(page):
         except:
             pass
         
-        # Wait for items to appear - poll until we have 100+ items or timeout
-        print("Waiting for listings to render...")
-        max_wait = 15  # seconds
-        start_time = time.time()
-        item_count = 0
+        # The page likely uses virtual scrolling - we need to scroll to load all items
+        print("Scrolling to load all items (virtual scrolling)...")
+        previous_count = 0
+        scroll_attempts = 0
+        max_scrolls = 50  # More scrolls to ensure we get all items
+        no_change_count = 0
         
-        while time.time() - start_time < max_wait:
+        while scroll_attempts < max_scrolls:
+            # Scroll down gradually
+            page.evaluate('window.scrollBy(0, 500)')
+            time.sleep(0.3)  # Small delay between scrolls
+            
+            # Check current count
             item_count = page.evaluate('''
                 () => {
                     const links = Array.from(document.querySelectorAll('a'));
@@ -282,13 +288,41 @@ def extract_listing_data_playwright(page):
                 }
             ''')
             
-            if item_count >= 100:
-                print(f"  Found {item_count} items!")
-                break
-            elif item_count > 0:
-                print(f"  Found {item_count} items so far...")
+            if item_count != previous_count:
+                print(f"  Scroll {scroll_attempts + 1}: Found {item_count} items")
+                no_change_count = 0
+                previous_count = item_count
+                
+                if item_count >= 100:
+                    print(f"  ✅ Found {item_count} items! Continuing to ensure we have all...")
+                    # Continue scrolling a bit more to make sure we got everything
+                    for _ in range(5):
+                        page.evaluate('window.scrollBy(0, 1000)')
+                        time.sleep(0.2)
+                    break
+            else:
+                no_change_count += 1
+                if no_change_count >= 5:  # No change for 5 scrolls
+                    print(f"  No new items after {no_change_count} scrolls, stopping at {item_count} items")
+                    break
             
-            time.sleep(1)
+            scroll_attempts += 1
+        
+        # Scroll back to top to ensure all items are in DOM
+        page.evaluate('window.scrollTo(0, 0)')
+        time.sleep(1)
+        
+        # Final count
+        final_count = page.evaluate('''
+            () => {
+                const links = Array.from(document.querySelectorAll('a'));
+                return links.filter(link => {
+                    const href = link.getAttribute('href') || '';
+                    return href.match(/\\/item\\/m\\d+/);
+                }).length;
+            }
+        ''')
+        print(f"  Final count after scrolling: {final_count} items")
         
         if api_requests:
             print(f"  Detected {len(api_requests)} API requests")

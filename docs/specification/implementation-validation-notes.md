@@ -1431,7 +1431,7 @@ Key relationships between data entities:
 **Results:**
 - Access: ✅ PASS (with improved headers)
 - Search: ✅ PASS (can access search pages with improved headers)
-- Data Extraction: ❌ FAIL (requires JavaScript rendering)
+- Data Extraction: ✅ PASS (with Playwright - JavaScript rendering required)
 - Rate Limiting: ✅ PASS (no issues with reasonable delays)
 - JavaScript Required: **Yes** (REQUIRED - Next.js/React application)
 - Anti-Bot Measures: ⚠️ Moderate (403 errors with basic headers, but works with improved headers)
@@ -1450,7 +1450,21 @@ Key relationships between data entities:
    - Extract listing data from the rendered DOM
 
 **Sample Data Extracted:**
-_(No data extracted yet - JavaScript rendering needed first)_
+```json
+{
+  "title": "Nikon FM2",
+  "price": "BRL1,329.22",
+  "image_url": "https://static.mercdn.net/thumb/item/webp/m26068059510_1.jpg",
+  "listing_url": "https://jp.mercari.com/en/item/m26068059510",
+  "all_images": [
+    "https://static.mercdn.net/item/detail/orig/photos/m26068059510_1.jpg",
+    "https://static.mercdn.net/item/detail/orig/photos/m26068059510_2.jpg",
+    "..."
+  ]
+}
+```
+
+**Note:** Data extraction successfully works with Playwright. The initial HTTP-only test failed because listings are loaded via JavaScript, but Playwright successfully extracts all required fields (titles, prices, URLs, images).
 
 **Technical Details:**
 - Search URL format: `https://www.mercari.com/jp/search/?keyword={search_term}`
