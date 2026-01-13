@@ -150,6 +150,9 @@ docs/
 **Rationale:**
 - **Centralized:** All documentation in one place
 - **Complete:** Design assets (mockups, branding) alongside written docs
+- **Organized:** All markdown specification files in `specification/` subfolder
+
+**Note:** All new markdown documentation files should be placed in `docs/specification/`. Only `README.md` and `release-notes-*.md` files remain at the `docs/` root level.
 - **Easy to find:** Developers know where to look for documentation
 - **Versioned:** Mockups organized by version (v1 = desktop, v2 = mobile-responsive)
 

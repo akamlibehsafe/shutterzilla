@@ -2,6 +2,14 @@
 
 This folder contains comprehensive documentation for the ShutterZilla platform, intended for handoff to Cursor AI (or any development team) for implementation.
 
+## Documentation Organization
+
+**Important:** All markdown documentation files (`.md`) should be placed in the `specification/` folder. The only exceptions are:
+- `README.md` (this file) - stays at `docs/` root
+- `release-notes-*.md` - stay at `docs/` root for easy access
+
+This keeps all specification and planning documents organized in one location.
+
 ## Contents
 
 | Document | Description |
