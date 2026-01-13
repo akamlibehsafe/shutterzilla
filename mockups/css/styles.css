@@ -122,6 +122,7 @@ body {
 /* ===== Tab Navigation ===== */
 .tabs {
   display: flex;
+  justify-content: center;
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-gray-200);
 }
