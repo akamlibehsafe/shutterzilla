@@ -265,17 +265,38 @@ def extract_listing_data_playwright(page):
         except:
             pass
         
+        # Additional wait for React to fully render - wait longer for initial items
+        print("Waiting for initial listings to load...")
+        time.sleep(5)  # Give more time for initial batch
+        
+        # Check initial count
+        initial_count = page.evaluate('''
+            () => {
+                const links = Array.from(document.querySelectorAll('a'));
+                return links.filter(link => {
+                    const href = link.getAttribute('href') || '';
+                    return href.match(/\\/item\\/m\\d+/);
+                }).length;
+            }
+        ''')
+        print(f"  Initial items found: {initial_count}")
+        
         # The page likely uses virtual scrolling - we need to scroll to load all items
         print("Scrolling to load all items (virtual scrolling)...")
-        previous_count = 0
+        previous_count = initial_count
         scroll_attempts = 0
-        max_scrolls = 50  # More scrolls to ensure we get all items
-        no_change_count = 0
+        max_scrolls = 100  # More scrolls to ensure we get all items
+        consecutive_no_change = 0
         
         while scroll_attempts < max_scrolls:
-            # Scroll down gradually
-            page.evaluate('window.scrollBy(0, 500)')
-            time.sleep(0.3)  # Small delay between scrolls
+            # Scroll gradually - scroll down by viewport height
+            page.evaluate('window.scrollBy(0, window.innerHeight * 0.8)')
+            time.sleep(1)  # Wait for items to load
+            
+            # Also scroll to bottom periodically to ensure we trigger all loading
+            if scroll_attempts % 5 == 0:
+                page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                time.sleep(1.5)
             
             # Check current count
             item_count = page.evaluate('''
@@ -290,21 +311,60 @@ def extract_listing_data_playwright(page):
             
             if item_count != previous_count:
                 print(f"  Scroll {scroll_attempts + 1}: Found {item_count} items")
-                no_change_count = 0
+                consecutive_no_change = 0
                 previous_count = item_count
                 
                 if item_count >= 100:
                     print(f"  ✅ Found {item_count} items! Continuing to ensure we have all...")
-                    # Continue scrolling a bit more to make sure we got everything
-                    for _ in range(5):
-                        page.evaluate('window.scrollBy(0, 1000)')
-                        time.sleep(0.2)
+                    # Continue scrolling to get remaining items
+                    for _ in range(15):
+                        page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                        time.sleep(1.5)
+                        # Check again
+                        new_count = page.evaluate('''
+                            () => {
+                                const links = Array.from(document.querySelectorAll('a'));
+                                return links.filter(link => {
+                                    const href = link.getAttribute('href') || '';
+                                    return href.match(/\\/item\\/m\\d+/);
+                                }).length;
+                            }
+                        ''')
+                        if new_count > item_count:
+                            item_count = new_count
+                            print(f"    Found more items: {item_count} total")
+                            consecutive_no_change = 0
+                        else:
+                            consecutive_no_change += 1
+                            if consecutive_no_change >= 3:
+                                break
                     break
             else:
-                no_change_count += 1
-                if no_change_count >= 5:  # No change for 5 scrolls
-                    print(f"  No new items after {no_change_count} scrolls, stopping at {item_count} items")
-                    break
+                consecutive_no_change += 1
+                # Only stop after many attempts with no change
+                if consecutive_no_change >= 8:  # No change for 8 scrolls
+                    print(f"  No new items after {consecutive_no_change} scrolls, stopping at {item_count} items")
+                    # Try a few more aggressive scrolls to bottom
+                    for _ in range(3):
+                        page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                        time.sleep(2)
+                        final_check = page.evaluate('''
+                            () => {
+                                const links = Array.from(document.querySelectorAll('a'));
+                                return links.filter(link => {
+                                    const href = link.getAttribute('href') || '';
+                                    return href.match(/\\/item\\/m\\d+/);
+                                }).length;
+                            }
+                        ''')
+                        if final_check > item_count:
+                            print(f"  Found {final_check} items after final scroll!")
+                            item_count = final_check
+                            consecutive_no_change = 0
+                        else:
+                            break
+                    if consecutive_no_change >= 3:
+                        break
             
             scroll_attempts += 1
         
