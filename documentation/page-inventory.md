@@ -4,6 +4,8 @@ This document provides a complete inventory of all 26 pages in the ShutterZilla 
 
 ## Sitemap
 
+_Note: All pages with a top bar (excluding auth and landing pages) have a profile icon that links to `admin_dashboard.html`._
+
 ```
 / (landing-page.html)
 ├── auth_sign-up.html
