@@ -12,7 +12,7 @@ This release contains all the necessary assets for a developer to begin building
 
 A complete set of 26 responsive and fully styled mockups covering every page of the platform.
 
-- **Live Mockups:** [https://akamlibehsafe.github.io/shutterzilla/mockups/landing-page.html](https://akamlibehsafe.github.io/shutterzilla/mockups/landing-page.html)
+- **Live Mockups:** [https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html)
 
 | Section | Pages Included |
 |---|---|
@@ -47,7 +47,7 @@ A full suite of documentation to guide the implementation process.
 1.  Clone the repository: `git clone https://github.com/akamlibehsafe/shutterzilla.git`
 2.  Open the `shutterzilla` folder in Cursor AI.
 3.  Point Cursor to the `documentation/` folder for context on the project's structure and requirements.
-4.  Use the HTML/CSS files in `mockups/` as the visual and structural foundation for building the application components.
+4.  Use the HTML/CSS files in `documentation/mockupsv1/` as the visual and structural foundation for building the application components.
 
 ---
 

@@ -49,7 +49,7 @@ The `documentation` folder is your primary reference. It contains six key docume
 
 **(Script):**
 
-"Let's start with the foundation: the **Design System**. The `design-system.md` file is your guide to the visual language of ShutterZilla. It details the full color palette, including the CSS variables used in the mockups, the typography scale, spacing rules, border radiuses, and shadow styles. Adhering to this system will ensure a consistent user experience across the platform. All of these variables are defined in `mockups/css/styles.css`."
+"Let's start with the foundation: the **Design System**. The `design-system.md` file is your guide to the visual language of ShutterZilla. It details the full color palette, including the CSS variables used in the mockups, the typography scale, spacing rules, border radiuses, and shadow styles. Adhering to this system will ensure a consistent user experience across the platform. All of these variables are defined in `mockupsv1/css/styles.css` and `mockupsv2/css/styles.css`."
 
 
 **(Slide 4: Page Inventory & Sitemap)**

@@ -4,7 +4,7 @@ This folder contains the mobile-responsive versions of all ShutterZilla mockups.
 
 ## Overview
 
-All 26 HTML pages from the original `mockups` folder have been recreated here with enhanced mobile responsiveness. The original `mockups` folder remains unchanged.
+All 26 HTML pages from the original `mockupsv1` folder have been recreated here with enhanced mobile responsiveness. The original `mockupsv1` folder remains unchanged.
 
 ## Mobile-Responsive Features
 
@@ -144,4 +144,4 @@ When testing these mockups:
 
 ## Original Mockups
 
-The original, non-mobile-optimized mockups remain in the `../mockups/` folder and are unchanged.
+The original, non-mobile-optimized mockups remain in the `../mockupsv1/` folder and are unchanged.

@@ -18,7 +18,7 @@ The project is permanently deployed and publicly accessible via GitHub Pages.
 
 - **Homepage:** [https://akamlibehsafe.github.io/shutterzilla/](https://akamlibehsafe.github.io/shutterzilla/)
 - **Presentation:** [https://akamlibehsafe.github.io/shutterzilla/documentation/presentation.html](https://akamlibehsafe.github.io/shutterzilla/documentation/presentation.html)
-- **Mockups:** [https://akamlibehsafe.github.io/shutterzilla/mockups/landing-page.html](https://akamlibehsafe.github.io/shutterzilla/mockups/landing-page.html)
+- **Mockups:** [https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html)
 
 ## 3. Scope of Work: 26 Mockups
 
