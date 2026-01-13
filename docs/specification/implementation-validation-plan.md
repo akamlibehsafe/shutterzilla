@@ -15,13 +15,16 @@ This document outlines the validation and feasibility testing we'll perform befo
 
 #### Steps:
 1. **Define User Journeys**
-   - [ ] Scraper App user journey (discover → search → save → view details)
+   - [ x ] Landing Page (load when visiting shutterzilla.com → login → App Swticher
+   - [ x ] Authentication Pages (perform login for users from landing page)
+   - [ x ] App Switcher (load when user logged in and going to shutterzila.com → Apps)
+   - [ x ] Scraper App user journey (discover → search → save → view details)
    - [ ] Collection App user journey (add → view → manage → statistics)
    - [ ] Authentication flow (sign up → verify → sign in → use apps)
    - [ ] Admin flow (manage users → configure scraper → view logs)
 
 2. **Define Core Features**
-   - [ ] What can users do in Scraper App?
+   - [ x ] What can users do in Scraper App?
    - [ ] What can users do in Collection App?
    - [ ] What data do we need to store?
    - [ ] What are the key interactions?
