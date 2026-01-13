@@ -64,10 +64,13 @@
     
     .price-range__input {
       flex: 1;
+      min-width: 0;
+      width: 100%;
       padding: var(--spacing-sm) var(--spacing-md);
       border: 1px solid var(--color-gray-300);
       border-radius: var(--radius-md);
       font-size: var(--font-size-sm);
+      box-sizing: border-box;
     }
     
     .price-range__separator {
