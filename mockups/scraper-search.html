@@ -159,6 +159,31 @@
       font-size: var(--font-size-base);
       max-width: 300px;
     }
+    
+    .source-icon--jd {
+      background-color: #6366f1;
+    }
+    
+    .card__image-container {
+      position: relative;
+      height: 140px;
+      background-color: var(--color-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .card__image-container img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .search-results__count {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
   </style>
 </head>
 <body>
@@ -294,17 +319,135 @@
       <div class="search-results">
         <div class="search-results__header">
           <h2 class="search-results__title">Search Results</h2>
-          
+          <span class="search-results__count">23 cameras found</span>
         </div>
         
-        <!-- Empty State -->
-        <div class="empty-state">
-          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-          <h3 class="empty-state__title">Start Your Search</h3>
-          <p class="empty-state__text">Use the filters on the left to search for vintage cameras across Sources.</p>
+        <!-- Results Grid -->
+        <div class="grid grid--4">
+          <!-- Card 1 -->
+          <div class="card">
+            <div class="card__image-container">
+              <div class="source-icon source-icon--mercari">M</div>
+              <img src="assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Nikon FM2 Black Body</h3>
+              <div class="card__meta">
+                <span class="card__price">$345</span>
+                <span class="badge badge--success">✓ Excellent</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 2 -->
+          <div class="card">
+            <div class="card__image-container">
+              <div class="ribbon">Sold</div>
+              <div class="source-icon source-icon--buyee">B</div>
+              <img src="assets/cameras/leica-m3.png" alt="Leica M3">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Leica M3 Single Stroke</h3>
+              <div class="card__meta">
+                <span class="card__price">$2,100</span>
+                <span class="badge badge--success">✓ Excellent</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 3 -->
+          <div class="card">
+            <div class="card__image-container">
+              <span class="badge badge--new" style="position:absolute;bottom:8px;left:8px;">NEW</span>
+              <div class="source-icon source-icon--ebay">eB</div>
+              <img src="assets/cameras/canon-ae1.png" alt="Canon AE-1">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Canon AE-1 Program Silver</h3>
+              <div class="card__meta">
+                <span class="card__price">$120</span>
+                <span class="badge badge--success">✓ Excellent</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 4 -->
+          <div class="card">
+            <div class="card__image-container">
+              <span class="badge badge--new" style="position:absolute;bottom:8px;left:8px;">NEW</span>
+              <div class="source-icon source-icon--jd">JD</div>
+              <img src="assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Nikon FM2n Chrome</h3>
+              <div class="card__meta">
+                <span class="card__price">$289</span>
+                <span class="badge badge--success">✓ Good</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 5 -->
+          <div class="card">
+            <div class="card__image-container">
+              <div class="source-icon source-icon--mercari">M</div>
+              <img src="assets/cameras/leica-m3.png" alt="Leica M3">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Leica M3 Double Stroke</h3>
+              <div class="card__meta">
+                <span class="card__price">$1,850</span>
+                <span class="badge badge--success">✓ Excellent</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 6 -->
+          <div class="card">
+            <div class="card__image-container">
+              <div class="ribbon">Sold</div>
+              <div class="source-icon source-icon--ebay">eB</div>
+              <img src="assets/cameras/canon-ae1.png" alt="Canon AE-1">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Canon AE-1 Black</h3>
+              <div class="card__meta">
+                <span class="card__price">$150</span>
+                <span class="badge badge--success">✓ Good</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 7 -->
+          <div class="card">
+            <div class="card__image-container">
+              <div class="source-icon source-icon--buyee">B</div>
+              <img src="assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Nikon FM2 Titanium</h3>
+              <div class="card__meta">
+                <span class="card__price">$599</span>
+                <span class="badge badge--success">✓ Mint</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 8 -->
+          <div class="card">
+            <div class="card__image-container">
+              <span class="badge badge--new" style="position:absolute;bottom:8px;left:8px;">NEW</span>
+              <div class="source-icon source-icon--jd">JD</div>
+              <img src="assets/cameras/leica-m3.png" alt="Leica M3">
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Leica M3 w/ Summicron</h3>
+              <div class="card__meta">
+                <span class="card__price">$2,450</span>
+                <span class="badge badge--success">✓ Excellent</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
