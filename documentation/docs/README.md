@@ -15,6 +15,12 @@ This folder contains comprehensive documentation for the ShutterZilla platform, 
 | **[data-models.md](./data-models.md)** | Suggested data models for the backend (User, CameraListing, SavedSearch, CollectionCamera). |
 | **[key-decisions-log.md](./key-decisions-log.md)** | Log of key design and architectural decisions made during prototyping and tech stack selection. |
 | **[folder-structure.md](./folder-structure.md)** | Complete guide to the project's folder structure, organization rationale, and navigation. |
+| **[implementation-plan.md](./implementation-plan.md)** | Step-by-step implementation plan with phases, tasks, and status tracking. |
+| **[implementation-notes.md](./implementation-notes.md)** | Detailed notes, decisions, and learnings from each implementation phase. |
+| **[implementation-mockup-to-code-changes.md](./implementation-mockup-to-code-changes.md)** | Log of all changes made when converting mockups to actual code. |
+| **[implementation-data-models-refinement.md](./implementation-data-models-refinement.md)** | Working document for refining data models screen-by-screen. |
+| **[implementation-screen-specifications.md](./implementation-screen-specifications.md)** | Detailed specifications for each screen's behavior and requirements. |
+| **[implementation-scraper-behavior-specification.md](./implementation-scraper-behavior-specification.md)** | Specification for how the scraper service works and behaves. |
 
 ## How to Use with Cursor AI
 
