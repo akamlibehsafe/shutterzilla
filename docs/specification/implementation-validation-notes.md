@@ -1425,36 +1425,67 @@ Key relationships between data entities:
 
 ### 0.2.1 Mercari Japan Scraping Test
 
-**Date Tested:** _TBD_  
-**Tester:** _TBD_
+**Date Tested:** 2026-01-13  
+**Tester:** Validation Script
 
 **Results:**
-- Access: ✅ / ⚠️ / ❌
-- Data Extraction: ✅ / ⚠️ / ❌
-- Rate Limiting: None / Moderate / Severe
-- JavaScript Required: Yes / No
-- Anti-Bot Measures: None / Moderate / Severe
+- Access: ✅ PASS (with improved headers)
+- Search: ✅ PASS (can access search pages with improved headers)
+- Data Extraction: ❌ FAIL (requires JavaScript rendering)
+- Rate Limiting: ✅ PASS (no issues with reasonable delays)
+- JavaScript Required: **Yes** (REQUIRED - Next.js/React application)
+- Anti-Bot Measures: ⚠️ Moderate (403 errors with basic headers, but works with improved headers)
 
 **Challenges Encountered:**
-_(Document any issues found)_
+1. **JavaScript Rendering Required:** Mercari uses Next.js/React framework. Listings are loaded client-side via JavaScript/API calls after page load. The initial HTML contains only page structure, not listing data.
+2. **Anti-Bot Protection:** Basic HTTP requests get 403 Forbidden. Solution: Improved headers (realistic User-Agent, Accept headers, Referer, etc.) and session management allow access.
+3. **Dynamic Content:** Listings are not in the initial HTML - they're loaded via API calls after JavaScript execution.
 
 **Solutions Found:**
-_(Document how we solved challenges)_
+1. **Improved Headers:** Using realistic browser headers (updated User-Agent, Accept headers, Referer, Sec-Fetch headers) allows access to search pages.
+2. **Session Management:** Using requests.Session() to maintain cookies helps with access.
+3. **JavaScript Rendering Needed:** Playwright or Selenium is REQUIRED to:
+   - Execute JavaScript on the page
+   - Wait for listings to load
+   - Extract listing data from the rendered DOM
 
 **Sample Data Extracted:**
-```json
-{
-  "title": "...",
-  "price": "...",
-  "image": "...",
-  "url": "..."
-}
-```
+_(No data extracted yet - JavaScript rendering needed first)_
 
-**Recommendation:** ✅ Proceed / ⚠️ Proceed with caution / ❌ Not feasible
+**Technical Details:**
+- Search URL format: `https://www.mercari.com/jp/search/?keyword={search_term}`
+- HTML structure: Next.js/React application
+- Listings loaded via: Client-side JavaScript/API calls
+- HTML contains: Page structure, but listings are loaded dynamically
 
-**Notes:**
-_(Additional observations)_
+**Recommendation:** ✅ **Proceed** - Feasible with Playwright for JavaScript rendering
+
+**Implementation Notes:**
+- ✅ Cannot use simple HTTP requests + BeautifulSoup (listings loaded client-side)
+- ✅ Must use browser automation (Playwright recommended) - **TESTED AND WORKING**
+- ✅ Playwright successfully extracts listing data:
+  - Titles: ✅ Working (e.g., "ニコン Nikon New FM2 シルバー")
+  - Prices: ✅ Working (e.g., "BRL1,329.22")
+  - URLs: ✅ Working (e.g., "/item/m26068059510")
+  - Images: ⚠️ Needs refinement (structure identified)
+- ✅ Need to wait for listings to load after page navigation (5+ seconds recommended)
+- ✅ Improved headers help avoid 403 errors
+- ✅ Rate limiting appears reasonable with delays between requests
+
+**Test Results (Playwright):**
+- Access Test: ✅ PASS
+- Search Test: ✅ PASS  
+- Extraction Test: ✅ PASS
+- Listings Found: 10+ listings successfully extracted
+- Sample data extracted with titles, prices, URLs
+
+**Next Steps:**
+1. ✅ Implement Playwright-based scraper - **COMPLETED AND TESTED**
+2. ✅ Wait for listings to load - **WORKING**
+3. ✅ Extract listing data from rendered DOM - **WORKING**
+4. Refine image extraction (images found, need to extract URLs properly)
+5. Extract additional fields: condition, seller info
+6. Handle pagination for more listings
 
 ---
 

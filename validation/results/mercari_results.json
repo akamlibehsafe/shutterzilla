@@ -1,0 +1,17 @@
+{
+  "test_date": "2026-01-13T16:24:06.066592",
+  "search_term": "Nikon FM2",
+  "access_test": false,
+  "search_test": true,
+  "extraction_test": false,
+  "rate_limiting_test": true,
+  "challenges": [
+    "Getting 403 Forbidden - Mercari has anti-bot protection"
+  ],
+  "notes": [
+    "Tried improved headers but still blocked. May need Playwright/Selenium for JavaScript rendering.",
+    "Successful search URL: https://www.mercari.com/jp/search/?keyword=Nikon FM2",
+    "Could not extract listing data - HTML structure needs inspection"
+  ],
+  "sample_data": []
+}
