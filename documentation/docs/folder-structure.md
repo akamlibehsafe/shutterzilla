@@ -14,7 +14,6 @@ The root directory contains only essential configuration files and the GitHub Pa
 shutterzilla/
 ├── .env.local          # Local environment variables (gitignored)
 ├── .gitignore          # Git ignore rules
-├── index.html          # GitHub Pages landing page
 ├── package.json        # Root package.json (monorepo workspace config)
 └── README.md           # Project overview and quick start
 ```
@@ -140,7 +139,8 @@ documentation/
 │           ├── v1_all_gray/
 │           └── v2_accent_blade/
 │
-└── presentation.html   # Interactive presentation
+├── presentation.html   # Interactive presentation
+└── index.html          # Documentation home page
 ```
 
 **Rationale:**

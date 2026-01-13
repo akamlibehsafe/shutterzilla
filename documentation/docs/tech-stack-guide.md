@@ -613,7 +613,6 @@ shutterzilla/
 ├── .env.local             # Local environment variables (gitignored)
 ├── .gitignore
 ├── package.json           # Root package.json (monorepo)
-├── index.html             # GitHub Pages landing page
 └── README.md
 ```
 

@@ -159,7 +159,6 @@ shutterzilla/
 │   ├── mockupsv2/        # Mobile-responsive mockups
 │   └── branding/         # Logo and brand assets
 │
-├── index.html             # GitHub Pages landing page
 └── README.md
 ```
 
