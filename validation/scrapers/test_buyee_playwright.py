@@ -62,6 +62,11 @@ def extract_listing_data_playwright(page):
             () => {
                 const listings = [];
                 
+                // Debug: Log page structure
+                console.log('Page title:', document.title);
+                console.log('Page URL:', window.location.href);
+                console.log('Body text preview:', document.body.textContent.substring(0, 200));
+                
                 // Try multiple selector patterns for Buyee listings
                 const selectors = [
                     'div.item-card',
@@ -69,8 +74,15 @@ def extract_listing_data_playwright(page):
                     'div.search-result-item',
                     'div[class*="item"]',
                     'div[class*="product"]',
+                    'div[class*="listing"]',
                     'article.item',
                     'li.item',
+                    'div[data-item-id]',
+                    'div.item',
+                    '.item-list-item',
+                    '.search-item',
+                    '[class*="ItemCard"]',
+                    '[class*="ItemCard"]',
                 ];
                 
                 let items = [];
@@ -85,10 +97,38 @@ def extract_listing_data_playwright(page):
                 
                 // If no items found, try to find any links that might be listings
                 if (items.length === 0) {
-                    const allLinks = Array.from(document.querySelectorAll('a[href*="/item/"]'));
+                    // Try Buyee-specific patterns
+                    const buyeeLinks = Array.from(document.querySelectorAll('a[href*="/item/"]'));
+                    const mercariLinks = Array.from(document.querySelectorAll('a[href*="mercari"]'));
+                    const yahooLinks = Array.from(document.querySelectorAll('a[href*="yahoo"]'));
+                    
+                    const allLinks = [...buyeeLinks, ...mercariLinks, ...yahooLinks];
                     if (allLinks.length > 0) {
-                        console.log(`Found ${allLinks.length} item links`);
-                        items = allLinks.map(link => link.closest('div') || link.parentElement || link);
+                        console.log(`Found ${allLinks.length} item links (Buyee: ${buyeeLinks.length}, Mercari: ${mercariLinks.length}, Yahoo: ${yahooLinks.length})`);
+                        items = allLinks.map(link => {
+                            // Try to find the parent container
+                            let container = link.closest('div[class*="item"]') || 
+                                          link.closest('div[class*="card"]') ||
+                                          link.closest('div[class*="product"]') ||
+                                          link.closest('li') ||
+                                          link.parentElement;
+                            return container || link;
+                        });
+                    }
+                }
+                
+                // Also try looking for images that might indicate listings
+                if (items.length === 0) {
+                    const productImages = Array.from(document.querySelectorAll('img[src*="item"], img[src*="product"], img[alt*="item" i]'));
+                    if (productImages.length > 0) {
+                        console.log(`Found ${productImages.length} product images`);
+                        items = productImages.map(img => {
+                            let container = img.closest('div[class*="item"]') || 
+                                          img.closest('div[class*="card"]') ||
+                                          img.closest('a')?.parentElement ||
+                                          img.parentElement;
+                            return container || img;
+                        });
                     }
                 }
                 
@@ -146,7 +186,15 @@ def extract_listing_data_playwright(page):
                     debug: {
                         totalDivs: document.querySelectorAll('div').length,
                         totalLinks: document.querySelectorAll('a').length,
-                        bodyText: document.body.textContent.substring(0, 200)
+                        totalImages: document.querySelectorAll('img').length,
+                        pageTitle: document.title,
+                        pageUrl: window.location.href,
+                        bodyText: document.body.textContent.substring(0, 500),
+                        hasErrorText: document.body.textContent.toLowerCase().includes('error') || 
+                                     document.body.textContent.toLowerCase().includes('not found'),
+                        itemLinks: document.querySelectorAll('a[href*="/item/"]').length,
+                        mercariLinks: document.querySelectorAll('a[href*="mercari"]').length,
+                        yahooLinks: document.querySelectorAll('a[href*="yahoo"]').length
                     }
                 };
             }
@@ -157,7 +205,19 @@ def extract_listing_data_playwright(page):
         
         print(f"  Found {count} listings")
         if listings_data.get('debug'):
-            print(f"  Debug: {listings_data['debug']}")
+            debug = listings_data['debug']
+            print(f"  Debug Info:")
+            print(f"    - Page Title: {debug.get('pageTitle', 'N/A')}")
+            print(f"    - Page URL: {debug.get('pageUrl', 'N/A')}")
+            print(f"    - Total divs: {debug.get('totalDivs', 0)}")
+            print(f"    - Total links: {debug.get('totalLinks', 0)}")
+            print(f"    - Total images: {debug.get('totalImages', 0)}")
+            print(f"    - Item links: {debug.get('itemLinks', 0)}")
+            print(f"    - Mercari links: {debug.get('mercariLinks', 0)}")
+            print(f"    - Yahoo links: {debug.get('yahooLinks', 0)}")
+            print(f"    - Has error text: {debug.get('hasErrorText', False)}")
+            if debug.get('bodyText'):
+                print(f"    - Body text preview: {debug['bodyText'][:200]}...")
         
         # Convert to our format
         all_listings = []
@@ -255,12 +315,97 @@ if __name__ == "__main__":
         page = context.new_page()
         
         try:
-            # Test 1: Navigate to search page
-            print(f"Navigating to: {search_url}")
-            page.goto(search_url, wait_until='domcontentloaded', timeout=60000)
+            # Test 1: Navigate to homepage first
+            print(f"Navigating to homepage: {BASE_URL}")
+            page.goto(BASE_URL, wait_until='domcontentloaded', timeout=60000)
+            time.sleep(2)  # Wait for page to fully load
             results['access_test'] = True
+            print("✅ Homepage loaded successfully")
+            
+            # Check if we can find a search form
+            print("\nLooking for search form...")
+            search_form_found = False
+            search_input = None
+            
+            # Try multiple search input selectors
+            search_selectors = [
+                'input[name="keyword"]',
+                'input[type="search"]',
+                'input[placeholder*="search" i]',
+                'input[id*="search" i]',
+                'input[class*="search" i]',
+                '#search-keyword',
+                '.search-keyword',
+                'input[type="text"]'
+            ]
+            
+            for selector in search_selectors:
+                try:
+                    search_input = page.query_selector(selector)
+                    if search_input:
+                        print(f"  Found search input with selector: {selector}")
+                        search_form_found = True
+                        break
+                except:
+                    continue
+            
+            if search_form_found and search_input:
+                # Try to interact with search form
+                print(f"  Entering search term: {SEARCH_TERM}")
+                search_input.fill(SEARCH_TERM)
+                time.sleep(1)
+                
+                # Try to find and click search button
+                search_button_selectors = [
+                    'button[type="submit"]',
+                    'input[type="submit"]',
+                    'button:has-text("Search")',
+                    'button:has-text("検索")',
+                    '.search-button',
+                    '#search-button'
+                ]
+                
+                search_clicked = False
+                for btn_selector in search_button_selectors:
+                    try:
+                        search_btn = page.query_selector(btn_selector)
+                        if search_btn:
+                            print(f"  Found search button with selector: {btn_selector}")
+                            search_btn.click()
+                            search_clicked = True
+                            break
+                    except:
+                        continue
+                
+                if not search_clicked:
+                    # Try pressing Enter
+                    print("  Pressing Enter to submit search...")
+                    search_input.press('Enter')
+                
+                # Wait for navigation
+                page.wait_for_load_state('networkidle', timeout=30000)
+                time.sleep(3)
+                print("✅ Search submitted")
+            else:
+                # Fallback: Try direct URL
+                print(f"\nSearch form not found, trying direct URL: {search_url}")
+                page.goto(search_url, wait_until='domcontentloaded', timeout=60000)
+                time.sleep(3)
+            
+            # Check if we're on an error page
+            page_title = page.title()
+            page_url = page.url
+            print(f"\nCurrent page title: {page_title}")
+            print(f"Current page URL: {page_url}")
+            
+            if 'error' in page_title.lower() or '/errors' in page_url:
+                results['challenges'].append("Search URL redirects to error page")
+                results['notes'].append(f"Page title: {page_title}")
+                results['notes'].append(f"Page URL: {page_url}")
+                print("⚠️ Warning: Page appears to be an error page")
+                # Still try to extract data in case there's content
+            
             results['search_test'] = True
-            print("✅ Page loaded successfully")
             
             # Test 2: Extract listing data
             print("\nExtracting listing data from search results...")
