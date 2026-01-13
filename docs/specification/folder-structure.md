@@ -102,7 +102,7 @@ All documentation, design assets, and mockups are organized in the `docs/` folde
 
 ```
 docs/
-├── md_specifications/   # All specification and planning markdown files
+├── specification/   # All specification and planning markdown files
 │   ├── tech-stack-guide.md      # Comprehensive tech stack guide
 │   ├── tech-stack-final.md      # Finalized tech stack reference
 │   ├── design-system.md         # Color palette, typography, spacing
@@ -179,7 +179,7 @@ docs/
 **Starting development:**
 1. Read `../README.md` at root for project overview
 2. Check `docs/../README.md` for documentation index
-3. Review `docs/md_specifications/tech-stack-guide.md` for setup instructions
+3. Review `docs/specification/tech-stack-guide.md` for setup instructions
 4. View `mockupsv2/` for design reference
 
 **Finding code:**
