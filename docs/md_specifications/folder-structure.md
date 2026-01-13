@@ -140,7 +140,10 @@ docs/
 │           └── v2_accent_blade/
 │
 ├── presentation.html   # Interactive presentation
-└── index.html          # GitHub Pages landing page
+├── index.html          # GitHub Pages landing page
+├── README.md           # Documentation index
+├── release-notes-v0.1.md    # Release notes
+└── release-notes-v0.2.md    # Release notes
 ```
 
 **Rationale:**
@@ -175,7 +178,7 @@ docs/
 **Starting development:**
 1. Read `../README.md` at root for project overview
 2. Check `docs/../README.md` for documentation index
-3. Review `docs/tech-stack-guide.md` for setup instructions
+3. Review `docs/md_specifications/tech-stack-guide.md` for setup instructions
 4. View `mockupsv2/` for design reference
 
 **Finding code:**
