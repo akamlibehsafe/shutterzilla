@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Choose Your App</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .app-switcher {
+      min-height: calc(100vh - var(--topbar-height));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-2xl);
+      background-color: var(--color-background);
+    }
+    
+    .app-switcher__title {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-2xl);
+    }
+    
+    .app-cards {
+      display: flex;
+      gap: var(--spacing-xl);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .app-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-xl);
+      width: 320px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .app-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    }
+    
+    .app-card__icon {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-lg);
+      background-color: var(--color-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-lg);
+    }
+    
+    .app-card__icon svg {
+      width: 40px;
+      height: 40px;
+      color: var(--color-teal);
+    }
+    
+    .app-card__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .app-card__description {
+      font-size: var(--font-size-base);
+      color: var(--color-slate-light);
+      margin-bottom: var(--spacing-lg);
+      line-height: 1.6;
+    }
+    
+    .app-card__btn {
+      width: 100%;
+      padding: var(--spacing-md);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar__logo">
+      <img src="assets/logo.png" alt="ShutterZilla">
+    </div>
+    <div class="topbar__title"></div>
+    <div class="topbar__right">
+      <div class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- App Switcher Content -->
+  <main class="app-switcher">
+    <h1 class="app-switcher__title">Choose Your App</h1>
+    
+    <div class="app-cards">
+      <!-- Scraper App Card -->
+      <div class="app-card">
+        <div class="app-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+        <h2 class="app-card__title">Shutterzilla Scraper</h2>
+        <p class="app-card__description">Scrape Japanese websites for vintage cameras with advanced filtering and price tracking.</p>
+        <a href="scraper-feed.html" class="btn btn--primary app-card__btn">Launch App</a>
+      </div>
+      
+      <!-- Collection App Card -->
+      <div class="app-card">
+        <div class="app-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </div>
+        <h2 class="app-card__title">Shutterzilla Collection</h2>
+        <p class="app-card__description">Store and manage your vintage camera collection with detailed cataloging and statistics.</p>
+        <a href="collection-home.html" class="btn btn--primary app-card__btn">Launch App</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
