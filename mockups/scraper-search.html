@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Scraper Search</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .search-container {
+      display: flex;
+      gap: var(--spacing-lg);
+      min-height: calc(100vh - var(--topbar-height) - 60px);
+    }
+    
+    .search-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background-color: var(--color-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-gray-200);
+      padding: var(--spacing-lg);
+      height: fit-content;
+    }
+    
+    .search-sidebar__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .filter-group {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .filter-group__label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .filter-group__input {
+      width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      color: var(--color-slate-dark);
+    }
+    
+    .filter-group__input:focus {
+      outline: none;
+      border-color: var(--color-teal);
+    }
+    
+    .price-range {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+    
+    .price-range__input {
+      flex: 1;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+    }
+    
+    .price-range__separator {
+      color: var(--color-slate-light);
+    }
+    
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-teal);
+    }
+    
+    .checkbox-item label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+    }
+    
+    .search-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-gray-200);
+    }
+    
+    .search-results {
+      flex: 1;
+    }
+    
+    .search-results__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .search-results__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .search-results__count {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-2xl);
+      text-align: center;
+      color: var(--color-slate-light);
+    }
+    
+    .empty-state__icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: var(--spacing-lg);
+      color: var(--color-gray-300);
+    }
+    
+    .empty-state__title {
+      font-size: var(--font-size-lg);
+      font-weight: 500;
+      color: var(--color-slate);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .empty-state__text {
+      font-size: var(--font-size-base);
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </div>
+    <div class="topbar__title">Scraper</div>
+    <div class="topbar__right">
+      <div class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <a href="#" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="scraper-feed.html" class="tabs__item">Feed</a>
+    <a href="#" class="tabs__item tabs__item--active">Search</a>
+    <a href="scraper-saved.html" class="tabs__item">Saved</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="search-container">
+      <!-- Search Sidebar -->
+      <aside class="search-sidebar">
+        <h2 class="search-sidebar__title">Search Filters</h2>
+        
+        <!-- Keyword Search -->
+        <div class="filter-group">
+          <label class="filter-group__label">Keyword</label>
+          <input type="text" class="filter-group__input" placeholder="e.g., Nikon FM2, Leica M3">
+        </div>
+        
+        <!-- Brand -->
+        <div class="filter-group">
+          <label class="filter-group__label">Brand</label>
+          <select class="filter-group__input">
+            <option value="">All Brands</option>
+            <option value="nikon">Nikon</option>
+            <option value="canon">Canon</option>
+            <option value="leica">Leica</option>
+            <option value="pentax">Pentax</option>
+            <option value="olympus">Olympus</option>
+            <option value="minolta">Minolta</option>
+            <option value="contax">Contax</option>
+          </select>
+        </div>
+        
+        <!-- Price Range -->
+        <div class="filter-group">
+          <label class="filter-group__label">Price Range (USD)</label>
+          <div class="price-range">
+            <input type="number" class="price-range__input" placeholder="Min">
+            <span class="price-range__separator">–</span>
+            <input type="number" class="price-range__input" placeholder="Max">
+          </div>
+        </div>
+        
+        <!-- Condition -->
+        <div class="filter-group">
+          <label class="filter-group__label">Condition</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="cond-mint" checked>
+              <label for="cond-mint">Mint</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="cond-excellent" checked>
+              <label for="cond-excellent">Excellent</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="cond-good" checked>
+              <label for="cond-good">Good</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="cond-fair">
+              <label for="cond-fair">Fair</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="cond-parts">
+              <label for="cond-parts">For Parts</label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Sources -->
+        <div class="filter-group">
+          <label class="filter-group__label">Sources</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="src-mercari" checked>
+              <label for="src-mercari">Mercari Japan</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="src-yahoo" checked>
+              <label for="src-yahoo">Yahoo Auctions</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="src-ebay" checked>
+              <label for="src-ebay">eBay Japan</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="src-buyee" checked>
+              <label for="src-buyee">Buyee</label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Availability -->
+        <div class="filter-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="available-only" checked>
+            <label for="available-only">Available items only</label>
+          </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="search-actions">
+          <button class="btn btn--primary" style="width: 100%;">Search</button>
+          <button class="btn btn--outline" style="width: 100%;">Save This Search</button>
+          <button class="btn btn--outline" style="width: 100%;">Clear Filters</button>
+        </div>
+      </aside>
+      
+      <!-- Search Results -->
+      <div class="search-results">
+        <div class="search-results__header">
+          <h2 class="search-results__title">Search Results</h2>
+          <span class="search-results__count">Enter search criteria to find cameras</span>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <h3 class="empty-state__title">Start Your Search</h3>
+          <p class="empty-state__text">Use the filters on the left to search for vintage cameras across Japanese marketplaces.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
