@@ -303,47 +303,20 @@ def extract_listing_data_playwright(page):
         print("Extracting all listings from page...")
         result = page.evaluate('''
             () => {
-                // Debug: Check page structure
-                const debug = {
-                    totalLinks: document.querySelectorAll('a').length,
-                    linksWithItem: 0,
-                    linksWithM: 0,
-                    allHrefs: []
-                };
-                
                 // Method 1: Find all links with /item/m pattern
                 const allLinks = Array.from(document.querySelectorAll('a'));
                 const itemLinks = allLinks.filter(link => {
                     const href = link.getAttribute('href') || '';
-                    debug.allHrefs.push(href.substring(0, 50)); // First 50 chars
-                    if (href.includes('/item/')) {
-                        debug.linksWithItem++;
-                    }
-                    if (href.match(/\/item\/m\d+/)) {
-                        debug.linksWithM++;
-                        return true;
-                    }
-                    return false;
+                    return href.match(/\/item\/m\d+/);
                 });
-                
-                // Method 2: Try different patterns - maybe items are in different format
-                const altPattern1 = Array.from(document.querySelectorAll('a[href*="item"]'));
-                const altPattern2 = Array.from(document.querySelectorAll('[data-testid*="item"], [data-testid*="listing"]'));
-                
-                // Method 3: Look for article or listing containers
-                const containers = Array.from(document.querySelectorAll('article, [class*="item"], [class*="listing"], [class*="product"]'));
-                
-                console.log('Debug info:', JSON.stringify(debug, null, 2));
-                console.log(`Found ${itemLinks.length} links with /item/m pattern`);
-                console.log(`Found ${altPattern1.length} links with "item" in href`);
-                console.log(`Found ${containers.length} potential item containers`);
                 
                 // Method 2: Also check for data attributes or other patterns
                 const allElements = Array.from(document.querySelectorAll('[href*="/item/m"], [data-href*="/item/m"]'));
                 
                 // Combine both methods
-                const allItemElements = [...new Set([...itemLinks, ...allElements, ...altPattern1])];
+                const allItemElements = [...new Set([...itemLinks, ...allElements])];
                 
+                console.log(`Found ${itemLinks.length} links with /item/m pattern`);
                 console.log(`Found ${allItemElements.length} total item elements`);
                 
                 // Get unique listings
