@@ -1,7 +1,35 @@
 from PIL import Image
+import sys
+import os
+
+# Get input file path from command line argument or use default
+if len(sys.argv) > 1:
+    input_path = sys.argv[1]
+else:
+    # Try to find the logo in common locations
+    possible_paths = [
+        'shutterzilla_v1_all_gray_4k.png',
+        '../branding/Logo/02 Manus Generated Logos/v1_all_gray/shutterzilla_v1_4k.png',
+        'branding/Logo/02 Manus Generated Logos/v1_all_gray/shutterzilla_v1_4k.png',
+    ]
+    
+    input_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            input_path = path
+            break
+    
+    if not input_path:
+        print("Error: Logo file not found.")
+        print("Usage: python resize_logo.py [path_to_4k_logo.png]")
+        print("Or place the logo file in one of these locations:")
+        for path in possible_paths:
+            print(f"  - {path}")
+        sys.exit(1)
 
 # Load original 4K logo
-original = Image.open('/home/ubuntu/shutterzilla_v1_all_gray_4k.png')
+original = Image.open(input_path)
+print(f'Loading logo from: {input_path}')
 print(f'Original size: {original.size}')
 
 # Content bounds from analysis
