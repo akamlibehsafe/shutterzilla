@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - About</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .content-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+    
+    .content-page h1 {
+      font-size: var(--font-size-2xl);
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .content-page h2 {
+      font-size: var(--font-size-xl);
+      color: var(--color-slate-dark);
+      margin-top: var(--spacing-xl);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .content-page p {
+      color: var(--color-slate);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .content-page ul {
+      color: var(--color-slate);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-md);
+      padding-left: var(--spacing-xl);
+    }
+    
+    .content-page li {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .app-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .app-card h3 {
+      font-size: var(--font-size-lg);
+      color: var(--color-teal);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .app-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">About</div>
+    <div class="topbar__right">
+      <div class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="content-page">
+    <h1>About ShutterZilla</h1>
+    
+    <p>ShutterZilla is a platform designed for vintage camera enthusiasts. We provide modern tools to help you discover, collect, and manage your film camera collection with ease.</p>
+    
+    <p>Whether you're a seasoned collector hunting for rare finds or just starting your journey into the world of analog photography, ShutterZilla has the tools you need.</p>
+    
+    <h2>Our Apps</h2>
+    
+    <div class="app-card">
+      <h3>ShutterZilla Scraper</h3>
+      <p>Search and discover vintage cameras across multiple online marketplaces. Our scraper aggregates listings from Mercari, Buyee, eBay USA, and JD Direct Auctions, giving you a comprehensive view of what's available. Set up saved searches with custom filters and get notified when new cameras matching your criteria are listed.</p>
+    </div>
+    
+    <div class="app-card">
+      <h3>ShutterZilla Collection</h3>
+      <p>Organize and manage your personal camera collection. Track cameras you own, maintain a wishlist of cameras you're looking for, and keep detailed records including purchase price, condition, and notes. View statistics about your collection and watch its value over time.</p>
+    </div>
+    
+    <h2>Features</h2>
+    
+    <ul>
+      <li><strong>Multi-Source Search</strong> - Search across multiple marketplaces simultaneously</li>
+      <li><strong>Smart Filters</strong> - Filter by brand, price range, condition, and source</li>
+      <li><strong>Saved Searches</strong> - Save your search criteria and get notified of new listings</li>
+      <li><strong>Collection Management</strong> - Track owned cameras and wishlist items</li>
+      <li><strong>Statistics & Insights</strong> - Visualize your collection's composition and value</li>
+      <li><strong>Responsive Design</strong> - Works seamlessly on desktop and mobile devices</li>
+    </ul>
+    
+    <h2>Our Mission</h2>
+    
+    <p>We believe that vintage cameras deserve to be preserved, used, and appreciated. Our mission is to connect collectors with the cameras they're looking for and help them maintain their collections with modern, easy-to-use tools.</p>
+    
+    <p>ShutterZilla was built by photographers and collectors who understand the joy of finding that perfect camera and the satisfaction of building a meaningful collection.</p>
+    
+    <h2>Contact</h2>
+    
+    <p>Have questions, feedback, or suggestions? We'd love to hear from you. Reach out to us at <a href="mailto:hello@shutterzilla.com" style="color: var(--color-teal);">hello@shutterzilla.com</a></p>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <div class="footer__logo-text">
+          <svg class="footer__logo-icon" width="32" height="32" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="4"/>
+            <path d="M50 10 L50 30 M50 70 L50 90 M10 50 L30 50 M70 50 L90 50 M22 22 L36 36 M64 64 L78 78 M78 22 L64 36 M36 64 L22 78" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="3"/>
+          </svg>
+          <span class="footer__logo-shutter">SHUTTER</span><span class="footer__logo-zilla">ZILLA</span>
+        </div>
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
