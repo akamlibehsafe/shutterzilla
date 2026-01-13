@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Admin Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .stat-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .stat-card__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .stat-card__value {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .stat-card__label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .stat-card__change {
+      font-size: var(--font-size-xs);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    
+    .stat-card__change--up {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .stat-card__change--down {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .dashboard-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .panel {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .panel__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .activity-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-item__icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .activity-item__content {
+      flex: 1;
+    }
+    
+    .activity-item__text {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-dark);
+      margin-bottom: 2px;
+    }
+    
+    .activity-item__time {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+    }
+    
+    .quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .quick-action {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--color-gray-50);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--color-slate-dark);
+      transition: background 0.2s;
+    }
+    
+    .quick-action:hover {
+      background: var(--color-gray-100);
+    }
+    
+    .quick-action__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-white);
+      color: var(--color-teal);
+    }
+    
+    .quick-action__text {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Admin</div>
+    <div class="topbar__right">
+      <div class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="admin_dashboard.html" class="tabs__item tabs__item--active">Dashboard</a>
+    <a href="admin_users.html" class="tabs__item">Users</a>
+    <a href="admin_scraper.html" class="tabs__item">Scraper Config</a>
+    <a href="admin_logs.html" class="tabs__item">System Logs</a>
+    <a href="admin_settings.html" class="tabs__item">Settings</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__header">
+          <div class="stat-card__icon" style="background: #dbeafe; color: #2563eb;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <span class="stat-card__change stat-card__change--up">+12%</span>
+        </div>
+        <div class="stat-card__value">1,247</div>
+        <div class="stat-card__label">Total Users</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__header">
+          <div class="stat-card__icon" style="background: #d1fae5; color: #059669;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </div>
+          <span class="stat-card__change stat-card__change--up">+5%</span>
+        </div>
+        <div class="stat-card__value">4</div>
+        <div class="stat-card__label">Active Scrapers</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__header">
+          <div class="stat-card__icon" style="background: #fef3c7; color: #f59e0b;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <span class="stat-card__change stat-card__change--up">+847</span>
+        </div>
+        <div class="stat-card__value">23,456</div>
+        <div class="stat-card__label">Items Scraped</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__header">
+          <div class="stat-card__icon" style="background: #fce7f3; color: #ec4899;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+          </div>
+          <span class="stat-card__change stat-card__change--up">99.8%</span>
+        </div>
+        <div class="stat-card__value">Healthy</div>
+        <div class="stat-card__label">System Health</div>
+      </div>
+    </div>
+    
+    <!-- Dashboard Row -->
+    <div class="dashboard-row">
+      <!-- Recent Activity -->
+      <div class="panel">
+        <h2 class="panel__title">Recent Activity</h2>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <div class="activity-item__icon" style="background: #d1fae5; color: #059669;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+              </svg>
+            </div>
+            <div class="activity-item__content">
+              <div class="activity-item__text">New user registered: <strong>john.doe@email.com</strong></div>
+              <div class="activity-item__time">2 minutes ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-item__icon" style="background: #dbeafe; color: #2563eb;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </div>
+            <div class="activity-item__content">
+              <div class="activity-item__text">Mercari scraper completed: <strong>156 new items</strong></div>
+              <div class="activity-item__time">15 minutes ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-item__icon" style="background: #fef3c7; color: #f59e0b;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="activity-item__content">
+              <div class="activity-item__text">Rate limit warning on <strong>eBay USA</strong> scraper</div>
+              <div class="activity-item__time">32 minutes ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-item__icon" style="background: #d1fae5; color: #059669;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="activity-item__content">
+              <div class="activity-item__text">Buyee scraper completed: <strong>89 new items</strong></div>
+              <div class="activity-item__time">1 hour ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-item__icon" style="background: #fce7f3; color: #ec4899;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="activity-item__content">
+              <div class="activity-item__text">Admin settings updated by <strong>admin@shutterzilla.com</strong></div>
+              <div class="activity-item__time">2 hours ago</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="panel">
+        <h2 class="panel__title">Quick Actions</h2>
+        <div class="quick-actions">
+          <a href="admin_users.html" class="quick-action">
+            <div class="quick-action__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+              </svg>
+            </div>
+            <span class="quick-action__text">Add New User</span>
+          </a>
+          <a href="admin_scraper.html" class="quick-action">
+            <div class="quick-action__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <span class="quick-action__text">Run All Scrapers</span>
+          </a>
+          <a href="admin_logs.html" class="quick-action">
+            <div class="quick-action__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </div>
+            <span class="quick-action__text">View System Logs</span>
+          </a>
+          <a href="admin_settings.html" class="quick-action">
+            <div class="quick-action__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <span class="quick-action__text">System Settings</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Admin Scraper Config</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .scraper-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .scraper-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .scraper-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .scraper-card__title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    
+    .scraper-card__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--font-size-sm);
+    }
+    
+    .scraper-card__name {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .scraper-card__status {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-sm);
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .status-dot--active {
+      background: #22c55e;
+    }
+    
+    .status-dot--inactive {
+      background: #9ca3af;
+    }
+    
+    .scraper-card__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: var(--spacing-sm);
+      background: var(--color-gray-50);
+      border-radius: var(--radius-md);
+    }
+    
+    .stat-item__value {
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+    }
+    
+    .stat-item__label {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+    }
+    
+    .scraper-card__config {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .config-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .config-row:last-child {
+      border-bottom: none;
+    }
+    
+    .config-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+    }
+    
+    .config-value {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate-dark);
+    }
+    
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: var(--color-gray-300);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle--active {
+      background: var(--color-teal);
+    }
+    
+    .toggle__knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    
+    .toggle--active .toggle__knob {
+      transform: translateX(20px);
+    }
+    
+    .scraper-card__actions {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    
+    .global-settings {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .global-settings__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-lg);
+    }
+    
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    
+    .setting-group__label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Admin</div>
+    <div class="topbar__right">
+      <div class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <a href="landing-page.html" class="topbar__logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="admin_dashboard.html" class="tabs__item">Dashboard</a>
+    <a href="admin_users.html" class="tabs__item">Users</a>
+    <a href="admin_scraper.html" class="tabs__item tabs__item--active">Scraper Config</a>
+    <a href="admin_logs.html" class="tabs__item">System Logs</a>
+    <a href="admin_settings.html" class="tabs__item">Settings</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1 class="page-header__title">Scraper Configuration</h1>
+      <button class="btn btn--primary">Run All Scrapers</button>
+    </div>
+    
+    <!-- Scraper Cards -->
+    <div class="scraper-grid">
+      <!-- Mercari -->
+      <div class="scraper-card">
+        <div class="scraper-card__header">
+          <div class="scraper-card__title">
+            <div class="scraper-card__icon" style="background: #fee2e2; color: #dc2626;">M</div>
+            <span class="scraper-card__name">Mercari</span>
+          </div>
+          <div class="scraper-card__status">
+            <span class="status-dot status-dot--active"></span>
+            Active
+          </div>
+        </div>
+        <div class="scraper-card__stats">
+          <div class="stat-item">
+            <div class="stat-item__value">8,234</div>
+            <div class="stat-item__label">Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">156</div>
+            <div class="stat-item__label">New Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">2h ago</div>
+            <div class="stat-item__label">Last Run</div>
+          </div>
+        </div>
+        <div class="scraper-card__config">
+          <div class="config-row">
+            <span class="config-label">Enabled</span>
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Schedule</span>
+            <span class="config-value">Every 2 hours</span>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Rate Limit</span>
+            <span class="config-value">100 req/min</span>
+          </div>
+        </div>
+        <div class="scraper-card__actions">
+          <button class="btn btn--outline btn--sm">Configure</button>
+          <button class="btn btn--primary btn--sm">Run Now</button>
+        </div>
+      </div>
+      
+      <!-- Buyee -->
+      <div class="scraper-card">
+        <div class="scraper-card__header">
+          <div class="scraper-card__title">
+            <div class="scraper-card__icon" style="background: #fef3c7; color: #f59e0b;">B</div>
+            <span class="scraper-card__name">Buyee</span>
+          </div>
+          <div class="scraper-card__status">
+            <span class="status-dot status-dot--active"></span>
+            Active
+          </div>
+        </div>
+        <div class="scraper-card__stats">
+          <div class="stat-item">
+            <div class="stat-item__value">5,621</div>
+            <div class="stat-item__label">Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">89</div>
+            <div class="stat-item__label">New Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">1h ago</div>
+            <div class="stat-item__label">Last Run</div>
+          </div>
+        </div>
+        <div class="scraper-card__config">
+          <div class="config-row">
+            <span class="config-label">Enabled</span>
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Schedule</span>
+            <span class="config-value">Every 3 hours</span>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Rate Limit</span>
+            <span class="config-value">50 req/min</span>
+          </div>
+        </div>
+        <div class="scraper-card__actions">
+          <button class="btn btn--outline btn--sm">Configure</button>
+          <button class="btn btn--primary btn--sm">Run Now</button>
+        </div>
+      </div>
+      
+      <!-- eBay USA -->
+      <div class="scraper-card">
+        <div class="scraper-card__header">
+          <div class="scraper-card__title">
+            <div class="scraper-card__icon" style="background: #dbeafe; color: #2563eb;">eB</div>
+            <span class="scraper-card__name">eBay USA</span>
+          </div>
+          <div class="scraper-card__status">
+            <span class="status-dot status-dot--active"></span>
+            Active
+          </div>
+        </div>
+        <div class="scraper-card__stats">
+          <div class="stat-item">
+            <div class="stat-item__value">6,892</div>
+            <div class="stat-item__label">Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">234</div>
+            <div class="stat-item__label">New Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">45m ago</div>
+            <div class="stat-item__label">Last Run</div>
+          </div>
+        </div>
+        <div class="scraper-card__config">
+          <div class="config-row">
+            <span class="config-label">Enabled</span>
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Schedule</span>
+            <span class="config-value">Every 1 hour</span>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Rate Limit</span>
+            <span class="config-value">200 req/min</span>
+          </div>
+        </div>
+        <div class="scraper-card__actions">
+          <button class="btn btn--outline btn--sm">Configure</button>
+          <button class="btn btn--primary btn--sm">Run Now</button>
+        </div>
+      </div>
+      
+      <!-- JD Direct Auctions -->
+      <div class="scraper-card">
+        <div class="scraper-card__header">
+          <div class="scraper-card__title">
+            <div class="scraper-card__icon" style="background: #f3e8ff; color: #9333ea;">JD</div>
+            <span class="scraper-card__name">JD Direct Auctions</span>
+          </div>
+          <div class="scraper-card__status">
+            <span class="status-dot status-dot--inactive"></span>
+            Paused
+          </div>
+        </div>
+        <div class="scraper-card__stats">
+          <div class="stat-item">
+            <div class="stat-item__value">2,709</div>
+            <div class="stat-item__label">Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">0</div>
+            <div class="stat-item__label">New Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">2d ago</div>
+            <div class="stat-item__label">Last Run</div>
+          </div>
+        </div>
+        <div class="scraper-card__config">
+          <div class="config-row">
+            <span class="config-label">Enabled</span>
+            <div class="toggle"><div class="toggle__knob"></div></div>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Schedule</span>
+            <span class="config-value">Every 4 hours</span>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Rate Limit</span>
+            <span class="config-value">30 req/min</span>
+          </div>
+        </div>
+        <div class="scraper-card__actions">
+          <button class="btn btn--outline btn--sm">Configure</button>
+          <button class="btn btn--primary btn--sm">Run Now</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Global Settings -->
+    <div class="global-settings">
+      <h2 class="global-settings__title">Global Settings</h2>
+      <div class="settings-grid">
+        <div class="setting-group">
+          <label class="setting-group__label">Default Rate Limit</label>
+          <input type="number" class="form-input" value="100" style="width: 100%;">
+        </div>
+        <div class="setting-group">
+          <label class="setting-group__label">Retry Attempts</label>
+          <input type="number" class="form-input" value="3" style="width: 100%;">
+        </div>
+        <div class="setting-group">
+          <label class="setting-group__label">Timeout (seconds)</label>
+          <input type="number" class="form-input" value="30" style="width: 100%;">
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
