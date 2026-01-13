@@ -36,16 +36,12 @@ For detailed tech stack information, see [Tech Stack Guide](./documentation/docs
 
 Comprehensive documentation is available in the [`documentation/`](./documentation/) folder:
 
-| Document | Description |
-|----------|-------------|
-| [Tech Stack Guide](./documentation/docs/tech-stack-guide.md) | Complete tech stack guide with all decisions, Q&A, and examples |
-| [Design System](./documentation/docs/design-system.md) | Color palette, typography, spacing, and visual guidelines |
-| [Functional Requirements](./documentation/docs/functional-requirements.md) | Detailed requirements for each section |
-| [Data Models](./documentation/docs/data-models.md) | Database schema and data structure |
-| [Component Library](./documentation/docs/component-library.md) | Reusable UI components reference |
-| [Page Inventory](./documentation/docs/page-inventory.md) | Complete list of all 26 pages |
+- **[Documentation Index](./documentation/docs/README.md)** - Complete list of all documentation files
+- **[Tech Stack Guide](./documentation/docs/tech-stack-guide.md)** - Complete tech stack guide with all decisions, Q&A, and examples
+- **[Design System](./documentation/docs/design-system.md)** - Color palette, typography, spacing, and visual guidelines
+- **[Folder Structure](./documentation/docs/folder-structure.md)** - Project organization and navigation guide
 
-See [documentation/docs/README.md](./documentation/docs/README.md) for the full documentation index.
+See [documentation/docs/README.md](./documentation/docs/README.md) for the complete documentation index.
 
 ## Live Mockups
 
@@ -72,10 +68,10 @@ shutterzilla/
 
 ## Quick Start
 
-1. **Review Documentation**: Start with [documentation/docs/README.md](./documentation/docs/README.md)
-2. **Check Tech Stack**: Read [tech-stack-guide.md](./documentation/docs/tech-stack-guide.md)
-3. **View Mockups**: Browse [Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv2/landing-page.html)
-4. **Set Up Development**: Follow the "Next Steps" section in the tech stack guide
+1. **Read this README** - Understand what ShutterZilla is
+2. **Check Documentation** - See [documentation/docs/README.md](./documentation/docs/README.md) for all available docs
+3. **Review Tech Stack** - Read [tech-stack-guide.md](./documentation/docs/tech-stack-guide.md) for setup instructions
+4. **View Mockups** - Browse [Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv2/landing-page.html)
 
 ## Development
 
