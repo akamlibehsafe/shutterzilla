@@ -1,0 +1,411 @@
+/* ShutterZilla Design System */
+
+/* ===== CSS Variables ===== */
+:root {
+  /* Colors */
+  --color-teal: #0d9488;
+  --color-teal-light: #14b8a6;
+  --color-slate-dark: #334155;
+  --color-slate: #475569;
+  --color-slate-light: #64748b;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-white: #ffffff;
+  --color-background: #f8f9fa;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Top Bar */
+  --topbar-height: 70px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-slate-dark);
+  background-color: var(--color-background);
+  line-height: 1.5;
+}
+
+/* ===== Top Bar Component ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--topbar-height);
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-white);
+  border-bottom: 2px solid var(--color-teal);
+}
+
+.topbar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.topbar__logo img {
+  height: 50px;
+  width: auto;
+}
+
+.topbar__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-slate);
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.topbar__user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-slate);
+}
+
+.topbar__logout {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-slate);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.topbar__logout:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* ===== Tab Navigation ===== */
+.tabs {
+  display: flex;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.tabs__item {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-base);
+  color: var(--color-slate-light);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tabs__item:hover {
+  color: var(--color-slate-dark);
+}
+
+.tabs__item--active {
+  color: var(--color-slate-dark);
+  border-bottom-color: var(--color-teal);
+  font-weight: 500;
+}
+
+/* ===== Page Content ===== */
+.page-content {
+  padding: var(--spacing-lg);
+}
+
+/* ===== Pills / Tags ===== */
+.pills {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pill {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pill--primary {
+  background-color: var(--color-teal);
+  color: var(--color-white);
+}
+
+.pill--secondary {
+  background-color: var(--color-gray-200);
+  color: var(--color-slate);
+}
+
+.pill--outline {
+  background-color: transparent;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-slate);
+}
+
+/* ===== Cards ===== */
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card__image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: var(--color-gray-100);
+  position: relative;
+}
+
+.card__body {
+  padding: var(--spacing-md);
+}
+
+.card__title {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-slate-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__price {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-teal);
+}
+
+.card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== Badges ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge--success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge--new {
+  background-color: var(--color-teal);
+  color: var(--color-white);
+}
+
+.badge--sold {
+  background-color: #ef4444;
+  color: var(--color-white);
+}
+
+/* ===== Ribbon ===== */
+.ribbon {
+  position: absolute;
+  top: 12px;
+  left: -30px;
+  width: 100px;
+  padding: 4px 0;
+  background-color: #ef4444;
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  transform: rotate(-45deg);
+  text-transform: uppercase;
+}
+
+/* ===== Grid ===== */
+.grid {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ===== Utilities ===== */
+.flex {
+  display: flex;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+
+.gap-md {
+  gap: var(--spacing-md);
+}
+
+.mb-sm {
+  margin-bottom: var(--spacing-sm);
+}
+
+.mb-md {
+  margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+  margin-bottom: var(--spacing-lg);
+}
+
+.text-muted {
+  color: var(--color-slate-light);
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+/* ===== Source Icons ===== */
+.source-icon {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.source-icon--mercari {
+  background-color: #ff4444;
+}
+
+.source-icon--buyee {
+  background-color: #ff9900;
+}
+
+.source-icon--ebay {
+  background: linear-gradient(135deg, #e53238, #0064d2, #f5af02, #86b817);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--color-teal);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-teal-light);
+}
+
+.btn--outline {
+  background-color: transparent;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-slate);
+}
+
+.btn--outline:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* ===== Select / Dropdown ===== */
+.select {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  font-size: var(--font-size-sm);
+  color: var(--color-slate);
+  cursor: pointer;
+}
+
+/* ===== View Toggle ===== */
+.view-toggle {
+  display: flex;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.view-toggle__btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  color: var(--color-slate-light);
+}
+
+.view-toggle__btn--active {
+  background-color: var(--color-teal);
+  color: var(--color-white);
+}
