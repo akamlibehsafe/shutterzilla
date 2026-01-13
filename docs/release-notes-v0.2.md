@@ -24,11 +24,12 @@ This release marks the completion of the planning and preparation phase for Shut
 - Organized folder structure with clear separation:
   - `apps/` - Application code (to be implemented)
   - `infrastructure/` - Database migrations and CI/CD
-  - `documentation/` - All docs, mockups, and branding
-- Moved all mockups to `documentation/` folder
+  - `docs/` - All documentation, mockups, and branding
+- Consolidated all content from `documentation/` to `docs/` folder
 - Renamed `mockups/` to `mockupsv1/` for clarity
-- Consolidated all markdown documentation in `docs/`
-- Moved `index.html` to `documentation/` as documentation home page
+- Organized all specification markdown files in `docs/specification/` subfolder
+- Moved `index.html` to `docs/` for GitHub Pages (root kept free for Vue.js app)
+- Established rule: All new `.md` files go in `docs/specification/` (except README and release notes)
 
 ### 📚 Comprehensive Documentation
 - **Tech Stack Guide** - Complete guide with all decisions, Q&A, and examples
@@ -60,10 +61,12 @@ This release marks the completion of the planning and preparation phase for Shut
 - Set up documentation structure for tracking progress and learnings
 
 ### 🗂️ Documentation Organization
+- All specification markdown files organized in `docs/specification/` folder
 - All implementation docs use `implementation-` prefix
 - Clear separation between planning docs and reference docs
 - Updated all README files with current structure
 - Added comprehensive folder structure documentation
+- Established documentation organization rule for future files
 
 ---
 
@@ -82,10 +85,11 @@ This release marks the completion of the planning and preparation phase for Shut
 - Created folder structure guide
 
 ### Project Organization
-- Clean root directory (only essential config files)
-- Clear separation: code (`apps/`), infrastructure, documentation
-- All markdown docs in `docs/`
-- All design assets (mockups, branding) in `documentation/`
+- Clean root directory (only essential config files, ready for Vue.js app)
+- Clear separation: code (`apps/`), infrastructure, documentation (`docs/`)
+- All specification markdown files in `docs/specification/`
+- All design assets (mockups, branding) in `docs/`
+- GitHub Pages configured to serve from `docs/` folder
 
 ### Git & Repository
 - Added comprehensive `.gitignore` with macOS files
@@ -97,32 +101,34 @@ This release marks the completion of the planning and preparation phase for Shut
 ## Files Changed
 
 ### New Files
-- `docs/implementation-plan.md`
-- `docs/implementation-notes.md`
-- `docs/implementation-validation-plan.md`
-- `docs/implementation-validation-notes.md`
-- `docs/implementation-data-models-refinement.md`
-- `docs/implementation-screen-specifications.md`
-- `docs/implementation-scraper-behavior-specification.md`
-- `docs/implementation-mockup-to-code-changes.md`
-- `docs/folder-structure.md`
-- `docs/tech-stack-guide.md`
-- `docs/tech-stack-final.md`
-- `documentation/index.html` (moved from root)
+- `docs/specification/implementation-plan.md`
+- `docs/specification/implementation-notes.md`
+- `docs/specification/implementation-validation-plan.md`
+- `docs/specification/implementation-validation-notes.md`
+- `docs/specification/implementation-data-models-refinement.md`
+- `docs/specification/implementation-screen-specifications.md`
+- `docs/specification/implementation-scraper-behavior-specification.md`
+- `docs/specification/implementation-mockup-to-code-changes.md`
+- `docs/specification/folder-structure.md`
+- `docs/specification/tech-stack-guide.md`
+- `docs/specification/tech-stack-final.md`
+- `docs/index.html` (GitHub Pages landing page)
 - `.gitignore`
 
 ### Moved/Reorganized
-- `mockups/` → `mockupsv1/`
-- `mockupsv2/` → `mockupsv2/`
-- `branding/` → `documentation/branding/`
-- All `.md` files → `docs/`
-- `index.html` → `documentation/index.html`
+- `mockups/` → `docs/mockupsv1/`
+- `mockupsv2/` → `docs/mockupsv2/`
+- `branding/` → `docs/branding/`
+- All specification `.md` files → `docs/specification/`
+- `index.html` → `docs/index.html` (GitHub Pages source)
+- Consolidated `documentation/` folder into `docs/` folder
 
 ### Updated Files
 - `README.md` - Comprehensive project overview
-- `docs/README.md` - Updated with new structure
-- `docs/key-decisions-log.md` - Added tech stack decisions
-- All documentation files with updated references
+- `docs/README.md` - Updated with new structure and documentation organization rule
+- `docs/specification/key-decisions-log.md` - Added tech stack decisions
+- `docs/specification/folder-structure.md` - Complete guide to project organization
+- All documentation files with updated references and paths
 
 ---
 
@@ -147,9 +153,9 @@ This release marks the completion of the planning and preparation phase for Shut
 
 ## Live Mockups
 
-- **[Mockups v2 (Mobile-Responsive)](https://akamlibehsafe.github.io/shutterzilmockupsv2/landing-page.html)**
-- **[Mockups v1 (Original Desktop)](https://akamlibehsafe.github.io/shutterzilmockupsv1/landing-page.html)**
-- **[Documentation Home](https://akamlibehsafe.github.io/shutterzilindex.html)**
+- **[Mockups v2 (Mobile-Responsive)](https://akamlibehsafe.github.io/shutterzilla/mockupsv2/landing-page.html)**
+- **[Mockups v1 (Original Desktop)](https://akamlibehsafe.github.io/shutterzilla/mockupsv1/landing-page.html)**
+- **[Documentation Home](https://akamlibehsafe.github.io/shutterzilla/)**
 
 ---
 
@@ -157,10 +163,10 @@ This release marks the completion of the planning and preparation phase for Shut
 
 All documentation is available in the [`docs/`](./docs/) folder:
 
-- [Implementation Plan](./docs/implementation-plan.md)
-- [Tech Stack Guide](./docs/tech-stack-guide.md)
-- [Folder Structure](./docs/folder-structure.md)
-- [Validation Plan](./docs/implementation-validation-plan.md)
+- [Implementation Plan](./docs/specification/implementation-plan.md)
+- [Tech Stack Guide](./docs/specification/tech-stack-guide.md)
+- [Folder Structure](./docs/specification/folder-structure.md)
+- [Validation Plan](./docs/specification/implementation-validation-plan.md)
 - [Full Documentation Index](./docs/README.md)
 
 ---
