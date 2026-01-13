@@ -102,20 +102,21 @@ All documentation, design assets, and mockups are organized in the `docs/` folde
 
 ```
 docs/
-├── tech-stack-guide.md      # Comprehensive tech stack guide
-├── tech-stack-final.md      # Finalized tech stack reference
-├── design-system.md         # Color palette, typography, spacing
-├── functional-requirements.md # Feature requirements
-├── data-models.md           # Database schema and models
-├── component-library.md      # UI component reference
-├── page-inventory.md        # Complete page list and sitemap
-├── key-decisions-log.md     # Design and architecture decisions
-├── folder-structure.md      # Folder structure guide
-├── presentation-script.md    # Presentation script
-├── session-summary-full.md   # Project summary
-├── ../release-notes-v0.1.md    # Release notes
-├── ../release-notes-v0.2.md    # Release notes
-├── ../README.md                 # Documentation index
+├── md_specifications/   # All specification and planning markdown files
+│   ├── tech-stack-guide.md      # Comprehensive tech stack guide
+│   ├── tech-stack-final.md      # Finalized tech stack reference
+│   ├── design-system.md         # Color palette, typography, spacing
+│   ├── functional-requirements.md # Feature requirements
+│   ├── data-models.md           # Database schema and models
+│   ├── component-library.md      # UI component reference
+│   ├── page-inventory.md        # Complete page list and sitemap
+│   ├── key-decisions-log.md     # Design and architecture decisions
+│   ├── folder-structure.md      # Folder structure guide
+│   ├── presentation-script.md    # Presentation script
+│   ├── session-summary-full.md   # Project summary
+│   ├── implementation-plan.md    # Implementation plan
+│   ├── implementation-notes.md   # Implementation notes
+│   └── ... (other implementation docs)
 │
 ├── mockupsv1/          # Original desktop-focused HTML/CSS mockups
 │   ├── css/
