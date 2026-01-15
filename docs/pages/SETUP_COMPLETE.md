@@ -5,12 +5,12 @@
 1. ✅ **Created `docs/pages/` folder** - Dedicated location for GitHub Pages source files
 2. ✅ **Moved files from root**:
    - `index.html` → `docs/pages/index.html`
-   - `presentation.html` → `docs/pages/presentation.html`
+   - `presentation.html` → `docs/pages/presentation.html` ✅
 3. ✅ **Updated GitHub Actions workflow** - Now deploys from `docs/pages/`
 4. ✅ **Updated links** - All mockup paths updated to new structure:
    - `docs/mockupsv1/` → `docs/mockups/v1/`
    - `docs/mockupsv2/` → `docs/mockups/current/` (v2)
-   - `docs/presentation.html` → `presentation.html`
+   - `docs/presentation.html` → Removed (duplicate, only `docs/pages/presentation.html` kept)
 
 ## Benefits
 

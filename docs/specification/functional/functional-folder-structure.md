@@ -300,17 +300,23 @@ As the project grows, consider:
 
 1. **Adding shared packages:**
    - `packages/shared-types/` for TypeScript types shared between frontend/backend
+   - `packages/api-client/` for shared API client library
+   - `packages/business-logic/` for shared business rules
    - `packages/ui-components/` for shared UI components
 
 2. **Adding more apps:**
    - `apps/admin-panel/` for separate admin interface
-   - `apps/mobile-app/` for mobile application
+   - `apps/mobile-scraper/` for mobile Scraper app (Android/iOS)
+   - `apps/mobile-collection/` for mobile Collection app (Android/iOS)
+   - Separate web apps if needed: `apps/web-scraper/`, `apps/web-collection/`
 
 3. **Infrastructure expansion:**
    - `infrastructure/terraform/` for infrastructure as code
    - `infrastructure/docker/` for container configurations
 
 The current structure supports these additions without major reorganization.
+
+**For detailed guidance on expanding the monorepo (especially for mobile apps), see:** `docs/guides/monorepo-expansion.md`
 
 ---
 

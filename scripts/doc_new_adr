@@ -48,6 +48,8 @@ if [ -d "$DOCS_DIR" ]; then
         if [ -f "$file" ]; then
             BASENAME=$(basename "$file")
             NUM=$(echo "$BASENAME" | grep -oE '^[0-9]+' || echo "0")
+            # Force base-10 interpretation to avoid octal issues
+            NUM=$((10#$NUM))
             if [ "$NUM" -gt "$LAST_NUM" ]; then
                 LAST_NUM=$NUM
             fi

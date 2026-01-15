@@ -40,7 +40,7 @@ A full suite of documentation to guide the implementation process.
 ### 3. Live Presentation & Project Homepage
 
 - **Project Homepage:** [https://akamlibehsafe.github.io/shutterzilla/](https://akamlibehsafe.github.io/shutterzilla/)
-- **Handoff Presentation:** [https://akamlibehsafe.github.io/shutterzilpresentation.html](https://akamlibehsafe.github.io/shutterzilpresentation.html)
+- **Handoff Presentation:** [https://akamlibehsafe.github.io/shutterzilla/presentation.html](https://akamlibehsafe.github.io/shutterzilla/presentation.html)
 
 ## How to Use for Implementation (Cursor AI)
 
