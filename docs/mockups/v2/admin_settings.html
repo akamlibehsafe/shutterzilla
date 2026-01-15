@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Admin Settings</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .settings-section {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .settings-section__header {
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .settings-section__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .settings-section__description {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .settings-section__body {
+      padding: var(--spacing-md);
+    }
+    
+    .setting-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+    
+    .setting-info {
+      flex: 1;
+    }
+    
+    .setting-label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate-dark);
+      margin-bottom: 2px;
+    }
+    
+    .setting-description {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+    }
+    
+    .setting-control {
+      margin-top: var(--spacing-xs);
+    }
+    
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      min-width: 44px;
+      background: var(--color-gray-300);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle--active {
+      background: var(--color-teal);
+    }
+    
+    .toggle__knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    
+    .toggle--active .toggle__knob {
+      transform: translateX(20px);
+    }
+    
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .danger-zone {
+      border-color: #fecaca;
+    }
+    
+    .danger-zone .settings-section__header {
+      background: #fef2f2;
+      border-bottom-color: #fecaca;
+    }
+    
+    .danger-zone .settings-section__title {
+      color: #dc2626;
+    }
+    
+    .btn--danger {
+      background: #dc2626;
+      color: white;
+      border: none;
+    }
+    
+    .btn--danger:active {
+      background: #b91c1c;
+    }
+    
+    @media (min-width: 768px) {
+      .page-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .settings-section__header {
+        padding: var(--spacing-lg);
+      }
+      
+      .settings-section__body {
+        padding: var(--spacing-lg);
+      }
+      
+      .setting-row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+      }
+      
+      .setting-control {
+        margin-top: 0;
+        margin-left: var(--spacing-xl);
+      }
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+      }
+      
+      .btn--danger:hover {
+        background: #b91c1c;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Admin</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <a href="admin_dashboard.html" class="tabs__item">Dashboard</a>
+    <a href="admin_users.html" class="tabs__item">Users</a>
+    <a href="admin_scraper.html" class="tabs__item">Scraper Config</a>
+    <a href="admin_logs.html" class="tabs__item">System Logs</a>
+    <a href="admin_settings.html" class="tabs__item tabs__item--active">Settings</a>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1 class="page-header__title">System Settings</h1>
+      <button class="btn btn--primary">Save Changes</button>
+    </div>
+    
+    <!-- General Settings -->
+    <div class="settings-section">
+      <div class="settings-section__header">
+        <h2 class="settings-section__title">General Settings</h2>
+        <p class="settings-section__description">Configure basic application settings</p>
+      </div>
+      <div class="settings-section__body">
+        <div class="form-group">
+          <label class="form-label">Application Name</label>
+          <input type="text" class="form-input" value="ShutterZilla">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Support Email</label>
+          <input type="email" class="form-input" value="support@shutterzilla.com">
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Maintenance Mode</div>
+            <div class="setting-description">Temporarily disable access to the application for non-admin users</div>
+          </div>
+          <div class="setting-control">
+            <div class="toggle"><div class="toggle__knob"></div></div>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Allow New Registrations</div>
+            <div class="setting-description">Enable or disable new user sign-ups</div>
+          </div>
+          <div class="setting-control">
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Email Settings -->
+    <div class="settings-section">
+      <div class="settings-section__header">
+        <h2 class="settings-section__title">Email Configuration</h2>
+        <p class="settings-section__description">Configure email server settings for notifications</p>
+      </div>
+      <div class="settings-section__body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">SMTP Host</label>
+            <input type="text" class="form-input" value="smtp.sendgrid.net">
+          </div>
+          <div class="form-group">
+            <label class="form-label">SMTP Port</label>
+            <input type="number" class="form-input" value="587">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">SMTP Username</label>
+            <input type="text" class="form-input" value="apikey">
+          </div>
+          <div class="form-group">
+            <label class="form-label">SMTP Password</label>
+            <input type="password" class="form-input" value="••••••••••••">
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Enable Email Notifications</div>
+            <div class="setting-description">Send email notifications for important events</div>
+          </div>
+          <div class="setting-control">
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Security Settings -->
+    <div class="settings-section">
+      <div class="settings-section__header">
+        <h2 class="settings-section__title">Security</h2>
+        <p class="settings-section__description">Configure security and authentication settings</p>
+      </div>
+      <div class="settings-section__body">
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Two-Factor Authentication</div>
+            <div class="setting-description">Require 2FA for all admin accounts</div>
+          </div>
+          <div class="setting-control">
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Session Timeout</div>
+            <div class="setting-description">Automatically log out inactive users</div>
+          </div>
+          <div class="setting-control">
+            <select class="select">
+              <option>15 minutes</option>
+              <option selected>30 minutes</option>
+              <option>1 hour</option>
+              <option>4 hours</option>
+              <option>Never</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Password Policy</div>
+            <div class="setting-description">Minimum password requirements for all users</div>
+          </div>
+          <div class="setting-control">
+            <select class="select">
+              <option>Basic (8+ characters)</option>
+              <option selected>Strong (8+ chars, mixed case, numbers)</option>
+              <option>Very Strong (12+ chars, mixed case, numbers, symbols)</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Login Rate Limiting</div>
+            <div class="setting-description">Limit failed login attempts to prevent brute force attacks</div>
+          </div>
+          <div class="setting-control">
+            <div class="toggle toggle--active"><div class="toggle__knob"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Danger Zone -->
+    <div class="settings-section danger-zone">
+      <div class="settings-section__header">
+        <h2 class="settings-section__title">Danger Zone</h2>
+        <p class="settings-section__description">Irreversible and destructive actions</p>
+      </div>
+      <div class="settings-section__body">
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Clear All Scraped Data</div>
+            <div class="setting-description">Permanently delete all scraped camera listings from the database</div>
+          </div>
+          <div class="setting-control">
+            <button class="btn btn--danger btn--sm">Clear Data</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Reset All User Passwords</div>
+            <div class="setting-description">Force all users to reset their passwords on next login</div>
+          </div>
+          <div class="setting-control">
+            <button class="btn btn--danger btn--sm">Reset Passwords</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

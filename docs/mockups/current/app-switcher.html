@@ -17,12 +17,21 @@
       background-color: var(--color-background);
     }
     
+    .app-switcher__container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
     .app-switcher__title {
       font-size: var(--font-size-xl);
       font-weight: 600;
       color: var(--color-slate-dark);
       margin-bottom: var(--spacing-xl);
       text-align: center;
+      width: 100%;
     }
     
     .app-cards {
@@ -30,7 +39,6 @@
       flex-direction: column;
       gap: var(--spacing-lg);
       width: 100%;
-      max-width: 400px;
     }
     
     .app-card {
@@ -92,6 +100,10 @@
         padding: var(--spacing-2xl);
       }
       
+      .app-switcher__container {
+        max-width: 800px;
+      }
+      
       .app-switcher__title {
         font-size: var(--font-size-2xl);
         margin-bottom: var(--spacing-2xl);
@@ -99,12 +111,13 @@
       
       .app-cards {
         flex-direction: row;
-        max-width: 800px;
         gap: var(--spacing-xl);
+        justify-content: center;
+        align-items: flex-start;
       }
       
       .app-card {
-        width: 320px;
+        flex: 0 0 320px;
         padding: var(--spacing-xl);
       }
       
@@ -154,7 +167,6 @@
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
       </a>
-      <a href="landing-page.html" class="topbar__logout">Logout</a>
     </div>
   </header>
 
@@ -173,9 +185,10 @@
 
   <!-- App Switcher Content -->
   <main class="app-switcher">
-    <h1 class="app-switcher__title">Choose Your App</h1>
-    
-    <div class="app-cards">
+    <div class="app-switcher__container">
+      <h1 class="app-switcher__title">Choose Your App</h1>
+      
+      <div class="app-cards">
       <!-- Scraper App Card -->
       <a href="scraper-feed.html" class="app-card">
         <div class="app-card__icon">
@@ -201,6 +214,7 @@
         <p class="app-card__description">Store and manage your vintage camera collection with detailed cataloging and statistics.</p>
         <span class="btn btn--primary app-card__btn">Launch App</span>
       </a>
+    </div>
     </div>
   </main>
 

@@ -1,0 +1,59 @@
+#!/bin/bash
+# Generate commit message based on git changes
+# Usage: ./scripts/generate-commit-msg > .git/COMMIT_EDITMSG
+
+# Get changed files
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+if [ -z "$CHANGED_FILES" ]; then
+  CHANGED_FILES=$(git diff --name-only --diff-filter=ACM 2>/dev/null)
+fi
+
+# Get diff stats
+STATS=$(git diff --cached --stat 2>/dev/null || git diff --stat 2>/dev/null)
+FILES_COUNT=$(echo "$STATS" | tail -1 | grep -oE '[0-9]+ files? changed' | grep -oE '[0-9]+' || echo "0")
+INSERTIONS=$(echo "$STATS" | tail -1 | grep -oE '[0-9]+ insertions' | grep -oE '[0-9]+' || echo "0")
+DELETIONS=$(echo "$STATS" | tail -1 | grep -oE '[0-9]+ deletions' | grep -oE '[0-9]+' || echo "0")
+
+# Detect change type and scope
+TYPE="chore"
+SCOPE=""
+DESCRIPTION="Update files"
+
+# Analyze file patterns
+if echo "$CHANGED_FILES" | grep -qE 'mockups'; then
+  SCOPE="mockups"
+fi
+
+if echo "$CHANGED_FILES" | grep -qE '\.(html|css|js)$'; then
+  TYPE="feat"
+  if echo "$CHANGED_FILES" | grep -qE '\.css$'; then
+    DESCRIPTION="Update styles"
+  elif echo "$CHANGED_FILES" | grep -qE '\.html$'; then
+    DESCRIPTION="Update pages"
+  elif echo "$CHANGED_FILES" | grep -qE '\.js$'; then
+    DESCRIPTION="Update scripts"
+  fi
+fi
+
+if echo "$CHANGED_FILES" | grep -qE '\.md$'; then
+  TYPE="docs"
+  DESCRIPTION="Update documentation"
+fi
+
+# Generate commit message
+if [ -n "$SCOPE" ]; then
+  echo "${TYPE}(${SCOPE}): ${DESCRIPTION}"
+else
+  echo "${TYPE}: ${DESCRIPTION}"
+fi
+
+echo ""
+echo "- Files changed: ${FILES_COUNT}"
+echo "- Insertions: +${INSERTIONS}"
+echo "- Deletions: -${DELETIONS}"
+echo ""
+echo "Changed files:"
+echo "$CHANGED_FILES" | head -15 | sed 's/^/- /'
+if [ $(echo "$CHANGED_FILES" | wc -l) -gt 15 ]; then
+  echo "- ... and $(($(echo "$CHANGED_FILES" | wc -l) - 15)) more files"
+fi

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Collection Statistics</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+    }
+    
+    .stat-card__icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-card__value {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .stat-card__label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .charts-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .chart-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    
+    .chart-card__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 250px;
+    }
+    
+    .table-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      overflow-x: auto;
+    }
+    
+    .table-card__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .stats-table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+    }
+    
+    .stats-table th {
+      text-align: left;
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-slate-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    
+    .stats-table td {
+      padding: var(--spacing-md);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-dark);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .stats-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .brand-bar__fill {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--color-teal);
+    }
+    
+    .brand-bar__count {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+      min-width: 30px;
+    }
+    
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+      }
+      
+      .stat-card {
+        padding: var(--spacing-lg);
+      }
+      
+      .stat-card__value {
+        font-size: var(--font-size-2xl);
+      }
+      
+      .charts-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+      }
+      
+      .table-card {
+        overflow-x: visible;
+      }
+      
+      .stats-table {
+        min-width: auto;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Collection</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs">
+    <div class="tabs__container">
+      <a href="collection_home.html" class="tabs__item">My Cameras</a>
+      <a href="collection_add.html" class="tabs__item">Add Camera</a>
+      <a href="collection_stats.html" class="tabs__item tabs__item--active">Statistics</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <!-- Summary Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #d1fae5; color: var(--color-teal);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div class="stat-card__value">12</div>
+        <div class="stat-card__label">Total Cameras</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #dbeafe; color: #2563eb;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="stat-card__value">$8,450</div>
+        <div class="stat-card__label">Total Value</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #fef3c7; color: #f59e0b;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
+        <div class="stat-card__value">$704</div>
+        <div class="stat-card__label">Average Value</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #fce7f3; color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
+        <div class="stat-card__value">5</div>
+        <div class="stat-card__label">Wishlist Items</div>
+      </div>
+    </div>
+    
+    <!-- Charts Row -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <h2 class="chart-card__title">Collection by Brand</h2>
+        <div class="chart-container">
+          <canvas id="brandChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="chart-card">
+        <h2 class="chart-card__title">Value Over Time</h2>
+        <div class="chart-container">
+          <canvas id="valueChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Brand Breakdown Table -->
+    <div class="table-card">
+      <h2 class="table-card__title">Brand Breakdown</h2>
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Cameras</th>
+            <th>Distribution</th>
+            <th>Total Value</th>
+            <th>Avg Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nikon</strong></td>
+            <td>4</td>
+            <td>
+              <div class="brand-bar">
+                <div class="brand-bar__fill" style="width: 120px;"></div>
+                <span class="brand-bar__count">33%</span>
+              </div>
+            </td>
+            <td>$2,890</td>
+            <td>$723</td>
+          </tr>
+          <tr>
+            <td><strong>Canon</strong></td>
+            <td>3</td>
+            <td>
+              <div class="brand-bar">
+                <div class="brand-bar__fill" style="width: 90px; background: #3b82f6;"></div>
+                <span class="brand-bar__count">25%</span>
+              </div>
+            </td>
+            <td>$580</td>
+            <td>$193</td>
+          </tr>
+          <tr>
+            <td><strong>Leica</strong></td>
+            <td>2</td>
+            <td>
+              <div class="brand-bar">
+                <div class="brand-bar__fill" style="width: 60px; background: #ef4444;"></div>
+                <span class="brand-bar__count">17%</span>
+              </div>
+            </td>
+            <td>$3,200</td>
+            <td>$1,600</td>
+          </tr>
+          <tr>
+            <td><strong>Pentax</strong></td>
+            <td>2</td>
+            <td>
+              <div class="brand-bar">
+                <div class="brand-bar__fill" style="width: 60px; background: #f59e0b;"></div>
+                <span class="brand-bar__count">17%</span>
+              </div>
+            </td>
+            <td>$380</td>
+            <td>$190</td>
+          </tr>
+          <tr>
+            <td><strong>Olympus</strong></td>
+            <td>1</td>
+            <td>
+              <div class="brand-bar">
+                <div class="brand-bar__fill" style="width: 30px; background: #8b5cf6;"></div>
+                <span class="brand-bar__count">8%</span>
+              </div>
+            </td>
+            <td>$400</td>
+            <td>$400</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    // Brand Distribution Chart
+    const brandCtx = document.getElementById('brandChart').getContext('2d');
+    new Chart(brandCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Nikon', 'Canon', 'Leica', 'Pentax', 'Olympus'],
+        datasets: [{
+          data: [4, 3, 2, 2, 1],
+          backgroundColor: ['#0d9488', '#3b82f6', '#ef4444', '#f59e0b', '#8b5cf6'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right'
+          }
+        }
+      }
+    });
+
+    // Value Over Time Chart
+    const valueCtx = document.getElementById('valueChart').getContext('2d');
+    new Chart(valueCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Collection Value',
+          data: [2500, 2500, 3200, 3200, 4800, 5200, 5200, 6400, 6400, 7100, 8000, 8450],
+          borderColor: '#0d9488',
+          backgroundColor: 'rgba(13, 148, 136, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

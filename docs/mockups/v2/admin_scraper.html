@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Admin Scraper Config</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .scraper-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .scraper-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+    }
+    
+    .scraper-card__header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .scraper-card__title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .scraper-card__icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--font-size-sm);
+    }
+    
+    .scraper-card__name {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .scraper-card__status {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-sm);
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      border-radius: 50%;
+    }
+    
+    .status-dot--active {
+      background: #22c55e;
+    }
+    
+    .status-dot--inactive {
+      background: #9ca3af;
+    }
+    
+    .scraper-card__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: var(--spacing-sm);
+      background: var(--color-gray-50);
+      border-radius: var(--radius-md);
+    }
+    
+    .stat-item__value {
+      font-size: var(--font-size-base);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+    }
+    
+    .stat-item__label {
+      font-size: var(--font-size-xs);
+      color: var(--color-slate-light);
+    }
+    
+    .scraper-card__config {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .config-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .config-row:last-child {
+      border-bottom: none;
+    }
+    
+    .config-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate);
+    }
+    
+    .config-value {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate-dark);
+    }
+    
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      min-width: 44px;
+      background: var(--color-gray-300);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle--active {
+      background: var(--color-teal);
+    }
+    
+    .toggle__knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    
+    .toggle--active .toggle__knob {
+      transform: translateX(20px);
+    }
+    
+    .scraper-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .scraper-card__actions .btn {
+      width: 100%;
+    }
+    
+    .global-settings {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+    }
+    
+    .global-settings__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+    
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    
+    .setting-group__label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-slate);
+    }
+    
+    @media (min-width: 768px) {
+      .page-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .scraper-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+      }
+      
+      .scraper-card {
+        padding: var(--spacing-lg);
+      }
+      
+      .scraper-card__header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .stat-item__value {
+        font-size: var(--font-size-lg);
+      }
+      
+      .scraper-card__actions {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+      }
+      
+      .scraper-card__actions .btn {
+        width: auto;
+      }
+      
+      .settings-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Scraper Configuration</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper App</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+      <a href="about.html" class="mobile-menu__link">About</a>
+      <a href="privacy.html" class="mobile-menu__link">Privacy Policy</a>
+      <a href="terms.html" class="mobile-menu__link">Terms of Service</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+            <span class="scraper-card__name"></span>
+          </div>
+          
+            <span class="scraper-card__name">Auctions</span>
+          </div>
+          <div class="scraper-card__status">
+            <span class="status-dot status-dot--inactive"></span>
+            Paused
+          </div>
+        </div>
+        <div class="scraper-card__stats">
+          <div class="stat-item">
+            <div class="stat-item__value">2,709</div>
+            <div class="stat-item__label">Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">0</div>
+            <div class="stat-item__label">New Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__value">2d ago</div>
+            <div class="stat-item__label">Last Run</div>
+          </div>
+        </div>
+        <div class="scraper-card__config">
+          <div class="config-row">
+            <span class="config-label">Enabled</span>
+            <div class="toggle"><div class="toggle__knob"></div></div>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Schedule</span>
+            <span class="config-value">Every 4 hours</span>
+          </div>
+          <div class="config-row">
+            <span class="config-label">Rate Limit</span>
+            <span class="config-value">30 req/min</span>
+          </div>
+        </div>
+        <div class="scraper-card__actions">
+          <button class="btn btn--outline btn--sm">Configure</button>
+          <button class="btn btn--primary btn--sm">Run Now</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Global Settings -->
+    <div class="global-settings">
+      <h2 class="global-settings__title">Global Settings</h2>
+      <div class="settings-grid">
+        <div class="setting-group">
+          <label class="setting-group__label">Default Rate Limit</label>
+          <input type="number" class="form-input" value="100">
+        </div>
+        <div class="setting-group">
+          <label class="setting-group__label">Retry Attempts</label>
+          <input type="number" class="form-input" value="3">
+        </div>
+        <div class="setting-group">
+          <label class="setting-group__label">Timeout (seconds)</label>
+          <input type="number" class="form-input" value="30">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

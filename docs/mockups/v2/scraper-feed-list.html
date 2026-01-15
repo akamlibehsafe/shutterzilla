@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Scraper Feed (List View)</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* List View Styles */
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .list-item {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    
+    .list-item:active {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    
+    .list-item__image {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background-color: var(--color-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .list-item__image img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .list-item__body {
+      flex: 1;
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .list-item__header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .list-item__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin: 0;
+    }
+    
+    .list-item__price {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      color: var(--color-teal);
+    }
+    
+    .list-item__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+    
+    .list-item__detail {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .list-item__actions {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-md);
+      border-top: 1px solid var(--color-gray-200);
+    }
+    
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .source-badge--{
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .source-badge--buyee {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+    
+    .source-badge--ebay {
+      background-color: #dbeafe;
+      color: #2563eb;
+    }
+    
+    .ribbon-small {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ef4444;
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    
+    .badge-new-small {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: var(--color-teal);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      z-index: 5;
+    }
+    
+    @media (min-width: 768px) {
+      .list-item {
+        flex-direction: row;
+      }
+      
+      .list-item__image {
+        width: 160px;
+        height: 120px;
+        flex-shrink: 0;
+      }
+      
+      .list-item__body {
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+      
+      .list-item__header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      
+      .list-item__meta {
+        flex-wrap: nowrap;
+        gap: var(--spacing-md);
+      }
+      
+      .list-item__actions {
+        border-top: none;
+        border-left: 1px solid var(--color-gray-200);
+        padding: var(--spacing-md);
+      }
+      
+      .list-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="app-switcher.html" class="topbar__logo">
+      <img src="assets/logo-topbar.png" alt="ShutterZilla">
+    </a>
+    <div class="topbar__title">Feed</div>
+    <div class="topbar__right">
+      <a href="admin_dashboard.html" class="topbar__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+        </div>
+        
+        </div>
+        <div class="list-item__actions">
+          <span class="btn btn--outline" style="width: 100%;">View Deal</span>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="about.html" class="footer__link">About</a>
+          <a href="privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu.js"></script>
+</body>
+</html>

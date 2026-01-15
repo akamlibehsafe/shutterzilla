@@ -14,7 +14,8 @@ docs/mockups/
 
 ## Current Versions
 
-- **current/** - Version 2 (Mobile-responsive) - Active for development
+- **current/** - Latest version - Active for development
+- **v2/** - Version 2 (Mobile-responsive, alignment fixes) - Archived
 - **v1/** - Version 1 (Original desktop) - Archived for reference
 
 ## Versioning Strategy
@@ -50,7 +51,13 @@ cp -r path/to/v3 docs/mockups/current
 
 ## Version History
 
-- **v1**: Original desktop-focused mockups (26 pages)
-- **v2**: Mobile-responsive mockups (26 pages) - Currently active
+- **v1**: Original desktop-focused mockups (26 pages) - Archived
+- **v2**: Mobile-responsive mockups with alignment fixes (26 pages) - Archived
+  - Added mobile support
+  - Fixed alignment issues (topbar titles, tabs)
+  - Removed logout button
+  - Added tab navigation to scraper app
+  - See [v2/VERSION.md](./v2/VERSION.md) for details
 
-See [VERSIONING_STRATEGY.md](./VERSIONING_STRATEGY.md) for detailed versioning strategy.
+See [VERSIONING_STRATEGY.md](./VERSIONING_STRATEGY.md) for detailed versioning strategy.  
+See [CHANGELOG.md](./CHANGELOG.md) for version changelog.

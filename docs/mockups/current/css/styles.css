@@ -168,6 +168,7 @@ body {
   gap: var(--spacing-sm);
   text-decoration: none;
   flex-shrink: 0;
+  z-index: 1;
 }
 
 .topbar__logo img {
@@ -181,14 +182,19 @@ body {
   font-weight: 600;
   color: var(--color-slate);
   display: none;
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
+  pointer-events: none;
 }
 
 .topbar__right {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  margin-left: auto;
+  z-index: 1;
 }
 
 .topbar__user-icon {
@@ -230,11 +236,32 @@ body {
 .tabs {
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-gray-200);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding: 0;
+  width: 100%;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1280px) {
+  .tabs__container {
+    max-width: 1400px;
+  }
 }
 
 .tabs::-webkit-scrollbar {
