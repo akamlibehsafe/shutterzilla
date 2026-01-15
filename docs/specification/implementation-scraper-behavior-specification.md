@@ -64,8 +64,8 @@ The scraper service runs on a schedule (every 4 hours) and collects camera listi
 
 ## Source-Specific Questions
 
-### Mercari
-- [ ] What's the scraping approach (API, HTML parsing)?
+### Buyee
+- [ ] What's the scraping approach?
 - [ ] What fields are available?
 - [ ] What are the rate limits?
 - [ ] How do we handle pagination?
@@ -73,16 +73,6 @@ The scraper service runs on a schedule (every 4 hours) and collects camera listi
 ### eBay
 - [ ] What's the scraping approach?
 - [ ] Do we use eBay API or scrape HTML?
-- [ ] What fields are available?
-- [ ] What are the rate limits?
-
-### Buyee
-- [ ] What's the scraping approach?
-- [ ] What fields are available?
-- [ ] What are the rate limits?
-
-### JD Direct
-- [ ] What's the scraping approach?
 - [ ] What fields are available?
 - [ ] What are the rate limits?
 

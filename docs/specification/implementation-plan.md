@@ -39,9 +39,7 @@ All planning and implementation documentation will be stored in `docs/`:
 **Goal:** Test if we can successfully scrape from all four target sources
 
 - [ ] Create validation test scripts for each source
-- [ ] Test Mercari Japan scraping
 - [ ] Test Buyee scraping
-- [ ] Test Yahoo Japan Auctions scraping
 - [ ] Test eBay USA scraping (or evaluate API)
 - [ ] Document results in `implementation-validation-notes.md`
 - [ ] Make go/no-go decision based on results
@@ -329,10 +327,8 @@ All planning and implementation documentation will be stored in `docs/`:
 - [ ] Set up Supabase connection
 
 #### 8.3 Implement Scrapers (One by One)
-- [ ] Mercari scraper (refine and implement)
-- [ ] eBay scraper (refine and implement)
 - [ ] Buyee scraper (refine and implement)
-- [ ] JD Direct scraper (refine and implement)
+- [ ] eBay scraper (refine and implement)
 - [ ] Test each scraper
 - [ ] Handle errors and edge cases
 

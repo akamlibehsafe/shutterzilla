@@ -74,7 +74,7 @@ This document captures notes, observations, and results from the validation phas
 
 #### Scraper App user journey
 
-**Purpose:** Discover new cameras on source websites (Mercari, Buyee, Yahoo Japan Auctions, eBay), and allow users to categorize, mark, and save them for later review.
+**Purpose:** Discover new cameras on source websites (Buyee, eBay), and allow users to categorize, mark, and save them for later review.
 
 **Entry Point:**
 - User navigates to Scraper App from App Switcher
@@ -121,7 +121,7 @@ This document captures notes, observations, and results from the validation phas
 #### Page 2: Search
 **Mockup File:** `scraper-search.html`
 
-**Purpose:** Perform searches on source websites (Mercari, Buyee, Yahoo Japan Auctions, eBay) to find camera listings
+**Purpose:** Perform searches on source websites (Buyee, eBay) to find camera listings
 
 **What it shows:**
 - Search interface/form with search criteria
@@ -722,7 +722,7 @@ _(Additional observations or special considerations)_
 **Purpose:** Configure scraper-related settings, starting with source enable/disable management
 
 **What it shows:**
-- List of scraping sources (e.g., Mercari Japan, Buyee, Yahoo Japan Auctions, eBay)
+- List of scraping sources (Buyee, eBay)
 - Status of each source (enabled/disabled)
 
 **User Actions:**
@@ -855,7 +855,7 @@ _(Additional observations or special considerations)_
 Based on the Scraper App user journey documentation, here are the core features:
 
 **1. Discovery & Browsing**
-- Browse personalized feed of camera listings from multiple sources (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Browse personalized feed of camera listings from Buyee and eBay
 - View listings automatically matched from saved searches
 - View listings from automated scrapes
 
@@ -892,7 +892,7 @@ Based on the Scraper App user journey documentation, here are the core features:
 - Filter out dismissed listings from Feed and search results
 
 **8. Multi-Source Aggregation**
-- Aggregate listings from multiple sources (Mercari Japan, Buyee, Yahoo Japan Auctions, eBay)
+- Aggregate listings from Buyee and eBay
 - Display unified listing information across sources
 
 #### Collection App features
@@ -949,7 +949,7 @@ Based on the documented features and user journeys, here are the core data stora
 
 **2.1. Listings (from source websites)**
 - Listing ID (unique identifier)
-- Source website (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Source website (Buyee, eBay)
 - Source listing URL
 - Listing type (fixed price, auction)
 - Title
@@ -974,7 +974,7 @@ Based on the documented features and user journeys, here are the core data stora
 - User ID (owner of the search)
 - Search name
 - Search criteria (keywords, filters, etc.)
-- Sources included (Mercari, Buyee, Yahoo Japan Auctions, eBay) - which sources to search
+- Sources included (Buyee, eBay) - which sources to search
 - Search status (active/inactive) - toggle on/off
 - Created timestamp
 - Last executed timestamp
@@ -983,7 +983,7 @@ Based on the documented features and user journeys, here are the core data stora
 - Watch entry ID
 - User ID
 - Listing ID (reference to listing)
-- Source (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Source (Buyee, eBay)
 - Watched timestamp
 - Listing snapshot data (to preserve data even if listing becomes unavailable)
 
@@ -991,7 +991,7 @@ Based on the documented features and user journeys, here are the core data stora
 - Dismissed entry ID
 - User ID
 - Listing ID (reference to listing)
-- Source (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Source (Buyee, eBay)
 - Dismissed timestamp
 - Listing snapshot data (for cleanup verification)
 
@@ -999,7 +999,7 @@ Based on the documented features and user journeys, here are the core data stora
 - Feed entry ID
 - User ID
 - Listing ID (reference to listing)
-- Source (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Source (Buyee, eBay)
 - Entry source type (saved search match, automated scrape, etc.)
 - Added to feed timestamp
 
@@ -1193,7 +1193,7 @@ Based on the documented features and user journeys, here are the core data stora
 - Last updated timestamp
 
 **4.2. Source Configuration**
-- Source ID (Mercari, Buyee, Yahoo Japan Auctions, eBay)
+- Source ID (Buyee, eBay)
 - Source status (enabled/disabled)
 - Source configuration data
 - Last updated timestamp
@@ -1423,148 +1423,59 @@ Key relationships between data entities:
 
 **Status:** Not Started
 
-### 0.2.1 Mercari Japan Scraping Test
+### 0.2.1 Buyee Scraping Test
 
 **Date Tested:** 2026-01-13  
 **Tester:** Validation Script
 
 **Results:**
-- Access: ✅ PASS (with improved headers)
-- Search: ✅ PASS (can access search pages with improved headers)
+- Access: ✅ PASS
+- Search: ✅ PASS
 - Data Extraction: ✅ PASS (with Playwright - JavaScript rendering required)
 - Rate Limiting: ✅ PASS (no issues with reasonable delays)
-- JavaScript Required: **Yes** (REQUIRED - Next.js/React application)
-- Anti-Bot Measures: ⚠️ Moderate (403 errors with basic headers, but works with improved headers)
+- JavaScript Required: **Yes** (REQUIRED - Dynamic content loading)
+- Anti-Bot Measures: ⚠️ Moderate (works with proper headers and browser automation)
 
 **Challenges Encountered:**
-1. **JavaScript Rendering Required:** Mercari uses Next.js/React framework. Listings are loaded client-side via JavaScript/API calls after page load. The initial HTML contains only page structure, not listing data.
-2. **Anti-Bot Protection:** Basic HTTP requests get 403 Forbidden. Solution: Improved headers (realistic User-Agent, Accept headers, Referer, etc.) and session management allow access.
-3. **Dynamic Content:** Listings are not in the initial HTML - they're loaded via API calls after JavaScript execution.
+1. **JavaScript Rendering Required:** Buyee uses dynamic content loading. Listings are loaded client-side via JavaScript.
+2. **Iframe Content:** Item descriptions are inside iframes within `section#itemDescription`, requiring iframe access.
+3. **Dynamic Content:** Listings and detail information are loaded dynamically.
 
 **Solutions Found:**
-1. **Improved Headers:** Using realistic browser headers (updated User-Agent, Accept headers, Referer, Sec-Fetch headers) allows access to search pages.
-2. **Session Management:** Using requests.Session() to maintain cookies helps with access.
-3. **JavaScript Rendering Needed:** Playwright or Selenium is REQUIRED to:
-   - Execute JavaScript on the page
-   - Wait for listings to load
-   - Extract listing data from the rendered DOM
+1. **Playwright Browser Automation:** Using Playwright for JavaScript rendering and iframe access.
+2. **Language Settings:** Using English headers and URL parameters to get translated content.
+3. **Translation Fallback:** Automatic translation of Japanese text to English when Buyee doesn't provide translations.
 
 **Sample Data Extracted:**
-```json
-{
-  "title": "Nikon FM2",
-  "price": "BRL1,329.22",
-  "image_url": "https://static.mercdn.net/thumb/item/webp/m26068059510_1.jpg",
-  "listing_url": "https://jp.mercari.com/en/item/m26068059510",
-  "all_images": [
-    "https://static.mercdn.net/item/detail/orig/photos/m26068059510_1.jpg",
-    "https://static.mercdn.net/item/detail/orig/photos/m26068059510_2.jpg",
-    "..."
-  ]
-}
-```
-
-**Note:** Data extraction successfully works with Playwright. The initial HTTP-only test failed because listings are loaded via JavaScript, but Playwright successfully extracts all required fields (titles, prices, URLs, images).
+- Titles: ✅ Working (extracted from `li.itemCard` and `.itemCard__itemName`)
+- Prices: ✅ Working (Buyout Price and Current Price extracted separately)
+- URLs: ✅ Working
+- Images: ✅ Working (all product images extracted)
+- Description: ✅ Working (extracted from iframe in `section#itemDescription`)
+- Condition: ✅ Working (extracted from `section#itemDetail_sec` table)
+- Number of Bids: ✅ Working (extracted from `section#itemDetail_sec` table)
+- Closing Time: ✅ Working (extracted from `section#itemDetail_sec` table)
 
 **Technical Details:**
-- Search URL format: `https://www.mercari.com/jp/search/?keyword={search_term}`
-- HTML structure: Next.js/React application
-- Listings loaded via: Client-side JavaScript/API calls
-- HTML contains: Page structure, but listings are loaded dynamically
+- Search URL format: `https://buyee.jp/item/crosssearch/query/{search_term}?conversionType=top_page_search&suggest=1`
+- HTML structure: Dynamic JavaScript-rendered content
+- Listings container: `li.itemCard`
+- Title selector: `.itemCard__itemName`
+- Description: Inside iframe in `section#itemDescription` → `section#item-description`
+- Detail fields: In `section#itemDetail_sec` with `itemDetail__listName` and `itemDetail__listValue` structure
 
-**Recommendation:** ✅ **Proceed** - Feasible with Playwright for JavaScript rendering
+**Recommendation:** ✅ **Proceed** - Feasible with Playwright
 
 **Implementation Notes:**
-- ✅ Cannot use simple HTTP requests + BeautifulSoup (listings loaded client-side)
-- ✅ Must use browser automation (Playwright recommended) - **TESTED AND WORKING**
-- ✅ Playwright successfully extracts listing data:
-  - Titles: ✅ Working (e.g., "ニコン Nikon New FM2 シルバー")
-  - Prices: ✅ Working (e.g., "BRL1,329.22")
-  - URLs: ✅ Working (e.g., "/item/m26068059510")
-  - Images: ⚠️ Needs refinement (structure identified)
-- ✅ Need to wait for listings to load after page navigation (5+ seconds recommended)
-- ✅ Improved headers help avoid 403 errors
-- ✅ Rate limiting appears reasonable with delays between requests
-
-**Test Results (Playwright):**
-- Access Test: ✅ PASS
-- Search Test: ✅ PASS  
-- Extraction Test: ❌ **FAIL** - Virtual Scrolling Limitation
-- Listings Found: Only 12 items extracted (expected: 101 items)
-- Root Cause: **Virtual Scrolling** - Only ~10-15 items exist in DOM at any time, even though 101 are visually rendered
-
-**Critical Issue - Virtual Scrolling:**
-- **Problem:** Mercari uses aggressive virtual scrolling. Only items currently in viewport (or slightly outside) exist in the DOM.
-- **Evidence:** HTML snapshot shows only 9 `merListItem-container` elements and 11 item links, despite 101 items being visually present in a 20×5+1 grid layout.
-- **Impact:** Traditional DOM-based extraction fails because items are dynamically added/removed as user scrolls.
-- **Attempted Solutions:**
-  1. ❌ Aggressive scrolling (600+ scrolls with waits) - Only found 12 items
-  2. ❌ Collecting items during scroll - Still only found 12 items
-  3. ⏳ API response interception - In progress (may contain all 101 items)
-  4. ⏳ __NEXT_DATA__ extraction - In progress (React state may contain all items)
-
-**Current Status:** ❌ **FAIL** - Cannot reliably extract all 101 items using DOM-based methods
-
-**Next Steps:**
-1. ✅ Implement Playwright-based scraper - **COMPLETED**
-2. ✅ Wait for listings to load - **WORKING**
-3. ❌ Extract listing data from rendered DOM - **FAILING due to virtual scrolling**
-4. ⏳ **PRIORITY:** Extract items from API response (`api.mercari.jp/v2/entities:search`) - May contain all 101 items
-5. ⏳ **PRIORITY:** Extract items from `__NEXT_DATA__` script tag - React state may contain all items
-6. ⚠️ **Alternative:** Accept limitation and extract only visible items (~10-15 per page load)
-7. ⚠️ **Alternative:** Implement pagination/scroll-based collection (slow but may work)
+- ✅ Must use browser automation (Playwright) - **TESTED AND WORKING**
+- ✅ Successfully extracts all required fields
+- ✅ Handles iframe content for descriptions
+- ✅ Extracts structured data from detail tables
+- ✅ Translation support for Japanese content
 
 ---
 
-### 0.2.2 Buyee Scraping Test
-
-**Date Tested:** _TBD_  
-**Tester:** _TBD_
-
-**Results:**
-_(Same structure as Mercari)_
-
-**Challenges Encountered:**
-_(To be filled)_
-
-**Solutions Found:**
-_(To be filled)_
-
-**Sample Data Extracted:**
-_(To be filled)_
-
-**Recommendation:** _TBD_
-
-**Notes:**
-_(To be filled)_
-
----
-
-### 0.2.3 Yahoo Japan Auctions Scraping Test
-
-**Date Tested:** _TBD_  
-**Tester:** _TBD_
-
-**Results:**
-_(Same structure as Mercari)_
-
-**Challenges Encountered:**
-_(To be filled)_
-
-**Solutions Found:**
-_(To be filled)_
-
-**Sample Data Extracted:**
-_(To be filled)_
-
-**Recommendation:** _TBD_
-
-**Notes:**
-_(To be filled)_
-
----
-
-### 0.2.4 eBay USA Scraping Test
+### 0.2.2 eBay USA Scraping Test
 
 **Date Tested:** _TBD_  
 **Tester:** _TBD_

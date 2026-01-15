@@ -41,7 +41,7 @@ This document provides a reference for the reusable UI components in the Shutter
 | **Badge** | `.badge` | Small, colored indicators used for status. Variants include `.badge--success`, `.badge--new`, and `.badge--sold`. |
 | **Pill** | `.pill` | Rounded, tag-like elements used for filters and categories. Variants include `.pill--primary`, `.pill--secondary`, and `.pill--outline`. |
 | **Ribbon** | `.ribbon` | An angled banner, typically used to indicate a "SOLD" status on a camera listing. |
-| **Source Icon** | `.source-icon` | Small, colored icons that indicate the source of a scraper listing. Variants include `.source-icon--mercari`, `.source-icon--buyee`, and `.source-icon--ebay`. |
+| **Source Icon** | `.source-icon` | Small, colored icons that indicate the source of a scraper listing. Variants include `.source-icon--buyee` and `.source-icon--ebay`. |
 
 ## 6. Grid System
 

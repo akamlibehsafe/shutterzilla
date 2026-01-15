@@ -45,10 +45,8 @@ This document outlines the validation and feasibility testing we'll perform befo
 **Critical Question:** Can we reliably extract camera listing data from each source?
 
 #### Target Sources:
-1. **Mercari Japan** (`mercari.jp`)
-2. **Buyee** (`buyee.jp`)
-3. **Yahoo Japan Auctions** (`auctions.yahoo.co.jp`) - also known as JD Direct
-4. **eBay USA** (`ebay.com`)
+1. **Buyee** (`buyee.jp`)
+2. **eBay USA** (`ebay.com`)
 
 #### Validation Approach
 
@@ -69,9 +67,9 @@ For each source, we'll create a simple test scraper to validate:
 - Document what works and what doesn't
 - Identify challenges and solutions
 
-#### 0.2.1 Mercari Japan Scraping Test
+#### 0.2.1 Buyee Scraping Test
 
-**Test Script:** `validation/scrapers/test_mercari.py`
+**Test Script:** `validation/scrapers/test_buyee_playwright.py`
 
 **What to Test:**
 - [ ] Access mercari.jp search page
@@ -101,17 +99,17 @@ _(To be filled during testing)_
 
 #### 0.2.2 Buyee Scraping Test
 
-**Test Script:** `validation/scrapers/test_buyee.py`
+**Test Script:** `validation/scrapers/test_buyee_playwright.py`
 
 **What to Test:**
 - [ ] Access buyee.jp search page
 - [ ] Search for camera listings
-- [ ] Extract listing data (same fields as Mercari)
+- [ ] Extract listing data (title, price, description, condition, bids, closing time, images)
 - [ ] Handle pagination
 - [ ] Test rate limiting
 
 **Challenges to Document:**
-_(Same structure as Mercari)_
+_(Document any challenges encountered during testing)_
 
 **Result:** ✅ Feasible / ⚠️ Challenging / ❌ Not Feasible
 
@@ -120,34 +118,7 @@ _(To be filled during testing)_
 
 ---
 
-#### 0.2.3 Yahoo Japan Auctions Scraping Test
-
-**Test Script:** `validation/scrapers/test_yahoo_auctions.py`
-
-**What to Test:**
-- [ ] Access auctions.yahoo.co.jp
-- [ ] Search for camera listings
-- [ ] Extract listing data:
-  - [ ] Title
-  - [ ] Current bid / Buy it now price
-  - [ ] Time remaining
-  - [ ] Image URL(s)
-  - [ ] Listing URL
-  - [ ] Seller information
-- [ ] Handle auction-specific data (bids, time remaining)
-- [ ] Test rate limiting
-
-**Challenges to Document:**
-_(Same structure as Mercari)_
-
-**Result:** ✅ Feasible / ⚠️ Challenging / ❌ Not Feasible
-
-**Notes:**
-_(To be filled during testing)_
-
----
-
-#### 0.2.4 eBay USA Scraping Test
+#### 0.2.2 eBay USA Scraping Test
 
 **Test Script:** `validation/scrapers/test_ebay.py`
 
@@ -177,13 +148,13 @@ _(To be filled during testing)_
 
 | Source | Feasibility | Challenges | Recommendation |
 |--------|-------------|------------|----------------|
-| Mercari Japan | _TBD_ | _TBD_ | _TBD_ |
+| Buyee | ✅ Feasible | JavaScript rendering, iframe content | ✅ Proceed |
 | Buyee | _TBD_ | _TBD_ | _TBD_ |
 | Yahoo Japan Auctions | _TBD_ | _TBD_ | _TBD_ |
 | eBay USA | _TBD_ | _TBD_ | _TBD_ |
 
 #### Decision Points:
-- [ ] Can we scrape at least 3 out of 4 sources successfully?
+- [ ] Can we scrape both sources successfully?
 - [ ] Are challenges manageable with reasonable effort?
 - [ ] Do we need to adjust our approach (e.g., use APIs where available)?
 - [ ] Should we proceed with full implementation?
@@ -202,14 +173,10 @@ Create a `validation/` folder for test scripts:
 ```
 validation/
 ├── scrapers/
-│   ├── test_mercari.py
-│   ├── test_buyee.py
-│   ├── test_yahoo_auctions.py
+│   ├── test_buyee_playwright.py
 │   └── test_ebay.py
 ├── results/
-│   ├── mercari_results.md
-│   ├── buyee_results.md
-│   ├── yahoo_auctions_results.md
+│   ├── buyee_playwright_results.md
 │   └── ebay_results.md
 └── ../README.md
 ```

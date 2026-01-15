@@ -52,10 +52,8 @@ apps/
 └── scraper/            # Python scraping service
     ├── main.py         # Scraper entry point
     ├── scrapers/       # Individual scraper modules
-    │   ├── mercari.py
     │   ├── ebay.py
-    │   ├── buyee.py
-    │   └── jd_direct.py
+    │   └── buyee.py
     ├── utils/          # Utility functions
     │   ├── database.py # Supabase connection
     │   └── helpers.py

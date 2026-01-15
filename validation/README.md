@@ -9,20 +9,16 @@ This directory contains test scripts to validate scraping feasibility for each s
 
 ## Sources to Test
 
-1. Mercari Japan (`mercari.jp`)
-2. Buyee (`buyee.jp`)
-3. Yahoo Japan Auctions (`auctions.yahoo.co.jp`)
-4. eBay USA (`ebay.com`)
+1. Buyee (`buyee.jp`)
+2. eBay USA (`ebay.com`)
 
 ## Running Tests
 
 Each test script can be run independently:
 
 ```bash
-python validation/scrapers/test_mercari.py
-python validation/scrapers/test_buyee.py
-python validation/scrapers/test_yahoo_auctions.py
-python validation/scrapers/test_ebay.py
+python validation/scrapers/test_buyee_playwright.py
+# python validation/scrapers/test_ebay.py  # To be implemented
 ```
 
 ## Requirements

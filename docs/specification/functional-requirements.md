@@ -33,7 +33,7 @@ The Scraper App is focused on discovering vintage camera listings from various o
 | **Brand** | Text Input | e.g., "Nikon", "Leica", "Canon" |
 | **Price Range** | Min/Max Input | Two fields for minimum and maximum price. |
 | **Condition** | Checkboxes | Mint, Excellent, Good, Fair, Poor |
-| **Source** | Checkboxes | Mercari, Buyee, eBay USA, JD Direct Auctions |
+| **Source** | Checkboxes | Buyee, eBay USA |
 | **Availability** | Toggle Switch | "Available items only" |
 
 ## 3. Collection App

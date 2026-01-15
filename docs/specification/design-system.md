@@ -25,7 +25,6 @@ The color palette is designed to be clean, modern, and accessible, with a primar
 |---|---|---|
 | **Success** | `#dcfce7` / `#166534` | Success messages, online indicators |
 | **Sold / Error** | `#ef4444` | Sold badges, error messages |
-| **Mercari Red** | `#ff4444` | Mercari source badge |
 | **Buyee Amber** | `#ff9900` | Buyee source badge |
 | **eBay Gradient** | `linear-gradient(...)` | eBay source badge |
 

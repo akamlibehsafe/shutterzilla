@@ -836,19 +836,15 @@ _(Add notes as you work through this step)_
 
 ### 8.3 Implement Scrapers (One by One)
 
-#### Mercari scraper (refine and implement)
-**Notes:**
-_(Add notes as you work through this step)_
-
-#### eBay scraper (refine and implement)
-**Notes:**
-_(Add notes as you work through this step)_
-
 #### Buyee scraper (refine and implement)
 **Notes:**
-_(Add notes as you work through this step)_
+- ✅ Playwright-based scraper working
+- ✅ Successfully extracts all required fields
+- ✅ Handles iframe content for descriptions
+- ✅ Extracts structured data from detail tables
+- ✅ Translation support for Japanese content
 
-#### JD Direct scraper (refine and implement)
+#### eBay scraper (refine and implement)
 **Notes:**
 _(Add notes as you work through this step)_
 

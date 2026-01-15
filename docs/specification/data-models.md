@@ -21,7 +21,7 @@ _This document outlines suggested data models for the ShutterZilla platform. The
 | Field | Type | Description |
 |---|---|---|
 | `id` | `uuid` | Primary key. |
-| `source` | `enum` | The source of the listing (e.g., `mercari`, `buyee`, `ebay`). |
+| `source` | `enum` | The source of the listing (e.g., `buyee`, `ebay`). |
 | `source_id` | `string` | The original ID of the listing on the source platform. |
 | `title` | `string` | The title of the listing. |
 | `url` | `string` | The URL to the original listing. |

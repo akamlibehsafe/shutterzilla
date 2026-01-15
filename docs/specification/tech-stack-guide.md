@@ -198,14 +198,14 @@ Python has the best tools for scraping websites. It's also what you'll use for t
 
 **Example:**
 ```python
-# scraper/scrapers/mercari.py
-import requests
-from bs4 import BeautifulSoup
+# scraper/scrapers/buyee.py
+from playwright.sync_api import sync_playwright
 
-def scrape_mercari():
-    url = "https://mercari.com/search?keyword=nikon+fm2"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+def scrape_buyee():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://buyee.jp/item/crosssearch/query/nikon+fm2")
     
     listings = []
     for item in soup.find_all('div', class_='item'):
@@ -582,10 +582,8 @@ shutterzilla/
 │   └── scraper/           # Python scraping service
 │       ├── main.py           # Entry point
 │       ├── scrapers/
-│       │   ├── mercari.py
 │       │   ├── ebay.py
-│       │   ├── buyee.py
-│       │   └── jd_direct.py
+│       │   └── buyee.py
 │       ├── utils/
 │       │   ├── database.py   # Supabase connection
 │       │   └── helpers.py
@@ -735,7 +733,7 @@ shutterzilla/
 3. **Commit to GitHub:**
    ```bash
    git add scraper/
-   git commit -m "Update Mercari scraper"
+   git commit -m "Update scraper"
    git push
    ```
 

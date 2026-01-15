@@ -6,7 +6,7 @@ Modern apps for your vintage cameras. Discover, collect, and manage your film ca
 
 ShutterZilla is a comprehensive platform for vintage camera enthusiasts, featuring:
 
-- **Scraper App**: Aggregates camera listings from multiple sources (Mercari, Buyee, eBay, JD Direct) with saved search functionality
+- **Scraper App**: Aggregates camera listings from Buyee and eBay with saved search functionality
 - **Collection App**: Personal camera collection management with statistics and detailed tracking
 - **Admin Dashboard**: System administration, user management, and scraper configuration
 
@@ -23,7 +23,7 @@ ShutterZilla is a comprehensive platform for vintage camera enthusiasts, featuri
 
 **Total Monthly Cost:** $0 (free tiers for up to 10 users)
 
-For detailed tech stack information, see [Tech Stack Guide](./documentation/docs/tech-stack-guide.md).
+For detailed tech stack information, see [Tech Stack Guide](./docs/specification/technical/tech-stack-guide.md).
 
 ## Project Status
 
@@ -34,19 +34,23 @@ For detailed tech stack information, see [Tech Stack Guide](./documentation/docs
 
 ## Documentation
 
-Comprehensive documentation is available in the [`documentation/`](./documentation/) folder:
+Comprehensive documentation is available in the [`docs/`](./docs/) folder:
 
-- **[Documentation Index](./documentation/docs/README.md)** - Complete list of all documentation files
-- **[Tech Stack Guide](./documentation/docs/tech-stack-guide.md)** - Complete tech stack guide with all decisions, Q&A, and examples
-- **[Design System](./documentation/docs/design-system.md)** - Color palette, typography, spacing, and visual guidelines
-- **[Folder Structure](./documentation/docs/folder-structure.md)** - Project organization and navigation guide
+- **[CHANGELOG](./CHANGELOG.md)** - User-facing "what changed" per release
+- **[AI Context](./docs/project/ai-context.md)** - Quick briefing for AI assistants and new contributors
+- **[Runbook](./docs/project/runbook.md)** - Operations guide (installation, troubleshooting, recovery)
+- **[Architecture Decision Records](./docs/project/decisions/)** - Technical and product decisions ("why we did X instead of Y")
+- **[Documentation Index](./docs/README.md)** - Complete list of all documentation files
+- **[Tech Stack Guide](./docs/specification/technical/tech-stack-guide.md)** - Complete tech stack guide with all decisions, Q&A, and examples
+- **[Design System](./docs/specification/design/design-system.md)** - Color palette, typography, spacing, and visual guidelines
+- **[Automation Guide](./docs/guides/automation.md)** - How to automate documentation maintenance
 
-See [documentation/docs/README.md](./documentation/docs/README.md) for the complete documentation index.
+See [docs/README.md](./docs/README.md) for the complete documentation index.
 
 ## Live Mockups
 
-- **[Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv2/landing-page.html)** - Mobile-responsive versions of all pages
-- **[Original Mockups v1](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv1/landing-page.html)** - Original desktop-focused mockups
+- **[Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/current/landing-page.html)** - Mobile-responsive versions of all pages
+- **[Original Mockups v1](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/archive/landing-page.html)** - Original desktop-focused mockups
 
 ## Project Structure
 
@@ -59,19 +63,24 @@ shutterzilla/
 ├── infrastructure/         # Infrastructure as code
 │   ├── supabase/          # Database migrations (to be implemented)
 │   └── .github/            # GitHub Actions workflows
-├── documentation/          # Project documentation
-│   ├── mockupsv1/         # Original desktop HTML/CSS mockups
-│   ├── mockupsv2/         # Mobile-responsive HTML/CSS mockups
-│   └── branding/          # Logo and branding assets
+├── docs/                   # Project documentation
+│   ├── guides/            # Process & workflow documentation
+│   ├── project/           # Project-specific docs (ai-context, runbook, decisions, releases)
+│   ├── specification/     # Technical specifications (design, technical, implementation, functional)
+│   ├── mockups/           # Design mockups (current/active, archive/old)
+│   └── assets/            # Branding and other assets
+├── scripts/                # Helper scripts for documentation
+├── validation/             # Scraper validation tests
 └── README.md
 ```
 
 ## Quick Start
 
 1. **Read this README** - Understand what ShutterZilla is
-2. **Check Documentation** - See [documentation/docs/README.md](./documentation/docs/README.md) for all available docs
-3. **Review Tech Stack** - Read [tech-stack-guide.md](./documentation/docs/tech-stack-guide.md) for setup instructions
-4. **View Mockups** - Browse [Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/documentation/mockupsv2/landing-page.html)
+2. **Quick Start** - Read [AI Context](./docs/project/ai-context.md) for project overview
+3. **Setup** - Follow [Runbook](./docs/project/runbook.md) for installation and troubleshooting
+4. **Check Documentation** - See [docs/README.md](./docs/README.md) for all available docs
+5. **View Mockups** - Browse [Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/current/landing-page.html)
 
 ## Development
 
@@ -82,7 +91,7 @@ This project uses:
 - **Vercel** for hosting
 - **GitHub Actions** for scheduled scraping tasks
 
-See [tech-stack-guide.md](./documentation/docs/tech-stack-guide.md) for detailed setup instructions.
+See [tech-stack-guide.md](./docs/specification/technical/tech-stack-guide.md) for detailed setup instructions.
 
 ## License
 
@@ -91,4 +100,6 @@ See [tech-stack-guide.md](./documentation/docs/tech-stack-guide.md) for detailed
 ## Links
 
 - **GitHub Pages**: https://akamlibehsafe.github.io/shutterzilla/
-- **Documentation**: [documentation/docs/README.md](./documentation/docs/README.md)
+- **Documentation**: [docs/README.md](./docs/README.md)
+- **Changelog**: [CHANGELOG.md](./CHANGELOG.md)
+- **ADRs**: [docs/project/decisions/](./docs/project/decisions/)

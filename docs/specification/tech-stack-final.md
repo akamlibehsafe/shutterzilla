@@ -136,10 +136,8 @@ shutterzilla/
 │   └── scraper/           # Python scraping service
 │       ├── main.py
 │       ├── scrapers/
-│       │   ├── mercari.py
 │       │   ├── ebay.py
-│       │   ├── buyee.py
-│       │   └── jd_direct.py
+│       │   └── buyee.py
 │       ├── utils/
 │       │   └── database.py
 │       └── requirements.txt
