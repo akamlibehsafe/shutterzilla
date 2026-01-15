@@ -177,6 +177,21 @@ Key architectural decisions are documented in ADRs (`docs/project/decisions/`):
 - 0004: Supabase for database/auth/storage
 - 0005: Simplified deployment (main = prod)
 - 0006: Python + GitHub Actions for scraping
+- 0007: Limit scraping sources to Buyee and eBay
+- 0008: Use Node.js + TypeScript for backend
+- 0009: Use Prisma ORM
+- 0010: Use Vercel for hosting
+- 0011: Use Resend for email sending
+- 0012: Use Zoho Mail + Gmail forwarding for email receiving
+- 0013: Use Sentry for error tracking
+- 0014: Use cloud Supabase (no local Docker)
+- 0015: Include OAuth from start
+- 0016: Use Tailwind CSS
+- 0017: Prioritize free tier services
+- 0018: Use Zod for runtime validation
+- 0019: Use monorepo structure
+- 0020: Use React Native for mobile apps
+- 0021: DevOps environment strategy and project management
 
 **Always check ADRs before making major architectural decisions.**
 
