@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "echo '⚠️  Builds disabled - app not ready for deployment yet' && exit 0"
+}

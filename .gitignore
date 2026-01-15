@@ -84,6 +84,9 @@ logs/
 # Test results and validation output
 validation/results/
 
+# Vercel
+.vercel
+
 # OS
 Thumbs.db
 ehthumbs.db
