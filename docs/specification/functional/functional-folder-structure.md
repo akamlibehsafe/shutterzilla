@@ -15,10 +15,14 @@ shutterzilla/
 ├── .env.local          # Local environment variables (gitignored)
 ├── .gitignore          # Git ignore rules
 ├── package.json        # Root package.json (monorepo workspace config)
-└── ../README.md           # Project overview and quick start
+├── vercel.json         # Vercel build control configuration
+├── validation/         # Scraping validation tests (kept as documentation)
+│   ├── README.md       # Validation overview and purpose
+│   └── scrapers/       # Test scripts for scraping feasibility
+└── README.md            # Project overview and quick start
 ```
 
-**Rationale:** Keeping the root clean makes it easy to find configuration files and understand the project at a glance.
+**Rationale:** Keeping the root clean makes it easy to find configuration files and understand the project at a glance. The `validation/` folder is kept as historical documentation of scraping feasibility testing.
 
 ---
 
@@ -219,6 +223,11 @@ docs/
 **Finding infrastructure:**
 - Database migrations: `infrastructure/supabase/migrations/`
 - CI/CD workflows: `infrastructure/.github/workflows/`
+
+**Finding validation:**
+- Validation scripts: `validation/scrapers/`
+- Validation plan: `docs/specification/implementation/implementation-validation-plan.md`
+- Validation results: `docs/specification/implementation/implementation-validation-notes.md`
 
 ### For Designers
 

@@ -2,6 +2,15 @@
 
 This directory contains test scripts to validate scraping feasibility for each source website.
 
+**Status:** This folder is kept as **documentation** after validation is complete. It serves as:
+- Historical record of what was tested
+- Reference material for validation methodology
+- Technical documentation of scraping feasibility testing
+
+See also:
+- `docs/specification/implementation/implementation-validation-plan.md` - Validation plan
+- `docs/specification/implementation/implementation-validation-notes.md` - Validation results
+
 ## Structure
 
 - `scrapers/` - Test scripts for each source
