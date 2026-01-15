@@ -98,61 +98,81 @@ infrastructure/
 
 All documentation, design assets, and mockups are organized in the `docs/` folder.
 
+**Note:** For detailed documentation folder structure and organization rationale, see [`docs/specification/technical/folder-structure.md`](../technical/folder-structure.md).
+
 ```
 docs/
-├── specification/   # All specification and planning markdown files
-│   ├── tech-stack-guide.md      # Comprehensive tech stack guide
-│   ├── tech-stack-final.md      # Finalized tech stack reference
-│   ├── design-system.md         # Color palette, typography, spacing
-│   ├── functional-requirements.md # Feature requirements
-│   ├── data-models.md           # Database schema and models
-│   ├── component-library.md      # UI component reference
-│   ├── page-inventory.md        # Complete page list and sitemap
-│   ├── key-decisions-log.md     # Design and architecture decisions
-│   ├── folder-structure.md      # Folder structure guide
-│   ├── presentation-script.md    # Presentation script
-│   ├── session-summary-full.md   # Project summary
-│   ├── implementation-plan.md    # Implementation plan
-│   ├── implementation-notes.md   # Implementation notes
-│   └── ... (other implementation docs)
+├── README.md                    # Main documentation index
 │
-├── mockupsv1/          # Original desktop-focused HTML/CSS mockups
-│   ├── css/
-│   │   └── styles.css  # Original stylesheet
-│   ├── assets/         # Logo files and placeholder images
-│   ├── screenshots/     # Page screenshots for reference
-│   └── *.html          # 26 HTML mockup pages
+├── guides/                      # Process & workflow documentation
+│   ├── automation.md            # How to automate documentation
+│   ├── quick-reference.md       # Quick command reference
+│   ├── documentation-workflow.md # Complete workflow guide
+│   ├── quick-start-automation.md # Quick start for automation
+│   └── migration/               # Migration docs (archived)
 │
-├── mockupsv2/          # Mobile-responsive HTML/CSS mockups
-│   ├── css/
-│   │   └── styles.css  # Mobile-first responsive stylesheet
-│   ├── js/
-│   │   └── mobile-menu.js # Mobile navigation JavaScript
-│   ├── assets/         # Logo files and placeholder images
-│   └── *.html          # 26 HTML mockup pages (mobile-optimized)
+├── project/                     # Project-specific documentation
+│   ├── ai-context.md            # AI/contributor briefing
+│   ├── runbook.md               # Operations guide
+│   ├── decisions/               # Architecture Decision Records (ADRs)
+│   │   └── 0001-*.md, 0002-*.md, etc.
+│   └── releases/                # Release notes
+│       └── release-notes-v*.md
 │
-├── branding/           # Logo and brand assets
-│   └── Logo/
-│       ├── 01 Inspiration Initial Designs/
-│       └── 02 Manus Generated Logos/
-│           ├── v1_all_gray/
-│           └── v2_accent_blade/
+├── specification/               # Technical specifications
+│   ├── design/                  # Design-related specs
+│   │   ├── design-system.md
+│   │   ├── component-library.md
+│   │   └── page-inventory.md
+│   ├── technical/               # Technical specs
+│   │   ├── tech-stack-guide.md
+│   │   ├── tech-stack-final.md
+│   │   ├── data-models.md
+│   │   └── folder-structure.md
+│   ├── implementation/          # Implementation docs
+│   │   ├── implementation-plan.md
+│   │   ├── implementation-notes.md
+│   │   ├── key-decisions-log.md
+│   │   └── ... (other implementation docs)
+│   └── functional/             # Functional specs
+│       ├── functional-requirements.md
+│       ├── functional-folder-structure.md
+│       ├── presentation-script.md
+│       └── session-summary-full.md
 │
-├── presentation.html   # Interactive presentation
-├── index.html          # GitHub Pages landing page
-├── README.md           # Documentation index
-├── release-notes-v0.1.md    # Release notes
-└── release-notes-v0.2.md    # Release notes
+├── mockups/                     # Design mockups
+│   ├── current/                 # Latest version (currently v2) - Mobile-responsive (active)
+│   │   ├── css/
+│   │   │   └── styles.css      # Mobile-first responsive stylesheet
+│   │   ├── js/
+│   │   │   └── mobile-menu.js  # Mobile navigation JavaScript
+│   │   ├── assets/             # Logo files and placeholder images
+│   │   └── *.html              # 26 HTML mockup pages (mobile-optimized)
+│   ├── v1/                     # Version 1 - Original desktop (archived)
+│   │   ├── css/
+│   │   │   └── styles.css      # Original stylesheet
+│   │   ├── assets/             # Logo files and placeholder images
+│   │   ├── screenshots/         # Page screenshots for reference
+│   │   └── *.html              # 26 HTML mockup pages
+│   └── v2/                     # Version 2 - Will be created when v3 is added
+│   └── ...                     # Future versions (v3, v4, etc.)
+│
+└── assets/                      # Branding & assets
+    └── branding/                # Logo and brand assets
+        └── Logo/
+            ├── 01 Inspiration Initial Designs/
+            └── 02 Manus Generated Logos/
+                ├── v1_all_gray/
+                └── v2_accent_blade/
 ```
 
 **Rationale:**
 - **Centralized:** All documentation in one place
 - **Complete:** Design assets (mockups, branding) alongside written docs
-- **Organized:** All markdown specification files in `specification/` subfolder
-
-**Note:** All new markdown documentation files should be placed in `docs/specification/`. Only `README.md` and `release-notes-*.md` files remain at the `docs/` root level.
+- **Organized:** Clear separation between guides, project docs, and specifications
+- **Structured:** Specifications organized by type (design, technical, implementation, functional)
+- **Versioned:** Mockups organized by version (current = v2 active, archive = v1 preserved)
 - **Easy to find:** Developers know where to look for documentation
-- **Versioned:** Mockups organized by version (v1 = desktop, v2 = mobile-responsive)
 
 ---
 
@@ -180,8 +200,8 @@ docs/
 **Starting development:**
 1. Read `../README.md` at root for project overview
 2. Check `docs/../README.md` for documentation index
-3. Review `docs/specification/tech-stack-guide.md` for setup instructions
-4. View `mockupsv2/` for design reference
+3. Review `docs/specification/technical/tech-stack-guide.md` for setup instructions
+4. View `docs/mockups/current/` for design reference
 
 **Finding code:**
 - Frontend code: `apps/frontend/`
@@ -190,8 +210,11 @@ docs/
 
 **Finding documentation:**
 - All docs: `docs/`
-- Design system: `docs/design-system.md`
-- Mockups: `mockupsv2/` (use v2 for mobile-responsive)
+- Project docs: `docs/project/` (ai-context, runbook, ADRs, releases)
+- Guides: `docs/guides/` (automation, workflow)
+- Design system: `docs/specification/design/design-system.md`
+- Tech stack: `docs/specification/technical/tech-stack-guide.md`
+- Mockups: `docs/mockups/current/` (use current for mobile-responsive)
 
 **Finding infrastructure:**
 - Database migrations: `infrastructure/supabase/migrations/`
@@ -200,9 +223,10 @@ docs/
 ### For Designers
 
 **Design assets:**
-- Branding: `docs/branding/`
-- Mockups: `mockupsv2/` (latest version)
-- Design system: `docs/design-system.md`
+- Branding: `docs/assets/branding/`
+- Mockups: `docs/mockups/current/` (latest version)
+- Design system: `docs/specification/design/design-system.md`
+- Component library: `docs/specification/design/component-library.md`
 
 ---
 
@@ -230,8 +254,9 @@ docs/
 
 ### 5. Easy Navigation
 - Developers know where to find code: `apps/`
-- Designers know where to find mockups: `mockupsv2/`
+- Designers know where to find mockups: `docs/mockups/current/`
 - Everyone knows where docs are: `docs/`
+- Clear organization: guides, project docs, and specifications are separated
 
 ---
 
@@ -240,14 +265,17 @@ docs/
 This structure was adopted after the initial design phase. The following changes were made:
 
 1. **Mockups reorganized:**
-   - `mockups/` → `mockupsv1/` (renamed for clarity)
-   - `mockupsv2/` → `mockupsv2/` (moved to documentation)
+   - `mockups/` → `docs/mockups/v1/` (v1 archived)
+   - `mockupsv2/` → `docs/mockups/current/` (v2 active, latest)
+   - Future versions: When v3 is created, `current/` → `v2/`, new version → `current/`
 
 2. **Branding moved:**
-   - `branding/` → `docs/branding/` (design assets belong with docs)
+   - `branding/` → `docs/assets/branding/` (design assets belong with docs)
 
-3. **Documentation organized:**
-   - All `.md` files → `docs/` (centralized documentation)
+3. **Documentation reorganized:**
+   - Project docs → `docs/project/` (ai-context, runbook, ADRs, releases)
+   - Guides → `docs/guides/` (automation, workflow)
+   - Specifications → `docs/specification/` organized by type (design, technical, implementation, functional)
 
 4. **Code structure planned:**
    - Future code will go in `apps/` folder
@@ -286,12 +314,17 @@ The current structure supports these additions without major reorganization.
 | Scrapers | `apps/scraper/scrapers/` |
 | Database migrations | `infrastructure/supabase/migrations/` |
 | CI/CD workflows | `infrastructure/.github/workflows/` |
-| Documentation | `docs/*.md` |
-| Mockups (latest) | `mockupsv2/` |
-| Branding assets | `docs/branding/` |
+| Documentation | `docs/` |
+| Project docs | `docs/project/` |
+| Guides | `docs/guides/` |
+| Specifications | `docs/specification/` |
+| Mockups (latest) | `docs/mockups/current/` |
+| Mockups v1 | `docs/mockups/v1/` |
+| Mockups v2 | `docs/mockups/v2/` (when v3 is created) |
+| Branding assets | `docs/assets/branding/` |
 | Project config | Root directory |
 
 ---
 
-**Last Updated:** 2026-01-13  
-**Structure Version:** 1.0
+**Last Updated:** 2026-01-15  
+**Structure Version:** 2.0 (reorganized documentation structure)

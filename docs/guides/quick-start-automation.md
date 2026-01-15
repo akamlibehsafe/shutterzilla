@@ -55,7 +55,7 @@ doc_new_adr "use-prisma-orm"
 
 # Fill in the ADR file that was created
 # Then commit
-git add docs/decisions/0007-use-prisma-orm.md
+git add docs/project/decisions/0007-use-prisma-orm.md
 git commit -m "docs: add ADR for Prisma ORM decision"
 ```
 
@@ -73,7 +73,7 @@ git checkout -b feature/user-auth
 ### 2. Make an ADR if it's a significant decision
 ```bash
 doc_new_adr "use-supabase-auth"
-# Fill in docs/decisions/0007-use-supabase-auth.md
+# Fill in docs/project/decisions/0007-use-supabase-auth.md
 ```
 
 ### 3. Build the feature
@@ -151,7 +151,7 @@ Every Monday, do this:
 ```bash
 # 1. Review Unreleased items in CHANGELOG.md
 # 2. Move important items to a version section if you're releasing
-# 3. Update priorities in docs/ai-context.md if they changed
+# 3. Update priorities in docs/project/ai-context.md if they changed
 ```
 
 ---
@@ -252,7 +252,7 @@ git checkout -b feature/camera-search
 
 # 2. Make decision → Create ADR
 doc_new_adr "use-algolia-search"
-# Fill in docs/decisions/0007-use-algolia-search.md
+# Fill in docs/project/decisions/0007-use-algolia-search.md
 
 # 3. Implement feature (make code changes)
 
@@ -306,7 +306,7 @@ A: That's okay! You can always add entries later. Use `git log` to see what chan
 
 **Weekly (5 min):**
 - Review Unreleased section in CHANGELOG.md
-- Update `docs/ai-context.md` if priorities changed
+- Update `docs/project/ai-context.md` if priorities changed
 
 **Before Release:**
 - Move items from Unreleased to version section
@@ -317,4 +317,4 @@ A: That's okay! You can always add entries later. Use `git log` to see what chan
 
 **That's it! Start using the scripts today and your docs will stay up-to-date.**
 
-For more details, see [docs/AUTOMATION.md](./AUTOMATION.md).
+For more details, see [docs/guides/automation.md](./automation.md).

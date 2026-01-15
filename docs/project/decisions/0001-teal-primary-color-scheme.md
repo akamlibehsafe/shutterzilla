@@ -26,5 +26,5 @@ Adopt teal (`#0d9488`) as the primary brand color, with a lighter variant (`#14b
 - Easy to implement in CSS with CSS variables (already done in mockups)
 
 ## Links
-- Design System: `docs/specification/design-system.md`
-- Mockups: `docs/mockupsv1/`, `docs/mockupsv2/`
+- Design System: `docs/specification/design/design-system.md`
+- Mockups: `docs/mockups/v1/`, `docs/mockups/current/`

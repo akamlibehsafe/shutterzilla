@@ -17,9 +17,9 @@ This guide explains how to automate the maintenance of project documentation as 
 The project has four main documentation types that benefit from automation:
 
 1. **CHANGELOG.md**: User-facing "what changed" per release
-2. **docs/decisions/**: ADRs (Architecture Decision Records) - "why we did X instead of Y"
-3. **docs/runbook.md**: Operations guide (manual updates as needed)
-4. **docs/ai-context.md**: Living briefing for AI/contributors (manual updates as needed)
+2. **docs/project/decisions/**: ADRs (Architecture Decision Records) - "why we did X instead of Y"
+3. **docs/project/runbook.md**: Operations guide (manual updates as needed)
+4. **docs/project/ai-context.md**: Living briefing for AI/contributors (manual updates as needed)
 
 ---
 
@@ -171,7 +171,7 @@ ADRs (Architecture Decision Records) should be created when making significant a
 
 ```bash
 doc_new_adr "use-prisma-orm"
-# Creates: docs/decisions/0007-use-prisma-orm.md
+# Creates: docs/project/decisions/0007-use-prisma-orm.md
 # Edit the file to fill in: Context, Decision, Alternatives, Consequences
 ```
 
@@ -207,7 +207,7 @@ npx husky add .husky/pre-commit "node scripts/check-adr.js"
 
 ### 3. AI Context Automation
 
-`docs/ai-context.md` should be updated manually, but you can create reminders.
+`docs/project/ai-context.md` should be updated manually, but you can create reminders.
 
 #### Option A: Update Script with Prompts
 
@@ -230,12 +230,12 @@ sed -i '' "/^### What's Next$/,/^### What Not to Change$/c\\
 $(echo "$PRIORITIES" | sed 's/^/1. /')\\
 \\
 ### What Not to Change
-" docs/ai-context.md
+" docs/project/ai-context.md
 
 # Update last modified date
-sed -i '' "s/\*\*Last Updated\*\*:.*/\*\*Last Updated\*\*: $(date +%Y-%m-%d)/" docs/ai-context.md
+sed -i '' "s/\*\*Last Updated\*\*:.*/\*\*Last Updated\*\*: $(date +%Y-%m-%d)/" docs/project/ai-context.md
 
-echo "Updated docs/ai-context.md"
+echo "Updated docs/project/ai-context.md"
 ```
 
 #### Option B: GitHub Action (Weekly Reminder)
@@ -264,14 +264,14 @@ jobs:
               body: `
               This is a weekly reminder to:
               
-              1. Update \`docs/ai-context.md\` with current priorities
+              1. Update \`docs/project/ai-context.md\` with current priorities
               2. Move items from "Unreleased" to version sections in \`CHANGELOG.md\`
               3. Review if any ADRs need updating
               
               **Scripts available:**
               - \`doc_update_changelog\` - Add changelog entries
               - \`doc_new_adr\` - Create new ADR
-              - Manually edit \`docs/ai-context.md\` when priorities change
+              - Manually edit \`docs/project/ai-context.md\` when priorities change
               `,
               labels: ['documentation', 'maintenance']
             })
@@ -309,7 +309,7 @@ jobs:
 
 3. **Update AI context** if priorities changed:
    ```bash
-   # Manually edit docs/ai-context.md if priorities changed
+   # Manually edit docs/project/ai-context.md if priorities changed
    ```
 
 4. **Tag release**:

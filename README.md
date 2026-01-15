@@ -50,7 +50,7 @@ See [docs/README.md](./docs/README.md) for the complete documentation index.
 ## Live Mockups
 
 - **[Live Mockups v2](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/current/landing-page.html)** - Mobile-responsive versions of all pages
-- **[Original Mockups v1](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/archive/landing-page.html)** - Original desktop-focused mockups
+- **[Original Mockups v1](https://akamlibehsafe.github.io/shutterzilla/docs/mockups/v1/landing-page.html)** - Original desktop-focused mockups
 
 ## Project Structure
 

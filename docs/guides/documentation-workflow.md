@@ -75,7 +75,7 @@ Creates a new ADR template with the next number.
 
 ```bash
 doc_new_adr "use-docker-for-deployment"
-# Creates: docs/decisions/0005-use-docker-for-deployment.md
+# Creates: docs/project/decisions/0005-use-docker-for-deployment.md
 ```
 
 **When to use:**
@@ -146,7 +146,7 @@ doc_release 0.4.0 2026-01-20
 
 ## Manual Updates
 
-### When to Update AI Context (`docs/ai-context.md`)
+### When to Update AI Context (`docs/project/ai-context.md`)
 
 Update when:
 - Adding/removing scripts
@@ -157,7 +157,7 @@ Update when:
 
 **Keep it concise** - this is a briefing document, not full docs.
 
-### When to Update Runbook (`docs/runbook.md`)
+### When to Update Runbook (`docs/project/runbook.md`)
 
 Update when:
 - Adding new troubleshooting steps
@@ -168,7 +168,7 @@ Update when:
 
 **Focus on operations** - what operators need to know.
 
-### When to Create an ADR (`docs/decisions/`)
+### When to Create an ADR (`docs/project/decisions/`)
 
 Create an ADR when:
 - Making an architectural choice
@@ -227,7 +227,7 @@ mv .git/hooks/pre-commit .git/hooks/pre-commit.disabled
 
 ## Integration with Cursor/AI
 
-The `docs/ai-context.md` file is specifically designed to give AI assistants quick context. Keep it updated so Cursor understands:
+The `docs/project/ai-context.md` file is specifically designed to give AI assistants quick context. Keep it updated so Cursor understands:
 - Current architecture decisions
 - Known issues
 - What not to change
@@ -246,7 +246,7 @@ vim apps/frontend/src/components/CameraSearch.vue
 # 2. Add to changelog
 doc_update_changelog Added "Camera search functionality"
 
-# 3. Update AI context (manually edit docs/ai-context.md)
+# 3. Update AI context (manually edit docs/project/ai-context.md)
 # Add to "Repo Layout" section if it's a new major component
 
 # 4. Check everything
@@ -262,7 +262,7 @@ git commit -m "feat: add camera search"
 ```bash
 # 1. Create ADR
 doc_new_adr "use-prisma-orm"
-vim docs/decisions/0007-use-prisma-orm.md
+vim docs/project/decisions/0007-use-prisma-orm.md
 # Fill in: Context, Decision, Alternatives, Consequences
 
 # 2. Update status to Accepted
@@ -275,7 +275,7 @@ doc_update_changelog Changed "Use Prisma ORM instead of raw SQL (see ADR 0007)"
 # Reference ADR in relevant section
 
 # 5. Commit
-git add docs/decisions/ CHANGELOG.md docs/ai-context.md
+git add docs/project/decisions/ CHANGELOG.md docs/project/ai-context.md
 git commit -m "docs: add ADR 0007 for Prisma ORM decision"
 ```
 

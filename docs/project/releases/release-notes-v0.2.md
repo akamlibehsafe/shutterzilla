@@ -101,7 +101,7 @@ This release marks the completion of the planning and preparation phase for Shut
 ## Files Changed
 
 ### New Files
-- `docs/specification/implementation-plan.md`
+- `docs/specification/implementation/implementation-plan.md`
 - `docs/specification/implementation-notes.md`
 - `docs/specification/implementation-validation-plan.md`
 - `docs/specification/implementation-validation-notes.md`
@@ -116,8 +116,8 @@ This release marks the completion of the planning and preparation phase for Shut
 - `.gitignore`
 
 ### Moved/Reorganized
-- `mockups/` → `docs/mockupsv1/`
-- `mockupsv2/` → `docs/mockupsv2/`
+- `mockups/` → `docs/mockups/v1/`
+- `mockupsv2/` → `docs/mockups/current/`
 - `branding/` → `docs/branding/`
 - All specification `.md` files → `docs/specification/`
 - `index.html` → `docs/index.html` (GitHub Pages source)
@@ -164,8 +164,8 @@ This release marks the completion of the planning and preparation phase for Shut
 All documentation is available in the [`docs/`](./docs/) folder:
 
 - [Implementation Plan](./docs/specification/implementation-plan.md)
-- [Tech Stack Guide](./docs/specification/tech-stack-guide.md)
-- [Folder Structure](./docs/specification/folder-structure.md)
+- [Tech Stack Guide](./docs/specification/technical/tech-stack-guide.md)
+- [Folder Structure](./docs/specification/technical/folder-structure.md)
 - [Validation Plan](./docs/specification/implementation-validation-plan.md)
 - [Full Documentation Index](./docs/README.md)
 

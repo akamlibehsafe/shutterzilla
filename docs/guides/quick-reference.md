@@ -6,7 +6,7 @@
 ```bash
 doc_new_adr "decision-title"
 # Example: doc_new_adr "use-docker-for-deployment"
-# Creates: docs/decisions/0005-use-docker-for-deployment.md
+# Creates: docs/project/decisions/0005-use-docker-for-deployment.md
 ```
 
 ### Add Changelog Entry
@@ -77,7 +77,7 @@ git tag -a v0.4.0 -m "Release 0.4.0"
 
 ## See Also
 
-- **Complete guide**: `docs/DOCUMENTATION_WORKFLOW.md`
-- **AI context**: `docs/ai-context.md`
-- **Runbook**: `docs/runbook.md`
-- **ADRs**: `docs/decisions/`
+- **Complete guide**: `docs/guides/documentation-workflow.md`
+- **AI context**: `docs/project/ai-context.md`
+- **Runbook**: `docs/project/runbook.md`
+- **ADRs**: `docs/project/decisions/`

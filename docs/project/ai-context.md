@@ -26,7 +26,7 @@ ShutterZilla is a platform for vintage camera enthusiasts to:
 2. Set up Supabase projects (dev + prod)
 3. Connect to Vercel (auto-deploy from GitHub)
 4. Install dependencies: `npm install` (frontend/backend), `pip install -r requirements.txt` (scraper)
-5. Configure environment variables (see `docs/runbook.md`)
+5. Configure environment variables (see `docs/project/runbook.md`)
 
 ### Uninstall
 - Local: Stop servers, optionally remove `node_modules`
@@ -58,13 +58,15 @@ shutterzilla/
 │   ├── supabase/           # Database migrations (to be implemented)
 │   └── .github/            # GitHub Actions workflows
 ├── docs/                    # All documentation
-│   ├── mockupsv1/         # Original desktop mockups (26 pages)
-│   ├── mockupsv2/         # Mobile-responsive mockups (26 pages)
+│   ├── mockups/            # Design mockups
+│   │   ├── current/       # Mobile-responsive mockups (26 pages)
+│   │   └── archive/       # Original desktop mockups (26 pages)
 │   ├── specification/     # Design specs, tech stack, implementation plans
-│   ├── decisions/         # ADRs (Architecture Decision Records)
-│   ├── branding/          # Logo and brand assets
-│   ├── runbook.md         # Operations guide (this file's companion)
-│   └── ai-context.md      # This file
+│   ├── project/           # Project-specific docs
+│   │   ├── decisions/     # ADRs (Architecture Decision Records)
+│   │   ├── runbook.md     # Operations guide (this file's companion)
+│   │   └── ai-context.md  # This file
+│   └── branding/          # Logo and brand assets
 ├── validation/             # Scraper validation tests
 └── README.md              # Project overview
 ```
@@ -72,8 +74,8 @@ shutterzilla/
 **Key directories**:
 - `apps/`: Application code (frontend, backend, scraper)
 - `docs/specification/`: Design specs, tech stack, implementation plans
-- `docs/decisions/`: ADRs documenting why we made key decisions
-- `docs/mockupsv1/` and `docs/mockupsv2/`: HTML/CSS mockups (reference for implementation)
+- `docs/project/decisions/`: ADRs documenting why we made key decisions
+- `docs/mockups/current/` and `docs/mockups/v1/`: HTML/CSS mockups (reference for implementation)
 - `validation/`: Scraper feasibility tests
 
 ---
@@ -96,7 +98,7 @@ shutterzilla/
 
 ### Code Organization
 - **All `.md` files in `docs/specification/`**: Except README, release notes, and special files
-- **ADRs in `docs/decisions/`**: Format: `NNNN-title.md` (e.g., `0001-teal-color.md`)
+- **ADRs in `docs/project/decisions/`**: Format: `NNNN-title.md` (e.g., `0001-teal-color.md`)
 - **Changelog in root**: `CHANGELOG.md` (user-facing changes per release)
 
 ---
@@ -119,7 +121,7 @@ shutterzilla/
 
 4. **Environment variables missing**
    - **Symptom**: API calls fail, auth doesn't work
-   - **Fix**: Set required variables in Vercel dashboard (see `docs/runbook.md`)
+   - **Fix**: Set required variables in Vercel dashboard (see `docs/project/runbook.md`)
 
 5. **Scraper can't access website**
    - **Symptom**: Scraper returns empty results or errors
@@ -144,10 +146,10 @@ shutterzilla/
 5. **Phase 4**: Implement scraper (Python + GitHub Actions)
 
 ### What Not to Change
-- **Tech stack decisions**: See ADRs in `docs/decisions/` for rationale
+- **Tech stack decisions**: See ADRs in `docs/project/decisions/` for rationale
 - **Deployment strategy**: `main` = production, branches = previews (see ADR 0005)
 - **Cost model**: Stick to free tiers (max 10 users)
-- **Documentation structure**: Keep ADRs in `docs/decisions/`, specs in `docs/specification/`
+- **Documentation structure**: Keep ADRs in `docs/project/decisions/`, specs in `docs/specification/`
 
 ---
 
@@ -168,7 +170,7 @@ shutterzilla/
 
 ## Decision Log
 
-Key architectural decisions are documented in ADRs (`docs/decisions/`):
+Key architectural decisions are documented in ADRs (`docs/project/decisions/`):
 - 0001: Teal primary color scheme
 - 0002: Split scraper/collection into two apps
 - 0003: Vue.js for frontend
@@ -182,14 +184,14 @@ Key architectural decisions are documented in ADRs (`docs/decisions/`):
 
 ## Documentation Index
 
-- **This file**: `docs/ai-context.md` (briefing for AI/contributors)
-- **Runbook**: `docs/runbook.md` (operations, troubleshooting)
+- **This file**: `docs/project/ai-context.md` (briefing for AI/contributors)
+- **Runbook**: `docs/project/runbook.md` (operations, troubleshooting)
 - **Changelog**: `CHANGELOG.md` (user-facing changes)
-- **ADRs**: `docs/decisions/` (architectural decisions)
-- **Tech Stack**: `docs/specification/tech-stack-guide.md` (complete guide)
-- **Implementation Plan**: `docs/specification/implementation-plan.md`
-- **Design System**: `docs/specification/design-system.md`
-- **Mockups**: `docs/mockupsv1/`, `docs/mockupsv2/` (26 pages each)
+- **ADRs**: `docs/project/decisions/` (architectural decisions)
+- **Tech Stack**: `docs/specification/technical/tech-stack-guide.md` (complete guide)
+- **Implementation Plan**: `docs/specification/implementation/implementation-plan.md`
+- **Design System**: `docs/specification/design/design-system.md`
+- **Mockups**: `docs/mockups/current/` (v2), `docs/mockups/v1/` (v1) (26 pages each)
 
 ---
 
@@ -201,14 +203,14 @@ Helper scripts for maintaining documentation (in `scripts/`):
 - `doc_check` - Check documentation status (runs in pre-commit hook)
 - `doc_release` - Create new release from unreleased entries
 
-**Quick reference**: See `docs/QUICK_REF.md`  
-**Complete workflow**: See `docs/DOCUMENTATION_WORKFLOW.md`
+**Quick reference**: See `docs/guides/quick-reference.md`  
+**Complete workflow**: See `docs/guides/documentation-workflow.md`
 
 ## AI Assistant Guidelines
 
 When helping with this project:
 
-1. **Check ADRs first**: Before suggesting major changes, review `docs/decisions/`
+1. **Check ADRs first**: Before suggesting major changes, review `docs/project/decisions/`
 2. **Follow existing patterns**: Match code style in mockups, follow folder structure
 3. **Update docs as you go**: If making decisions, create ADRs; if adding features, update CHANGELOG
 4. **Test on preview URLs**: Never merge directly to main without testing
@@ -217,7 +219,7 @@ When helping with this project:
 
 ---
 
-**For detailed setup instructions, see `docs/runbook.md`.**  
+**For detailed setup instructions, see `docs/project/runbook.md`.**  
 **For technical specifications, see `docs/specification/`.**  
-**For architectural decisions, see `docs/decisions/`.**  
-**For documentation workflow, see `docs/DOCUMENTATION_WORKFLOW.md`.**
+**For architectural decisions, see `docs/project/decisions/`.**  
+**For documentation workflow, see `docs/guides/documentation-workflow.md`.**

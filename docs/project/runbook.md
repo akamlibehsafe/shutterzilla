@@ -346,8 +346,8 @@ Set in Supabase dashboard under Project Settings → API:
 ## Getting Help
 
 - **Documentation**: Check `docs/specification/` for detailed docs
-- **Tech Stack**: See `docs/specification/tech-stack-guide.md`
-- **Decisions**: See `docs/decisions/` for ADRs
+- **Tech Stack**: See `docs/specification/technical/tech-stack-guide.md`
+- **Decisions**: See `docs/project/decisions/` for ADRs
 - **Issues**: Create GitHub issue or check existing issues
 
 ---

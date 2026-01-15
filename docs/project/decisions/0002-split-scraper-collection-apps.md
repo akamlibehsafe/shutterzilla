@@ -37,5 +37,5 @@ Split core functionality into two distinct applications accessible from a centra
 - Can scale each app independently
 
 ## Links
-- App Switcher mockup: `docs/mockupsv1/app-switcher.html`
-- Functional Requirements: `docs/specification/functional-requirements.md`
+- App Switcher mockup: `docs/mockups/v1/app-switcher.html`
+- Functional Requirements: `docs/specification/functional/functional-requirements.md`

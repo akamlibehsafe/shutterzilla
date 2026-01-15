@@ -5,7 +5,7 @@ Helper scripts for maintaining project documentation.
 ## Available Scripts
 
 ### `doc_new_adr`
-Creates a new Architecture Decision Record (ADR) in `docs/decisions/`.
+Creates a new Architecture Decision Record (ADR) in `docs/project/decisions/`.
 
 **Usage:**
 ```bash
@@ -71,11 +71,11 @@ mv .git/hooks/pre-commit .git/hooks/pre-commit.disabled
 
 ## See Also
 
-- **Quick Reference**: `docs/QUICK_REF.md` - Quick command reference
-- **Complete Workflow**: `docs/DOCUMENTATION_WORKFLOW.md` - Detailed workflow guide
-- **AI Context**: `docs/ai-context.md` - Briefing for AI assistants
-- **Runbook**: `docs/runbook.md` - Operations guide
-- **ADRs**: `docs/decisions/` - Architecture Decision Records
+- **Quick Reference**: `docs/guides/quick-reference.md` - Quick command reference
+- **Complete Workflow**: `docs/guides/documentation-workflow.md` - Detailed workflow guide
+- **AI Context**: `docs/project/ai-context.md` - Briefing for AI assistants
+- **Runbook**: `docs/project/runbook.md` - Operations guide
+- **ADRs**: `docs/project/decisions/` - Architecture Decision Records
 - **Changelog**: `CHANGELOG.md` - User-facing changelog
 
 ## Using AI Documentation Toolkits

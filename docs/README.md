@@ -124,13 +124,14 @@ The project includes **26 HTML/CSS pages** that serve as the visual specificatio
 
 | Folder | Description |
 |--------|-------------|
-| [`mockups/current/`](./mockups/current/) | **Mobile-responsive versions** - Optimized for mobile, tablet, and desktop. **Recommended for implementation reference.** |
-| [`mockups/archive/`](./mockups/archive/) | Original desktop-focused mockups - Preserved for reference |
+| [`mockups/current/`](./mockups/current/) | **Latest version (v2)** - Mobile-responsive versions - Optimized for mobile, tablet, and desktop. **Recommended for implementation reference.** |
+| [`mockups/v1/`](./mockups/v1/) | **Version 1** - Original desktop-focused mockups - Preserved for reference |
 
 **Key Files:**
-- `mockups/current/css/styles.css` - Mobile-first stylesheet with responsive design
-- `mockups/current/js/mobile-menu.js` - JavaScript for mobile navigation
-- `mockups/current/assets/` - Logo files and placeholder camera images
+- `mockups/current/css/styles.css` - Mobile-first stylesheet with responsive design (v2)
+- `mockups/current/js/mobile-menu.js` - JavaScript for mobile navigation (v2)
+- `mockups/current/assets/` - Logo files and placeholder camera images (v2)
+- `mockups/v1/` - Version 1 mockups (archived)
 
 **Live Mockups:**
 - [Live Mockups v2](https://akamlibehsafe.github.io/shutterzilmockupsv2/landing-page.html) - Mobile-responsive versions
