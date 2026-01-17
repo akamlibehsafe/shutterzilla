@@ -119,6 +119,94 @@ SUPABASE_ANON_KEY = eyJ... (dev project anon key)
    - **Production Branch:** `main` → Deploys to `shutterzilla.com`
    - **Preview Deployments:** All other branches → Create preview URLs
 
+#### Step 4: Protect Preview Deployments (Prevent Public Access)
+
+**Problem:** Preview URLs are publicly accessible by default. Anyone with the URL can access your feature branches.
+
+**Solution Options:**
+
+**Option 1: Password Protection (Recommended for Solo Dev)**
+1. Go to Vercel Project Settings → Deployment Protection
+2. Enable "Password Protection" for Preview Deployments
+3. Set a password (or use Vercel's auto-generated one)
+4. Share password only with yourself/team
+5. Production deployments remain public (unprotected)
+
+**Option 2: Disable Automatic Preview Deployments**
+1. Go to Vercel Project Settings → Git
+2. Disable "Automatic Deployments" for previews
+3. Manually deploy previews when needed via Vercel CLI or dashboard
+4. More control, but requires manual action
+
+**Option 3: Application-Level Access Control with Redirect (Recommended)**
+
+Redirect to production domain if preview token is missing - better UX than showing an error:
+
+```typescript
+// In your app (e.g., middleware or route guard)
+// For Vue.js frontend, add this in a router guard or app initialization
+
+// Check if this is a preview deployment
+if (import.meta.env.VITE_VERCEL_ENV === 'preview') {
+  const previewToken = import.meta.env.VITE_PREVIEW_ACCESS_TOKEN
+  const providedToken = new URLSearchParams(window.location.search).get('preview_token') 
+    || localStorage.getItem('preview_token')
+  
+  // If no valid token, redirect to production
+  if (!providedToken || providedToken !== previewToken) {
+    window.location.href = 'https://shutterzilla.com' + window.location.pathname + window.location.search
+    return // Stop execution
+  }
+  
+  // Store token for future requests
+  if (!localStorage.getItem('preview_token')) {
+    localStorage.setItem('preview_token', providedToken)
+  }
+}
+```
+
+**For Backend API (serverless functions):**
+```typescript
+// In your API middleware
+export function previewGuard(req: Request, res: Response, next: NextFunction) {
+  if (process.env.VERCEL_ENV === 'preview') {
+    const previewToken = process.env.PREVIEW_ACCESS_TOKEN
+    const providedToken = req.headers['x-preview-token'] 
+      || req.query.preview_token as string
+    
+    if (!providedToken || providedToken !== previewToken) {
+      // Redirect to production API
+      return res.redirect(301, `https://shutterzilla.com${req.path}`)
+    }
+  }
+  next()
+}
+```
+
+**Usage:**
+- Access preview with token: `https://feature-abc123.vercel.app?preview_token=your-secret-token`
+- Access without token: Automatically redirects to `https://shutterzilla.com`
+- Token stored in localStorage for future requests
+
+**Benefits:**
+- ✅ Better UX (redirect instead of error)
+- ✅ Seamless fallback to production
+- ✅ Users don't see broken preview URLs
+- ✅ Can share preview URLs with token for testing
+
+**Option 4: IP Allowlisting (Vercel Pro/Enterprise)**
+- Restrict preview deployments to specific IP addresses
+- Requires paid Vercel plan
+
+**Recommended Approach:**
+- **For solo dev:** Use Option 3 (Application-level redirect) - Best UX, automatic redirect to production
+- **For team:** Use Option 1 (Password Protection) + Option 3 (redirect fallback) - Double protection
+- **For sensitive features:** Use Option 3 (Application-level) with strong token + redirect
+
+**Best Practice:** Combine Option 1 + Option 3
+- Vercel password protection as first line of defense
+- Application-level redirect as fallback (redirects to production if someone bypasses password)
+
 ### Environment Workflow
 
 **Daily Development:**
@@ -626,6 +714,7 @@ Day 5: Review & Merge
 1. Check Vercel is connected to GitHub
 2. Verify branch was pushed to GitHub
 3. Check Vercel deployment logs
+4. Verify preview deployments are enabled in project settings
 
 **Problem:** Production not deploying
 
@@ -635,6 +724,15 @@ Day 5: Review & Merge
 3. Check Vercel deployment logs
 4. Review `vercel.json` for build configuration
 
+**Problem:** Preview URLs are publicly accessible
+
+**Solution:**
+1. Enable password protection in Vercel Project Settings → Deployment Protection
+2. Set password for preview deployments only
+3. Production remains public (unprotected)
+4. Alternative: Disable automatic preview deployments and deploy manually when needed
+5. Alternative: Add application-level access control with preview token
+
 ---
 
 ## Summary
@@ -643,6 +741,7 @@ Day 5: Review & Merge
 - ✅ Configuration-based (not branch-based)
 - ✅ Two environments: Preview (DEV) + Production (PRD)
 - ✅ Simple workflow: feature branch → preview → merge to main → production
+- ✅ Preview deployments protected (password or manual deployment)
 
 **Data Seeding:**
 - ✅ Artificial/generated test data

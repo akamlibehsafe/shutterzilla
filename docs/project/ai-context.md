@@ -192,6 +192,8 @@ Key architectural decisions are documented in ADRs (`docs/project/decisions/`):
 - 0019: Use monorepo structure
 - 0020: Use React Native for mobile apps
 - 0021: DevOps environment strategy and project management
+- 0022: Planning workflow (Master Plan + GitHub Issues/Projects)
+- 0023: Add detailed specifications phase before implementation
 
 **Always check ADRs before making major architectural decisions.**
 

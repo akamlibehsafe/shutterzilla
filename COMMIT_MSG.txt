@@ -1,0 +1,25 @@
+Expand Option 3 design to all Scraper app pages and add Olympus OM-1N
+
+Features:
+- Complete Option 3 (icon navigation) implementation across all Scraper pages
+  * Created missing detail pages: leica-m3, canon-ae1, olympus-om1n
+  * All pages now use consistent topbar with centered icon navigation
+
+- Grid/List view toggle added to feed pages
+  * Toggle control positioned after sort dropdown
+  * Active state highlights current view
+  * Seamless navigation between views
+
+- Added Olympus OM-1N camera listing
+  * Camera cards in grid and list views
+  * Complete detail page with full specifications
+  * Product images for all 4 views (front, top, back, side)
+
+UI improvements:
+- Standardized page titles ("Feed" instead of "Feed (List View)")
+- Consistent navigation patterns across all pages
+- Mobile-responsive design maintained
+
+Files changed:
+- docs/mockups/current/topbar-options-comparison/option3/* (all scraper pages)
+- docs/mockups/current/assets/cameras/olympus-om1n*.png (product images)

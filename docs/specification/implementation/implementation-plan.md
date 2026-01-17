@@ -2,7 +2,7 @@
 
 This document tracks the step-by-step implementation plan for building ShutterZilla. It will be updated as we progress through each phase.
 
-**Last Updated:** 2026-01-13  
+**Last Updated:** 2026-01-15  
 **Status:** Planning Phase
 
 ---
@@ -36,17 +36,73 @@ All planning and implementation documentation will be stored in `docs/`:
 **Deliverable:** High-level understanding of app behavior and basic data needs
 
 ### Phase 0.2: Scraping Feasibility Validation
-**Goal:** Test if we can successfully scrape from all four target sources
+**Goal:** Test if we can successfully scrape from all target sources
 
 - [ ] Create validation test scripts for each source
 - [ ] Test Buyee scraping
 - [ ] Test eBay USA scraping (or evaluate API)
 - [ ] Document results in `implementation-validation-notes.md`
-- [ ] Make go/no-go decision based on results
 
-**Deliverable:** Validation results and decision on scraping feasibility
+**Deliverable:** Validation results for scraping feasibility
 
 **Note:** See `implementation-validation-plan.md` for detailed validation steps.
+
+### Phase 0.3: Detailed Specifications & Design Refinement
+**Goal:** Define detailed specifications for UI, behavior, and architecture before implementation
+
+#### 0.3.1 UI Component Definitions
+- [ ] Review and complete component library documentation
+- [ ] Define missing UI components
+- [ ] Define interaction patterns and behaviors
+- [ ] Define responsive design specifications
+- [ ] Define accessibility requirements
+- [ ] Document component states (loading, error, empty, etc.)
+
+#### 0.3.2 Complete Scraper Behavior Specification
+- [ ] Define general scraper behavior (frequency, error handling, rate limiting)
+- [ ] Define data collection strategy (what data, normalization, missing data)
+- [ ] Define deduplication strategy (how to identify duplicates)
+- [ ] Define status tracking (active, sold, expired listings)
+- [ ] Define error handling approach
+- [ ] Define performance requirements
+- [ ] Define integration with database and notifications
+- [ ] Define source-specific behaviors (Buyee, eBay)
+- [ ] Document in `implementation-scraper-behavior-specification.md`
+
+#### 0.3.3 Detailed Page Behavior Specifications
+- [ ] Define behavior for each Scraper App page (Feed, Search, Saved Searches, Detail, Watch)
+- [ ] Define behavior for each Collection App page (Home, Add, Detail, Statistics)
+- [ ] Define behavior for Negative App pages (to be designed)
+- [ ] Define behavior for Authentication pages
+- [ ] Define behavior for Admin pages
+- [ ] Define data requirements for each page
+- [ ] Define interactions and user flows
+- [ ] Document in `implementation-screen-specifications.md`
+
+#### 0.3.4 App Architecture & Naming
+- [ ] Rename "Scraper App" (decide on new name)
+- [ ] Design Negative App architecture (Films & Analog Photos collection)
+- [ ] Define Negative App user journeys
+- [ ] Define Negative App data model
+- [ ] Define Negative App pages and features
+- [ ] Update App Switcher to include three apps
+- [ ] Update all documentation with new app names
+- [ ] Document in `implementation-validation-notes.md` and ADR
+
+**Deliverable:** Complete specifications for UI, scraper behavior, page behaviors, and app architecture
+
+**Note:** See `implementation-detailed-specifications-breakdown.md` for detailed breakdown of specification tasks.
+
+### Phase 0.4: Final Validation & Decision
+**Goal:** Review all specifications and make go/no-go decision
+
+- [ ] Review Phase 0.1-0.3 deliverables
+- [ ] Validate completeness of specifications
+- [ ] Make go/no-go decision based on all validation and specifications
+- [ ] Document decision and rationale
+- [ ] Update implementation plan based on decisions
+
+**Deliverable:** Final decision to proceed with implementation
 
 ### Phase 1: Complete Stack Setup
 **Goal:** Set up all infrastructure and services before writing any code
