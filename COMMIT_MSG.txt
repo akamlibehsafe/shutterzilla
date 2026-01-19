@@ -1,9 +1,28 @@
-Refine card UI: update badges and dismiss button
+feat(mockups): improve card styling and fix spacing issues
 
-- Reduce badge sizes from 28px to 25px (source icons and shop badges)
-- Replace "Dismiss" text with × symbol in card dismiss buttons
-- Improve dismiss button UX:
-  - Remove underline styling
-  - Increase font size to 22px
-  - Add padding and min-width/min-height (32px) for better clickability
-  - Position closer to right border with adjusted margins
+- Add "New" ribbon functionality with data-is-new attribute
+  - Cards 1, 2, 4, and 5 now show "New" ribbon automatically
+  - CSS uses ::before pseudo-element for automatic display
+
+- Fix OM-1N detail page
+  - Add missing Watchlist and Archived navigation links
+  - Add icons to app dropdown items
+  - Fix image path from .jpg to .png
+
+- Improve footer link spacing
+  - Reduce gap between footer links from 8px to 2px
+  - Remove min-height constraint on footer links
+  - Add line-height for better text spacing
+
+- Update footer tagline text
+  - Change "film camera collection" to "film and camera collections"
+  - Updated across all 58 HTML files
+
+- Fix price line spacing
+  - Set gap between price rows to 1px for all cards
+  - Fix Yahoo Japan Auction cards spacing:
+    * Reduce card body padding (top/bottom to 8px) to prevent title clipping
+    * Add margin-top to prices container (8px) for larger title-to-price spacing
+    * Set gap to 0 between Current and Buyout price rows
+    * Add -2px negative margin on Buyout line to bring it closer to Current
+    * Adjust title line-height to 1.2 for better fit

@@ -49,6 +49,7 @@
       padding-left: var(--spacing-sm);
       border-left: 1px solid var(--color-gray-300);
       position: relative;
+      height: 30px;
     }
 
     @media (min-width: 768px) {
@@ -61,12 +62,25 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-lg);
       font-weight: 600;
       color: var(--color-slate);
       cursor: pointer;
       transition: color 0.2s ease;
       user-select: none;
+      line-height: 1;
+            position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -75,8 +89,8 @@
     }
 
     .topbar-option3__app-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       color: inherit;
       display: flex;
@@ -117,6 +131,19 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
+      line-height: 1;
+            position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -559,21 +586,23 @@
         <span class="topbar-option3__app-name" id="appName">
           <span class="topbar-option3__app-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
+              <circle cx="12" cy="12" r="8"></circle>
               <path d="m21 21-4.35-4.35"></path>
             </svg>
           </span>
           Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
         </span>
         <div class="topbar-option3__app-dropdown" id="appDropdown">
           <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
             <span class="topbar-option3__app-dropdown-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
+                <circle cx="12" cy="12" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
             </span>
             Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
           <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
             <span class="topbar-option3__app-dropdown-icon">
@@ -583,6 +612,7 @@
               </svg>
             </span>
             Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
         </div>
       </div>
@@ -600,13 +630,27 @@
       </a>
       <a href="scraper-search.html" class="topbar-option3__nav-item" title="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
+          <circle cx="12" cy="12" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </a>
       <a href="scraper-saved.html" class="topbar-option3__nav-item" title="Saved Searches">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </a>
+      <a href="scraper-watchlist.html" class="topbar-option3__nav-item" title="Watchlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </a>
+      <a href="scraper-archived.html" class="topbar-option3__nav-item" title="Archived">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 8v13H3V8"></path>
+          <path d="M1 3h22v5H1z"></path>
+          <path d="M10 12h4"></path>
+          <path d="M12 9v6"></path>
         </svg>
       </a>
     </nav>
@@ -627,6 +671,8 @@
       <a href="../../app-switcher.html" class="mobile-menu__link">Home</a>
       <a href="scraper-feed.html" class="mobile-menu__link">Feed</a>
       <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-watchlist.html" class="mobile-menu__link">Watchlist</a>
+      <a href="scraper-archived.html" class="mobile-menu__link">Archived</a>
       <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
       <a href="../../collection_home.html" class="mobile-menu__link">Collection App</a>
       <a href="../../admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
@@ -684,7 +730,7 @@
         <h1 class="camera-title">Nikon FM2 Titanium + Nikkor 50mm f/1.4</h1>
         
         <div class="price-row">
-          <span class="price">$599</span>
+          <span class="price">¥89,850</span>
           <span class="source-badge source-badge--buyee">B</span>
           <span class="condition-badge condition-badge--mint">★ Mint</span>
         </div>
@@ -754,7 +800,7 @@
     <div class="footer__container">
       <div class="footer__brand">
         <img src="../../assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
-        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film and camera collections with powerful tools designed for enthusiasts.</p>
       </div>
       <div class="footer__section">
         <h4 class="footer__title">Quick Links</h4>

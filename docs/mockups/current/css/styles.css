@@ -368,13 +368,22 @@ body {
   padding: var(--spacing-md);
   min-width: 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 90px;
+}
+
+/* Yahoo Japan Auction cards: reduce padding to give title more room */
+.card-link[data-shop="yahoo-japan-auctions"] .card__body {
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
 }
 
 .card__title {
   font-size: 15px;
   font-weight: 500;
   color: var(--color-slate-dark);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 0;
   line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
@@ -383,35 +392,74 @@ body {
   min-width: 0;
 }
 
+.card__prices {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* Yahoo Japan Auction cards: larger space between title and prices, smaller between price rows */
+.card-link[data-shop="yahoo-japan-auctions"] .card__title {
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.card-link[data-shop="yahoo-japan-auctions"] .card__meta {
+  margin-top: 0;
+}
+
+.card-link[data-shop="yahoo-japan-auctions"] .card__prices {
+  gap: 0;
+  margin-top: var(--spacing-sm);
+}
+
+.card-link[data-shop="yahoo-japan-auctions"] .card__price-row:not(:first-child) {
+  margin-top: -2px;
+}
+
+.card__price-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 13px;
+}
+
+.card__price-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-slate-light);
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
 .card__price {
   font-size: 13px;
   font-weight: 700;
   color: var(--color-teal);
 }
 
-.card__prices {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.card__price-separator {
-  color: var(--color-gray-300);
-  font-weight: 400;
-}
-
 .card__price--buyout {
-  color: #8b0000;
+  color: var(--color-slate-dark);
 }
 
 .card__meta {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
+  margin-top: 0;
 }
 
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-right: calc(-1 * var(--spacing-md));
+  margin-bottom: -4px;
+}
+
+.card__watch,
 .card__dismiss {
   background: none;
   border: none;
@@ -419,7 +467,6 @@ body {
   font-size: 22px;
   font-weight: 400;
   padding: 8px;
-  padding-right: 4px;
   min-width: 32px;
   min-height: 32px;
   display: inline-flex;
@@ -429,14 +476,33 @@ body {
   transition: color 0.2s ease;
   text-decoration: none;
   opacity: 0.7;
-  margin-right: -4px;
+  flex-shrink: 0;
 }
 
+.card__watch {
+  margin-right: -8px;
+}
+
+.card__dismiss {
+  padding-right: var(--spacing-md);
+  margin-right: 0;
+}
+
+.card__watch svg,
+.card__dismiss svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.card__watch:hover,
 .card__dismiss:hover {
   color: var(--color-slate);
   opacity: 1;
 }
 
+.card__watch:active,
 .card__dismiss:active {
   opacity: 0.8;
 }
@@ -483,6 +549,10 @@ body {
   transform: rotate(-45deg);
   text-transform: uppercase;
   z-index: 10;
+}
+
+.ribbon--new {
+  background-color: var(--color-teal);
 }
 
 /* ===== Grid ===== */
@@ -856,7 +926,7 @@ body {
 .footer__links {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 2px;
 }
 
 .footer__link {
@@ -864,9 +934,9 @@ body {
   text-decoration: none;
   font-size: var(--font-size-sm);
   transition: color 0.2s ease;
-  min-height: var(--touch-target-min);
   display: flex;
   align-items: center;
+  line-height: 1.4;
 }
 
 .footer__link:hover,
