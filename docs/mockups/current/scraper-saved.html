@@ -254,6 +254,13 @@
       justify-content: center;
       color: var(--color-slate);
       text-decoration: none;
+      overflow: hidden;
+    }
+
+    .topbar-option3__user-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .saved-header {
@@ -502,7 +509,7 @@
           <span class="topbar-option3__beta-badge">Beta</span>
         </span>
         <div class="topbar-option3__app-dropdown" id="appDropdown">
-          <a href="../option3/scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
+          <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
             <span class="topbar-option3__app-dropdown-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -576,10 +583,7 @@
     
     <div class="topbar-option3__right">
       <a href="./admin_dashboard.html" class="topbar-option3__user-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
+        <img src="./assets/profile-pic.jpg" alt="Brandon Sturka profile" />
       </a>
     </div>
   </header>
@@ -708,6 +712,7 @@
         <div class="footer__links">
           <a href="scraper-feed.html" class="footer__link">Scraper</a>
           <a href="./collection_home.html" class="footer__link">Collections</a>
+          <a href="negative-home.html" class="footer__link">Negative</a>
         </div>
       </div>
     </div>

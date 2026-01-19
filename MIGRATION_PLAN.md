@@ -5,27 +5,28 @@ Migrate the Option 3 (Icon Navigation) topbar design from `topbar-options-compar
 
 ## Current State Analysis
 
-### ✅ Completed (Option 3)
-- **Location**: `docs/mockups/current/topbar-options-comparison/option3/`
-- **Pages**: All Scraper app pages (Feed, Search, Saved, Watchlist, Archived, Detail pages)
-- **Status**: Fully implemented and tested
+### ✅ Completed & Ready for Implementation
+- **Scraper Feed** (`scraper-feed.html`)
+  - **Status**: ✅ UI specifications finalized and approved
+  - **Reference**: Design foundation for all other Scraper pages
+  - **Decision**: See [Decision 0025](docs/project/decisions/0025-scraper-feed-ui-ready-for-implementation.md)
 
-### 🔄 Needs Migration
+### 🔄 Needs UI Review (Based on Feed Decisions)
 - **Location**: `docs/mockups/current/`
-- **Pages to migrate**:
-  1. **Scraper App** (Root level - will replace option3 versions)
-     - `scraper-feed.html`
-     - `scraper-search.html`
-     - `scraper-saved.html`
-     - `scraper-watchlist.html` (Watch page)
-     - `scraper-archived.html` (Archive page)
-     - `scraper-detail-*.html` (3 detail pages)
+- **Pages to review**:
+  1. **Scraper App** (Review for consistency with Feed)
+     - ✅ `scraper-feed.html` - Approved, ready for implementation
+     - 🔄 `scraper-search.html` - Needs review
+     - 🔄 `scraper-saved.html` - Needs review
+     - 🔄 `scraper-watchlist.html` - Needs review
+     - 🔄 `scraper-archived.html` - Needs review
+     - 🔄 `scraper-detail-*.html` (22 detail pages) - Needs review
   
-  2. **Collection App**
-     - `collection_home.html`
-     - `collection_detail.html`
-     - `collection_add.html`
-     - `collection_stats.html`
+  2. **Collection App** (Review after Scraper pages complete)
+     - 🔄 `collection_home.html` - Needs review
+     - 🔄 `collection_detail.html` - Needs review
+     - 🔄 `collection_add.html` - Needs review
+     - 🔄 `collection_stats.html` - Needs review
   
   3. **Admin Dashboard**
      - `admin_dashboard.html`
@@ -202,14 +203,30 @@ For each migrated page:
 
 ## Recommended Execution Order
 
-1. ✅ **Start with Scraper Feed** (you know it works)
-2. ✅ **Then other Scraper pages**: Search, Saved, Watchlist, Archived (similar structure)
-3. ⚠️ **Collection app** (different navigation needs)
-4. ⚠️ **Admin pages** (different navigation needs)
-5. ✅ **Core pages** (simpler)
-6. ✅ **Auth pages** (may need simplified version)
+### Phase 1: UI Review (Current)
+1. ✅ **Scraper Feed** - Approved, ready for implementation
+2. 🔄 **Other Scraper pages** - Review for consistency with Feed:
+   - Search, Saved, Watchlist, Archived (similar structure)
+   - Detail pages (22 pages)
+3. 🔄 **Collection app** - Review after Scraper pages (different navigation needs)
+4. ⚠️ **Admin pages** - Review after Collections (different navigation needs)
+5. ✅ **Core pages** - Approved (App Switcher, About, Privacy, Terms)
+6. ✅ **Auth pages** - May need simplified version
+
+### Phase 2: Implementation (After UI Review Complete)
+- Implement pages in same order as review
+- Scraper Feed can begin implementation immediately
+- Other pages wait for review approval
+
+### On Hold
+- ⏸️ **Negative App** - Deferred to post-MVP release
+  - See [Decision 0026](docs/project/decisions/0026-negative-app-on-hold-for-mvp.md)
+  - Placeholder page exists for future reference
 
 ## Notes
+- **UI Review Status**: See `docs/mockups/current/UI_REVIEW_STATUS.md` for current status
+- **Scraper Feed**: Approved and ready for implementation - serves as design foundation
+- **Review Process**: All pages must be reviewed for consistency with Feed decisions before implementation
+- **Negative App**: On hold for MVP - see [Decision 0026](docs/project/decisions/0026-negative-app-on-hold-for-mvp.md)
 - Always test in browser after each page
-- Keep option3 folder as reference until migration complete
 - Document any page-specific customizations needed

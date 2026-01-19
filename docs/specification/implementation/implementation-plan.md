@@ -47,10 +47,62 @@ All planning and implementation documentation will be stored in `docs/`:
 
 **Note:** See `implementation-validation-plan.md` for detailed validation steps.
 
-### Phase 0.3: Detailed Specifications & Design Refinement
-**Goal:** Define detailed specifications for UI, behavior, and architecture before implementation
+### Phase 0.3: UI Review & Design Refinement
+**Goal:** Review and approve all UI mockups before implementation
 
-#### 0.3.1 UI Component Definitions
+#### 0.3.1 Scraper Feed UI Approval ✅
+- [x] Scraper Feed UI specifications finalized
+- [x] Design decisions documented
+- [x] Feed page approved as design foundation
+- [x] See [Decision 0025](../../project/decisions/0025-scraper-feed-ui-ready-for-implementation.md)
+
+**Status:** ✅ Scraper Feed ready for implementation
+
+#### 0.3.2 Scraper Pages UI Review
+**Goal:** Review all other Scraper pages based on Feed decisions
+
+- [ ] Review Scraper Search page (`scraper-search.html`)
+- [ ] Review Scraper Saved Searches page (`scraper-saved.html`)
+- [ ] Review Scraper Watchlist page (`scraper-watchlist.html`)
+- [ ] Review Scraper Archived page (`scraper-archived.html`)
+- [ ] Review all Scraper Detail pages (`scraper-detail-*.html`)
+- [ ] Ensure consistency with Feed design decisions
+- [ ] Apply Feed styling patterns consistently
+- [ ] Document any deviations or special cases
+- [ ] Approve all Scraper pages for implementation
+
+**Review Criteria:**
+- Consistency with Feed design decisions
+- Consistent styling (colors, spacing, typography)
+- Component patterns match Feed page
+- Responsive design (mobile, tablet, desktop)
+- Interaction patterns are clear and consistent
+
+**Deliverable:** All Scraper pages reviewed and approved
+
+#### 0.3.3 Collections App UI Review
+**Goal:** Review Collections app pages after Scraper review complete
+
+- [ ] Review Collections Home page (`collection_home.html`)
+- [ ] Review Collections Add page (`collection_add.html`)
+- [ ] Review Collections Detail page (`collection_detail.html`)
+- [ ] Review Collections Statistics page (`collection_stats.html`)
+- [ ] Apply Scraper design patterns where applicable
+- [ ] Define Collections-specific components
+- [ ] Ensure consistent navigation patterns
+- [ ] Approve all Collections pages for implementation
+
+**Deliverable:** All Collections pages reviewed and approved
+
+#### 0.3.4 Negative App Status
+- [x] Negative app on hold for MVP release
+- [x] See [Decision 0026](../../project/decisions/0026-negative-app-on-hold-for-mvp.md)
+- [x] Placeholder page exists for future reference
+- [ ] Negative app UI specifications deferred to post-MVP
+
+**Status:** ⏸️ On hold for MVP
+
+#### 0.3.5 UI Component Definitions
 - [ ] Review and complete component library documentation
 - [ ] Define missing UI components
 - [ ] Define interaction patterns and behaviors
@@ -58,7 +110,7 @@ All planning and implementation documentation will be stored in `docs/`:
 - [ ] Define accessibility requirements
 - [ ] Document component states (loading, error, empty, etc.)
 
-#### 0.3.2 Complete Scraper Behavior Specification
+#### 0.3.6 Complete Scraper Behavior Specification
 - [ ] Define general scraper behavior (frequency, error handling, rate limiting)
 - [ ] Define data collection strategy (what data, normalization, missing data)
 - [ ] Define deduplication strategy (how to identify duplicates)
@@ -69,29 +121,19 @@ All planning and implementation documentation will be stored in `docs/`:
 - [ ] Define source-specific behaviors (Buyee, eBay)
 - [ ] Document in `implementation-scraper-behavior-specification.md`
 
-#### 0.3.3 Detailed Page Behavior Specifications
+#### 0.3.7 Detailed Page Behavior Specifications
 - [ ] Define behavior for each Scraper App page (Feed, Search, Saved Searches, Detail, Watch)
 - [ ] Define behavior for each Collection App page (Home, Add, Detail, Statistics)
-- [ ] Define behavior for Negative App pages (to be designed)
 - [ ] Define behavior for Authentication pages
 - [ ] Define behavior for Admin pages
 - [ ] Define data requirements for each page
 - [ ] Define interactions and user flows
 - [ ] Document in `implementation-screen-specifications.md`
 
-#### 0.3.4 App Architecture & Naming
-- [ ] Rename "Scraper App" (decide on new name)
-- [ ] Design Negative App architecture (Films & Analog Photos collection)
-- [ ] Define Negative App user journeys
-- [ ] Define Negative App data model
-- [ ] Define Negative App pages and features
-- [ ] Update App Switcher to include three apps
-- [ ] Update all documentation with new app names
-- [ ] Document in `implementation-validation-notes.md` and ADR
-
-**Deliverable:** Complete specifications for UI, scraper behavior, page behaviors, and app architecture
+**Deliverable:** Complete specifications for UI, scraper behavior, page behaviors
 
 **Note:** See `implementation-detailed-specifications-breakdown.md` for detailed breakdown of specification tasks.
+**Note:** See `UI_REVIEW_STATUS.md` in mockups folder for current review status.
 
 ### Phase 0.4: Final Validation & Decision
 **Goal:** Review all specifications and make go/no-go decision
