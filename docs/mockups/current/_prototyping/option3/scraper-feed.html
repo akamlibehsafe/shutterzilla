@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Scraper Feed (Option 3: Icon Navigation)</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Option 3: Icon navigation in topbar */
+    .topbar-option3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--topbar-height);
+      padding: 0 var(--spacing-md);
+      background-color: var(--color-white);
+      border-bottom: 2px solid var(--color-teal);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      gap: var(--spacing-md);
+    }
+
+    .topbar-option3__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar-option3__logo img {
+      height: 40px;
+      width: auto;
+      max-width: 140px;
+    }
+
+    .topbar-option3__divider {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-left: var(--spacing-xs);
+      padding-left: var(--spacing-sm);
+      border-left: 1px solid var(--color-gray-300);
+      position: relative;
+      height: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__divider {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__app-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-name:hover {
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-option3__app-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .topbar-option3__app-dropdown {
+      position: absolute;
+      top: calc(100% + var(--spacing-xs));
+      left: 0;
+      background: var(--color-white);
+      padding: var(--spacing-xs) 0;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .topbar-option3__app-dropdown.open {
+      display: flex;
+    }
+
+    .topbar-option3__app-dropdown-item {
+      padding: var(--spacing-sm) var(--spacing-md);
+      color: var(--color-slate);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-dropdown-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .topbar-option3__app-dropdown-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      vertical-align: middle;
+    }
+
+    .topbar-option3__app-dropdown-item:hover,
+    .topbar-option3__app-dropdown-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-dropdown-item--current {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+
+    .topbar-option3__nav {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-xs);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__nav {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__nav-item {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--color-slate-light);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .topbar-option3__nav-item:hover,
+    .topbar-option3__nav-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item--active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .topbar-option3__nav-item[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-slate-dark);
+      color: var(--color-white);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .topbar-option3__right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__user-icon {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      border-radius: var(--radius-full);
+      background-color: var(--color-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-slate);
+      text-decoration: none;
+      overflow: hidden;
+    }
+
+    .topbar-option3__user-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      padding-left: var(--spacing-sm);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+
+    .card__image-container {
+      position: relative;
+      height: 140px;
+      background-color: var(--color-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .card__image-container img {
+      max-width: 75%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    /* Match view-toggle height */
+    .header-row {
+      align-items: center;
+    }
+
+    /* Select button height */
+    .header-row .controls .btn {
+      min-height: 36px;
+      height: 36px;
+      font-size: var(--font-size-base);
+    }
+
+    /* Sort dropdown height */
+    .header-row .controls .select {
+      min-height: 36px;
+      height: 36px;
+      font-size: var(--font-size-base);
+    }
+
+    /* Selection toolbar buttons height */
+    .selection-toolbar__btn {
+      min-height: 34px !important;
+      height: 34px !important;
+    }
+
+
+    .header-row .view-toggle {
+      height: 32px;
+    }
+
+    .header-row .view-toggle__btn {
+      min-height: 32px;
+      height: 32px;
+      padding: 4px var(--spacing-xs);
+    }
+
+    .header-row .view-toggle__btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Left side container for pills and search */
+    .header-row__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    /* Search input in header row */
+    .header-row__search {
+      display: flex;
+      align-items: center;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .header-row__search .search-input {
+      min-height: 36px;
+      height: 36px;
+      padding: 4px var(--spacing-md);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      width: 300px;
+      box-sizing: border-box;
+    }
+
+    .header-row__search .search-input:focus {
+      outline: none;
+      border-color: var(--color-teal);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+
+    @media (max-width: 767px) {
+      .header-row__left {
+        width: 100%;
+      }
+
+      .header-row__search {
+        width: 100%;
+        margin: var(--spacing-sm) 0 0 0;
+      }
+
+      .header-row__search .search-input {
+        width: 100%;
+      }
+    }
+
+    /* Increase spacing between selection toolbar buttons */
+    .selection-toolbar__actions {
+      gap: var(--spacing-sm) !important;
+      align-items: center;
+    }
+
+    .selection-toolbar__count {
+      margin-right: 0 !important;
+    }
+    
+    /* Auto-show "New" ribbon for cards with data-is-new="true" */
+    .card-link[data-is-new="true"] .card__image-container::before {
+      content: "New";
+      position: absolute;
+      top: 12px;
+      left: -30px;
+      width: 100px;
+      padding: 4px 0;
+      background-color: var(--color-teal);
+      color: var(--color-white);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      transform: rotate(-45deg);
+      text-transform: uppercase;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar-option3">
+    <div class="topbar-option3__left">
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a href="../../app-switcher.html" class="topbar-option3__logo">
+        <img src="../../assets/logo-topbar.png" alt="ShutterZilla">
+      </a>
+      <div class="topbar-option3__divider">
+        <span class="topbar-option3__app-name" id="appName">
+          <span class="topbar-option3__app-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </span>
+          Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
+        </span>
+        <div class="topbar-option3__app-dropdown" id="appDropdown">
+          <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </span>
+            Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+          <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </span>
+            Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Icon Navigation (hidden on mobile, shown on desktop) -->
+    <nav class="topbar-option3__nav">
+      <a href="scraper-feed.html" class="topbar-option3__nav-item topbar-option3__nav-item--active" title="Feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </a>
+      <a href="scraper-search.html" class="topbar-option3__nav-item" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </a>
+      <a href="scraper-saved.html" class="topbar-option3__nav-item" title="Saved Searches">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </a>
+      <a href="scraper-watchlist.html" class="topbar-option3__nav-item" title="Watchlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </a>
+      <a href="scraper-archived.html" class="topbar-option3__nav-item" title="Archived">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 8v13H3V8"></path>
+          <path d="M1 3h22v5H1z"></path>
+          <path d="M10 12h4"></path>
+          <path d="M12 9v6"></path>
+        </svg>
+      </a>
+    </nav>
+    
+    <div class="topbar-option3__right">
+      <a href="../../admin_dashboard.html" class="topbar-option3__user-icon">
+        <img src="../../assets/profile-pic.jpg" alt="Brandon Sturka profile" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="../../app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-watchlist.html" class="mobile-menu__link">Watchlist</a>
+      <a href="scraper-archived.html" class="mobile-menu__link">Archived</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="../../collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="../../admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1 class="page-header__title">Feed</h1>
+    </div>
+    
+    <!-- Header Row -->
+    <div class="header-row">
+      <div class="header-row__left">
+        <div class="pills" id="pillsContainer">
+          <a href="#" class="pill pill--primary" data-filter="all">All</a>
+          <a href="#" class="pill pill--outline" data-filter="buyee">Buyee</a>
+          <a href="#" class="pill pill--outline" data-filter="ebay">eBay</a>
+        </div>
+        <div class="header-row__search">
+          <input type="search" class="search-input" placeholder="Search cameras..." aria-label="Search cameras">
+        </div>
+      </div>
+      <div class="selection-toolbar" id="selectionToolbar">
+        <div class="selection-toolbar__actions">
+          <span class="selection-toolbar__count" id="selectionCount">0 selected</span>
+          <button class="btn btn--outline selection-toolbar__btn" onclick="selectAllCards(); return false;">Select All</button>
+          <button class="btn btn--primary selection-toolbar__btn" onclick="archiveSelected(); return false;">Archive Selected</button>
+          <button class="btn btn--outline selection-toolbar__btn" onclick="watchSelected(); return false;">Watch Selected</button>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn--outline" id="selectModeBtn" onclick="toggleSelectMode(); return false;">Select</button>
+        <select class="select">
+          <option>Sort: Newest</option>
+          <option>Sort: Price: Low to High</option>
+          <option>Sort: Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Camera Grid -->
+    <div class="grid grid--6">
+      <!-- Card 1 -->
+      <a href="scraper-detail-nikon-fm2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/nikon-fm2-titanium.jpg" alt="Nikon FM2">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Nikon FM2 Titanium</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥89,850</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 2 -->
+      <a href="scraper-detail-leica-m3.html" class="card-link" data-source="ebay" data-availability="available" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/leica-m3.jpg" alt="Leica M3">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Leica M3 Double Stroke</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥277,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 3 -->
+      <a href="scraper-detail-canon-ae1.html" class="card-link" data-source="ebay" data-availability="sold">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="ribbon">Sold</div>
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/canon-ae1.jpg" alt="Canon AE-1">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Canon AE-1 Black</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥22,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 4 -->
+      <a href="scraper-detail-olympus-om1n.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
+            <img src="../../assets/cameras/olympus-om1n.png" alt="Olympus OM-1N">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Olympus OM-1N + Zuiko 50mm f/1.8</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥52,350</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 5 -->
+      <a href="scraper-detail-nikon-f.html" class="card-link" data-source="ebay" data-availability="available" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/nikon-f.jpg" alt="Nikon F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Nikon F</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥63,750</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 6 -->
+      <a href="scraper-detail-pentax-spotmatic-f.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-spotmatic-f.jpg" alt="Pentax Spotmatic F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax Spotmatic F</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Current</span>
+                  <span class="card__price">¥41,250</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Buyout</span>
+                  <span class="card__price card__price--buyout">¥47,438</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 7 -->
+      <a href="scraper-detail-olympus-om20.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/olympus-OM-20.jpg" alt="Olympus OM-20">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Olympus OM-20</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥28,350</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 8 -->
+      <a href="scraper-detail-pentax-es2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-es-II.jpg" alt="Pentax ES-II">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax ES-II</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Current</span>
+                  <span class="card__price">¥48,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Buyout</span>
+                  <span class="card__price card__price--buyout">¥55,200</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 9 -->
+      <a href="scraper-detail-konica-iiia.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/konica-III-A.jpg" alt="Konica IIIA">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Konica IIIA</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥67,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 10 -->
+      <a href="scraper-detail-pentax-mx.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-mx.jpg" alt="Pentax MX">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax MX</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥57,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 11 -->
+      <a href="scraper-detail-nikon-d700.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/nikon-D700.jpg" alt="Nikon D700">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Nikon D700</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥97,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 12 -->
+      <a href="scraper-detail-olympus-om2n.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
+            <img src="../../assets/cameras/olympus-om-2n.jpg" alt="Olympus OM-2N">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Olympus OM-2N</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥63,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 13 -->
+      <a href="scraper-detail-yashica-mat-124g.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/yashica-mat-124g.jpg" alt="Yashica Mat-124G">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Yashica Mat-124G</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥82,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 14 -->
+      <a href="scraper-detail-bronica-s2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/bronica-s2.jpg" alt="Bronica S2">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Bronica S2</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Current</span>
+                  <span class="card__price">¥180,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Buyout</span>
+                  <span class="card__price card__price--buyout">¥207,000</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 15 -->
+      <a href="scraper-detail-rolleiflex-35f.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/rolleiflex-3.5f.jpg" alt="Rolleiflex 3.5F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Rolleiflex 3.5F</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥277,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 16 -->
+      <a href="scraper-detail-hasselblad-500cm.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-fleamarket">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-fleamarket" title="Yahoo Japan Fleamarket badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Fleamarket">
+              </span>
+            </div>
+            <img src="../../assets/cameras/hasselblad-500-cm.jpg" alt="Hasselblad 500C/M">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Hasselblad 500C/M</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥360,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 17 -->
+      <a href="scraper-detail-leica-m6.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/leica-m6.jpg" alt="Leica M6">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Leica M6</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥480,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 18 -->
+      <a href="scraper-detail-canon-a1.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/canon-f-1.jpg" alt="Canon F-1">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Canon F-1</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥97,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 19 -->
+      <a href="scraper-detail-mamiya-rb67.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/mamiya-rb67.jpg" alt="Mamiya RB67">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Mamiya RB67</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥127,500</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 20 -->
+      <a href="scraper-detail-minolta-x700.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
+            <img src="../../assets/cameras/minolta-x-700.jpg" alt="Minolta X-700">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Minolta X-700</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥33,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 21 -->
+      <a href="scraper-detail-contax-g2.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/conta-g2.jpg" alt="Contax G2">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Contax G2</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥165,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 22 -->
+      <a href="scraper-detail-fujica-st801.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-fleamarket">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-fleamarket" title="Yahoo Japan Fleamarket badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Fleamarket">
+              </span>
+            </div>
+            <img src="../../assets/cameras/fujica-st-801.jpg" alt="Fujica ST801">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Fujica ST801</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Price</span>
+                  <span class="card__price">¥27,000</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label"></span>
+                  <span class="card__price"></span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Add to Watchlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M1 3h22v5H1z"></path>
+                  <path d="M10 12h4"></path>
+                  <path d="M12 9v6"></path>
+                </svg>
+              </button>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="../../assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film and camera collections with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="../../about.html" class="footer__link">About</a>
+          <a href="../../privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="../../terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="../../collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/mobile-menu.js"></script>
+  <script>
+    // App name dropdown toggle
+    const appName = document.getElementById('appName');
+    const appDropdown = document.getElementById('appDropdown');
+    
+    if (appName && appDropdown) {
+      appName.addEventListener('click', (e) => {
+        e.stopPropagation();
+        appDropdown.classList.toggle('open');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!appName.contains(e.target) && !appDropdown.contains(e.target)) {
+          appDropdown.classList.remove('open');
+        }
+      });
+    }
+    
+    // Filter functionality
+    const filterPills = document.querySelectorAll('.pills .pill');
+    const cards = document.querySelectorAll('.card-link');
+    
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const filterType = pill.getAttribute('data-filter');
+        
+        // Update pill active states
+        filterPills.forEach(p => {
+          p.classList.remove('pill--primary');
+          p.classList.add('pill--outline');
+        });
+        pill.classList.remove('pill--outline');
+        pill.classList.add('pill--primary');
+        
+        // Filter cards
+        cards.forEach(card => {
+          if (filterType === 'all') {
+            card.style.display = '';
+          } else {
+            const cardSource = card.getAttribute('data-source');
+            if (cardSource === filterType) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+
+    // Select Mode Functionality
+    let isSelectMode = false;
+
+    function toggleSelectMode() {
+      const body = document.body;
+      const selectBtn = document.getElementById('selectModeBtn');
+      isSelectMode = body.classList.contains('select-mode');
+      
+      if (isSelectMode) {
+        body.classList.remove('select-mode');
+        selectBtn.textContent = 'Select';
+        // Clear all selections
+        document.querySelectorAll('.card-link[data-selected="true"]').forEach(card => {
+          card.removeAttribute('data-selected');
+        });
+        updateSelectionCount();
+      } else {
+        body.classList.add('select-mode');
+        selectBtn.textContent = 'Cancel';
+      }
+    }
+
+    function cancelSelectMode() {
+      document.body.classList.remove('select-mode');
+      const selectBtn = document.getElementById('selectModeBtn');
+      if (selectBtn) {
+        selectBtn.textContent = 'Select';
+      }
+      // Clear all selections
+      document.querySelectorAll('.card-link[data-selected="true"]').forEach(card => {
+        card.removeAttribute('data-selected');
+      });
+      updateSelectionCount();
+      isSelectMode = false;
+    }
+
+
+    // Intercept card clicks in select mode
+    const cardLinks = document.querySelectorAll('.card-link');
+    
+    cardLinks.forEach(cardLink => {
+      cardLink.addEventListener('click', function(e) {
+        // Check if we're in select mode
+        if (document.body.classList.contains('select-mode')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const isSelected = cardLink.getAttribute('data-selected') === 'true';
+          
+          if (isSelected) {
+            cardLink.removeAttribute('data-selected');
+          } else {
+            cardLink.setAttribute('data-selected', 'true');
+          }
+          
+          updateSelectionCount();
+        }
+        // If not in select mode, normal navigation happens
+      });
+    });
+
+    function updateSelectionCount() {
+      const selectedCount = document.querySelectorAll('.card-link[data-selected="true"]').length;
+      const countElement = document.getElementById('selectionCount');
+      if (countElement) {
+        countElement.textContent = `${selectedCount} selected`;
+      }
+    }
+
+    function selectAllCards() {
+      const visibleCards = document.querySelectorAll('.card-link:not([style*="display: none"])');
+      visibleCards.forEach(card => {
+        card.setAttribute('data-selected', 'true');
+      });
+      updateSelectionCount();
+    }
+
+    function archiveSelected() {
+      const selectedCards = document.querySelectorAll('.card-link[data-selected="true"]');
+      if (selectedCards.length === 0) return;
+      
+      // For mockup: just show an alert
+      alert(`Archiving ${selectedCards.length} card(s)...`);
+      
+      // In real implementation:
+      // - Add data-is-archived="true" to cards
+      // - Animate cards out
+      // - Save to localStorage/backend
+      // - Exit select mode
+      
+      cancelSelectMode();
+    }
+
+    function watchSelected() {
+      const selectedCards = document.querySelectorAll('.card-link[data-selected="true"]');
+      if (selectedCards.length === 0) return;
+      
+      // For mockup: just show an alert
+      alert(`Adding ${selectedCards.length} card(s) to watchlist...`);
+      
+      // In real implementation:
+      // - Add to watchlist
+      // - Show feedback
+      // - Exit select mode
+      
+      cancelSelectMode();
+    }
+  </script>
+</body>
+</html>

@@ -3,10 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ShutterZilla - About</title>
+  <title>Shutterzilla - About</title>
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Option 3: Icon navigation in topbar */
+    .topbar-option3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--topbar-height);
+      padding: 0 var(--spacing-md);
+      background-color: var(--color-white);
+      border-bottom: 2px solid var(--color-teal);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      gap: var(--spacing-md);
+    }
+
+    .topbar-option3__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar-option3__logo img {
+      height: 40px;
+      width: auto;
+      max-width: 140px;
+    }
+
+    .topbar-option3__divider {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-left: var(--spacing-xs);
+      padding-left: var(--spacing-sm);
+      border-left: 1px solid var(--color-gray-300);
+      position: relative;
+      height: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__divider {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__app-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-name:hover {
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-option3__app-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .topbar-option3__app-dropdown {
+      position: absolute;
+      top: calc(100% + var(--spacing-xs));
+      left: 0;
+      background: var(--color-white);
+      padding: var(--spacing-xs) 0;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .topbar-option3__app-dropdown.open {
+      display: flex;
+    }
+
+    .topbar-option3__app-dropdown-item {
+      padding: var(--spacing-sm) var(--spacing-md);
+      color: var(--color-slate);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-dropdown-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .topbar-option3__app-dropdown-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      vertical-align: middle;
+    }
+
+    .topbar-option3__app-dropdown-item:hover,
+    .topbar-option3__app-dropdown-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-dropdown-item--current {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+
+    .topbar-option3__nav {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-xs);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__nav {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__nav-item {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--color-slate-light);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .topbar-option3__nav-item:hover,
+    .topbar-option3__nav-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item--active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .topbar-option3__nav-item[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-slate-dark);
+      color: var(--color-white);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .topbar-option3__right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__user-icon {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      border-radius: var(--radius-full);
+      background-color: var(--color-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-slate);
+      text-decoration: none;
+      overflow: hidden;
+    }
+
+    .topbar-option3__user-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .content-page {
       max-width: 800px;
       margin: 0 auto;
@@ -87,22 +343,21 @@
 </head>
 <body>
   <!-- Top Bar -->
-  <header class="topbar">
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <a href="app-switcher.html" class="topbar__logo">
-      <img src="assets/logo-topbar.png" alt="ShutterZilla">
-    </a>
-    <div class="topbar__title"></div>
-    <div class="topbar__right">
-      <a href="admin_dashboard.html" class="topbar__user-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
+  <header class="topbar-option3">
+    <div class="topbar-option3__left">
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a href="app-switcher.html" class="topbar-option3__logo">
+        <img src="assets/logo-topbar.png" alt="Shutterzilla">
+      </a>
+    </div>
+    
+    <div class="topbar-option3__right">
+      <a href="admin_dashboard.html" class="topbar-option3__user-icon">
+        <img src="assets/profile-pic.jpg" alt="Brandon Sturka profile" />
       </a>
     </div>
   </header>
@@ -112,7 +367,7 @@
     <div class="mobile-menu__nav">
       <a href="app-switcher.html" class="mobile-menu__link">Home</a>
       <a href="scraper-feed.html" class="mobile-menu__link">Scraper App</a>
-      <a href="collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="collection_home.html" class="mobile-menu__link">Collections App</a>
       <a href="admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
       <a href="about.html" class="mobile-menu__link">About</a>
       <a href="privacy.html" class="mobile-menu__link">Privacy Policy</a>
@@ -122,21 +377,43 @@
 
   <!-- Page Content -->
   <main class="content-page">
-    <h1>About ShutterZilla</h1>
+    <h1>About Shutterzilla</h1>
+    
+    <p>Shutterzilla is a comprehensive platform designed to support hobbyists, enthusiasts, and professionals in getting the best out of their film and camera collections. We understand that building and maintaining a meaningful collection of vintage cameras requires more than just passion—it requires powerful tools that make discovery, organization, and management effortless.</p>
+    
+    <p>Our suite of applications provides everything you need to explore the world of vintage cameras, track down rare finds, and maintain detailed records of your collection. Whether you're a casual collector looking for your next camera, a serious enthusiast tracking market trends, or a professional managing an extensive inventory, Shutterzilla offers the tools and insights you need to succeed.</p>
+    
+    <p>From advanced web scraping that aggregates listings from multiple marketplaces to comprehensive collection management with detailed statistics and tracking, our applications work together to create a seamless experience. We've built Shutterzilla with the understanding that every collector has unique needs, and our flexible, intuitive tools adapt to your workflow.</p>
+    
+    <p><em>Modern apps for your vintage cameras. Discover, collect, and manage your film and camera collections with powerful tools designed for enthusiasts.</em></p>
     
     <div class="app-card">
-      <h3>ShutterZilla Collection</h3>
-      <p>Organize and manage your personal camera collection. Track cameras you own, maintain a wishlist of cameras you're looking for, and keep detailed records including purchase price, condition, and notes. View statistics about your collection and watch its value over time.</p>
+      <h3>Shutterzilla Scraper</h3>
+      <p>Discover vintage cameras from multiple marketplaces with our powerful web scraping tool. Search across various platforms including eBay USA, Buyee, Mercari, Yahoo Japan Auctions, and Rakuma. Save your search criteria and get notified when new listings match your preferences. Filter by brand, price range, condition, and source to find exactly what you're looking for.</p>
+    </div>
+    
+    <div class="app-card">
+      <h3>Shutterzilla Collections</h3>
+      <p>Organize and manage multiple camera collections with advanced tagging and sorting features. Track cameras you own, maintain wishlists of cameras you're looking for, and keep detailed records including purchase price, condition, and notes. View statistics about your collections and watch their value over time.</p>
+    </div>
+    
+    <div class="app-card">
+      <h3>Shutterzilla Negative</h3>
+      <p>Manage your film and analogue photo collection. Track films, developing process settings, camera settings, and take full control of your analogue photography with the mobile companion.</p>
     </div>
     
     <h2>Features</h2>
     
     <ul>
-      <li><strong>Multi-Source Search</strong> - Search across multiple marketplaces simultaneously</li>
+      <li><strong>Multi-Source Search</strong> - Search across multiple marketplaces simultaneously with Scraper</li>
       <li><strong>Smart Filters</strong> - Filter by brand, price range, condition, and source</li>
       <li><strong>Saved Searches</strong> - Save your search criteria and get notified of new listings</li>
-      <li><strong>Collection Management</strong> - Track owned cameras and wishlist items</li>
-      <li><strong>Statistics & Insights</strong> - Visualize your collection's composition and value</li>
+      <li><strong>Collection Management</strong> - Track owned cameras and wishlist items with advanced tagging and sorting</li>
+      <li><strong>Statistics & Insights</strong> - Visualize your collection's composition and value over time</li>
+      <li><strong>Film Tracking</strong> - Manage your film and analogue photo collection with Negative</li>
+      <li><strong>Developing Process</strong> - Track developing process settings and camera settings for each photo</li>
+      <li><strong>Photo Galleries</strong> - Build beautiful galleries for your analogue photography</li>
+      <li><strong>Mobile Companion</strong> - Take full control of your analogue photography on the go</li>
       <li><strong>Responsive Design</strong> - Works seamlessly on desktop and mobile devices</li>
     </ul>
     
@@ -144,7 +421,7 @@
     
     <p>We believe that vintage cameras deserve to be preserved, used, and appreciated. Our mission is to connect collectors with the cameras they're looking for and help them maintain their collections with modern, easy-to-use tools.</p>
     
-    <p>ShutterZilla was built by photographers and collectors who understand the joy of finding that perfect camera and the satisfaction of building a meaningful collection.</p>
+    <p>Shutterzilla was built by photographers and collectors who understand the joy of finding that perfect camera and the satisfaction of building a meaningful collection.</p>
     
     <h2>Contact</h2>
     
@@ -155,7 +432,7 @@
   <footer class="footer">
     <div class="footer__container">
       <div class="footer__brand">
-        <img src="assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <img src="assets/logo-footer.png" alt="Shutterzilla" class="footer__logo">
         <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film and camera collections with powerful tools designed for enthusiasts.</p>
       </div>
       <div class="footer__section">
@@ -170,12 +447,13 @@
         <h4 class="footer__title">Apps</h4>
         <div class="footer__links">
           <a href="scraper-feed.html" class="footer__link">Scraper</a>
-          <a href="collection_home.html" class="footer__link">Collection</a>
+          <a href="collection_home.html" class="footer__link">Collections</a>
+          <a href="negative-home.html" class="footer__link">Negative</a>
         </div>
       </div>
     </div>
     <div class="footer__bottom">
-      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+      <p class="footer__copyright">© 2025 Shutterzilla. All rights reserved.</p>
     </div>
   </footer>
 

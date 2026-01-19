@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Verify Your Email</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-background);
+      padding: var(--spacing-md);
+    }
+    
+    .landing__logo {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .landing__logo img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+    
+    .landing__tagline {
+      font-size: var(--font-size-base);
+      color: var(--color-slate-light);
+      margin-bottom: var(--spacing-xl);
+      text-align: center;
+      padding: 0 var(--spacing-md);
+    }
+    
+    .login-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-lg);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .login-card__icon {
+      width: 56px;
+      height: 56px;
+      background: #d1fae5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+    }
+    
+    .login-card__icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--color-teal);
+    }
+    
+    .login-card__title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .login-card__subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+      margin-bottom: var(--spacing-md);
+      line-height: 1.5;
+    }
+    
+    .login-card__email {
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+    
+    .login-card__footer {
+      margin-top: var(--spacing-lg);
+    }
+    
+    .link {
+      color: var(--color-teal);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .link:active {
+      text-decoration: underline;
+    }
+    
+    .resend-text {
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    @media (min-width: 768px) {
+      .landing {
+        padding: var(--spacing-xl);
+      }
+      
+      .landing__logo img {
+        height: 80px;
+      }
+      
+      .landing__tagline {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-2xl);
+      }
+      
+      .login-card {
+        padding: var(--spacing-xl);
+      }
+      
+      .login-card__icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: var(--spacing-lg);
+      }
+      
+      .login-card__icon svg {
+        width: 32px;
+        height: 32px;
+      }
+      
+      .link:hover {
+        text-decoration: underline;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="landing">
+    <!-- Logo -->
+    <div class="landing__logo">
+      <img src="assets/logo-landing.png" alt="ShutterZilla">
+    </div>
+    
+    <!-- Tagline -->
+    <p class="landing__tagline">Modern apps for your vintage cameras</p>
+    
+    <!-- Email Verification Card -->
+    <div class="login-card">
+      <div class="login-card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+      </div>
+      <h1 class="login-card__title">Check Your Email</h1>
+      <p class="login-card__subtitle">
+        We've sent a verification link to<br>
+        <span class="login-card__email">john@example.com</span>
+      </p>
+      <p class="login-card__subtitle">
+        Click the link in the email to verify your account and get started.
+      </p>
+      
+      <p class="resend-text">Didn't receive the email?</p>
+      <button class="btn btn--outline btn-block">Resend Verification Email</button>
+      
+      <!-- Footer Links -->
+      <div class="login-card__footer">
+        <a href="landing-page.html" class="link">← Back to login</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

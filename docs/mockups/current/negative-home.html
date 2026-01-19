@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shutterzilla - Negative Home (Option 3: Icon Navigation)</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Option 3: Icon navigation in topbar */
+    .topbar-option3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--topbar-height);
+      padding: 0 var(--spacing-md);
+      background-color: var(--color-white);
+      border-bottom: 2px solid var(--color-teal);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      gap: var(--spacing-md);
+    }
+
+    .topbar-option3__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar-option3__logo img {
+      height: 40px;
+      width: auto;
+      max-width: 140px;
+    }
+
+    .topbar-option3__divider {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-left: var(--spacing-xs);
+      padding-left: var(--spacing-sm);
+      border-left: 1px solid var(--color-gray-300);
+      position: relative;
+      height: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__divider {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__app-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-name:hover {
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-option3__app-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .topbar-option3__app-dropdown {
+      position: absolute;
+      top: calc(100% + var(--spacing-xs));
+      left: 0;
+      background: var(--color-white);
+      padding: var(--spacing-xs) 0;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .topbar-option3__app-dropdown.open {
+      display: flex;
+    }
+
+    .topbar-option3__app-dropdown-item {
+      padding: var(--spacing-sm) var(--spacing-md);
+      color: var(--color-slate);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-dropdown-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .topbar-option3__app-dropdown-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      vertical-align: middle;
+    }
+
+    .topbar-option3__app-dropdown-item:hover,
+    .topbar-option3__app-dropdown-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-dropdown-item--current {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+
+    .topbar-option3__nav {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-xs);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__nav {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__nav-item {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--color-slate-light);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .topbar-option3__nav-item:hover,
+    .topbar-option3__nav-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item--active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .topbar-option3__nav-item[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-slate-dark);
+      color: var(--color-white);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .topbar-option3__right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__user-icon {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      border-radius: var(--radius-full);
+      background-color: var(--color-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-slate);
+      text-decoration: none;
+      overflow: hidden;
+    }
+
+    .topbar-option3__user-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      padding-left: var(--spacing-sm);
+    }
+    
+    .page-header__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+    }
+
+    .card__image-container {
+      position: relative;
+      height: 140px;
+      background-color: var(--color-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .card__image-container img {
+      max-width: 75%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    /* Match view-toggle height */
+    .header-row {
+      align-items: center;
+    }
+
+    /* Select button height */
+    .header-row .controls .btn {
+      min-height: 36px;
+      height: 36px;
+      font-size: var(--font-size-base);
+    }
+
+    /* Sort dropdown height */
+    .header-row .controls .select {
+      min-height: 36px;
+      height: 36px;
+      font-size: var(--font-size-base);
+    }
+
+    /* Selection toolbar buttons height */
+    .selection-toolbar__btn {
+      min-height: 34px !important;
+      height: 34px !important;
+    }
+
+
+    .header-row .view-toggle {
+      height: 32px;
+    }
+
+    .header-row .view-toggle__btn {
+      min-height: 32px;
+      height: 32px;
+      padding: 4px var(--spacing-xs);
+    }
+
+    .header-row .view-toggle__btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Left side container for pills and search */
+    .header-row__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    /* Search input in header row */
+    .header-row__search {
+      display: flex;
+      align-items: center;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .header-row__search .search-input {
+      min-height: 36px;
+      height: 36px;
+      padding: 4px var(--spacing-md);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      width: 300px;
+      box-sizing: border-box;
+    }
+
+    .header-row__search .search-input:focus {
+      outline: none;
+      border-color: var(--color-teal);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+
+    @media (max-width: 767px) {
+      .header-row__left {
+        width: 100%;
+      }
+
+      .header-row__search {
+        width: 100%;
+        margin: var(--spacing-sm) 0 0 0;
+      }
+
+      .header-row__search .search-input {
+        width: 100%;
+      }
+    }
+
+    /* Increase spacing between selection toolbar buttons */
+    .selection-toolbar__actions {
+      gap: var(--spacing-sm) !important;
+      align-items: center;
+    }
+
+    .selection-toolbar__count {
+      margin-right: 0 !important;
+    }
+    
+    /* Auto-show "New" ribbon for cards with data-is-new="true" */
+    .card-link[data-is-new="true"] .card__image-container::before {
+      content: "New";
+      position: absolute;
+      top: 12px;
+      left: -30px;
+      width: 100px;
+      padding: 4px 0;
+      background-color: var(--color-teal);
+      color: var(--color-white);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      transform: rotate(-45deg);
+      text-transform: uppercase;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar-option3">
+    <div class="topbar-option3__left">
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a href="./app-switcher.html" class="topbar-option3__logo">
+        <img src="./assets/logo-topbar.png" alt="Shutterzilla">
+      </a>
+      <div class="topbar-option3__divider">
+        <span class="topbar-option3__app-name" id="appName">
+          <span class="topbar-option3__app-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Film strip base -->
+              <rect x="2" y="6" width="20" height="12" rx="1" fill="currentColor" opacity="0.9"/>
+              <!-- Perforations (sprocket holes) on top -->
+              <circle cx="5" cy="6" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="6" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="13" cy="6" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="17" cy="6" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="21" cy="6" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <!-- Perforations on bottom -->
+              <circle cx="5" cy="18" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="18" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="13" cy="18" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="17" cy="18" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="21" cy="18" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <!-- Film frames -->
+              <rect x="4" y="8" width="4" height="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+              <rect x="9" y="8" width="4" height="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+              <rect x="14" y="8" width="4" height="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+              <rect x="19" y="8" width="2" height="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+            </svg>
+          </span>
+          Negative
+          <span class="topbar-option3__beta-badge">Beta</span>
+        </span>
+        <div class="topbar-option3__app-dropdown" id="appDropdown">
+          <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </span>
+            Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+          <a href="./collection_home.html" class="topbar-option3__app-dropdown-item">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </span>
+            Collections
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+          <a href="negative-home.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </span>
+            Negative
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Icon Navigation (hidden on mobile, shown on desktop) -->
+    <nav class="topbar-option3__nav">
+      <a href="negative-home.html" class="topbar-option3__nav-item topbar-option3__nav-item--active" title="Films">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </a>
+      <a href="#" class="topbar-option3__nav-item" title="Galleries">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+      </a>
+      <a href="#" class="topbar-option3__nav-item" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+        </svg>
+      </a>
+    </nav>
+    
+    <div class="topbar-option3__right">
+      <a href="./admin_dashboard.html" class="topbar-option3__user-icon">
+        <img src="./assets/profile-pic.jpg" alt="Brandon Sturka profile" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="./app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="negative-home.html" class="mobile-menu__link">Films</a>
+      <a href="#" class="mobile-menu__link">Galleries</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Scraper App</a>
+      <a href="./collection_home.html" class="mobile-menu__link">Collections App</a>
+      <a href="./admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1 class="page-header__title">Films</h1>
+    </div>
+    
+    <!-- Header Row -->
+    <div class="header-row">
+      <div class="header-row__left">
+        <div class="pills" id="pillsContainer">
+          <a href="#" class="pill pill--primary" data-filter="all">All</a>
+          <a href="#" class="pill pill--outline" data-filter="35mm">35mm</a>
+          <a href="#" class="pill pill--outline" data-filter="120">120</a>
+          <a href="#" class="pill pill--outline" data-filter="large-format">Large Format</a>
+        </div>
+        <div class="header-row__search">
+          <input type="search" class="search-input" placeholder="Search films..." aria-label="Search films">
+        </div>
+      </div>
+      <div class="selection-toolbar" id="selectionToolbar">
+        <div class="selection-toolbar__actions">
+          <span class="selection-toolbar__count" id="selectionCount">0 selected</span>
+          <button class="btn btn--outline selection-toolbar__btn" onclick="selectAllCards(); return false;">Select All</button>
+          <button class="btn btn--primary selection-toolbar__btn" onclick="archiveSelected(); return false;">Archive Selected</button>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn--outline" id="selectModeBtn" onclick="toggleSelectMode(); return false;">Select</button>
+        <select class="select">
+          <option>Sort: Newest</option>
+          <option>Sort: Oldest</option>
+          <option>Sort: Film Type</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Film Grid -->
+    <div class="grid grid--6">
+      <!-- Film Card 1 -->
+      <a href="#" class="card-link" data-format="35mm" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/nikon-fm2-titanium.jpg" alt="Kodak Portra 400">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Kodak Portra 400</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">35mm</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">24</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Film Card 2 -->
+      <a href="#" class="card-link" data-format="120" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/leica-m3.jpg" alt="Fuji Pro 400H">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Fuji Pro 400H</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">120</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">12</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Film Card 3 -->
+      <a href="#" class="card-link" data-format="35mm">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/canon-ae1.jpg" alt="Ilford HP5 Plus">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Ilford HP5 Plus</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">35mm</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">36</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Film Card 4 -->
+      <a href="#" class="card-link" data-format="120" data-is-new="true">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/olympus-om1n.png" alt="Kodak Ektar 100">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Kodak Ektar 100</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">120</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">12</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Film Card 5 -->
+      <a href="#" class="card-link" data-format="35mm">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/nikon-f.jpg" alt="Fuji Superia 400">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Fuji Superia 400</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">35mm</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">24</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Film Card 6 -->
+      <a href="#" class="card-link" data-format="120">
+        <div class="card">
+          <div class="card__image-container">
+            <img src="./assets/cameras/pentax-spotmatic-f.jpg" alt="Kodak Tri-X 400">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Kodak Tri-X 400</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <div class="card__price-row">
+                  <span class="card__price-label">Format</span>
+                  <span class="card__price">120</span>
+                </div>
+                <div class="card__price-row">
+                  <span class="card__price-label">Photos</span>
+                  <span class="card__price">12</span>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button class="card__watch" onclick="event.preventDefault(); event.stopPropagation();" aria-label="View Gallery">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </button>
+                
+                <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Archive">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M21 8v13H3V8"></path>
+                    <path d="M1 3h22v5H1z"></path>
+                    <path d="M10 12h4"></path>
+                    <path d="M12 9v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="./assets/logo-footer.png" alt="Shutterzilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film and camera collections with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="./about.html" class="footer__link">About</a>
+          <a href="./privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="./terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="./collection_home.html" class="footer__link">Collections</a>
+          <a href="negative-home.html" class="footer__link">Negative</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 Shutterzilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="./js/mobile-menu.js"></script>
+  <script>
+    // App name dropdown toggle
+    const appName = document.getElementById('appName');
+    const appDropdown = document.getElementById('appDropdown');
+    
+    if (appName && appDropdown) {
+      appName.addEventListener('click', (e) => {
+        e.stopPropagation();
+        appDropdown.classList.toggle('open');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!appName.contains(e.target) && !appDropdown.contains(e.target)) {
+          appDropdown.classList.remove('open');
+        }
+      });
+    }
+    
+    // Filter functionality
+    const filterPills = document.querySelectorAll('.pills .pill');
+    const cards = document.querySelectorAll('.card-link');
+    
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const filterType = pill.getAttribute('data-filter');
+        
+        // Update pill active states
+        filterPills.forEach(p => {
+          p.classList.remove('pill--primary');
+          p.classList.add('pill--outline');
+        });
+        pill.classList.remove('pill--outline');
+        pill.classList.add('pill--primary');
+        
+        // Filter cards
+        cards.forEach(card => {
+          if (filterType === 'all') {
+            card.style.display = '';
+          } else {
+            const cardFormat = card.getAttribute('data-format');
+            if (cardFormat === filterType) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+
+    // Select Mode Functionality
+    let isSelectMode = false;
+
+    function toggleSelectMode() {
+      const body = document.body;
+      const selectBtn = document.getElementById('selectModeBtn');
+      isSelectMode = body.classList.contains('select-mode');
+      
+      if (isSelectMode) {
+        body.classList.remove('select-mode');
+        selectBtn.textContent = 'Select';
+        // Clear all selections
+        document.querySelectorAll('.card-link[data-selected="true"]').forEach(card => {
+          card.removeAttribute('data-selected');
+        });
+        updateSelectionCount();
+      } else {
+        body.classList.add('select-mode');
+        selectBtn.textContent = 'Cancel';
+      }
+    }
+
+    function cancelSelectMode() {
+      document.body.classList.remove('select-mode');
+      const selectBtn = document.getElementById('selectModeBtn');
+      if (selectBtn) {
+        selectBtn.textContent = 'Select';
+      }
+      // Clear all selections
+      document.querySelectorAll('.card-link[data-selected="true"]').forEach(card => {
+        card.removeAttribute('data-selected');
+      });
+      updateSelectionCount();
+      isSelectMode = false;
+    }
+
+    // Intercept card clicks in select mode
+    const cardLinks = document.querySelectorAll('.card-link');
+    
+    cardLinks.forEach(cardLink => {
+      cardLink.addEventListener('click', function(e) {
+        // Check if we're in select mode
+        if (document.body.classList.contains('select-mode')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const isSelected = cardLink.getAttribute('data-selected') === 'true';
+          
+          if (isSelected) {
+            cardLink.removeAttribute('data-selected');
+          } else {
+            cardLink.setAttribute('data-selected', 'true');
+          }
+          
+          updateSelectionCount();
+        }
+        // If not in select mode, normal navigation happens
+      });
+    });
+
+    function updateSelectionCount() {
+      const selectedCount = document.querySelectorAll('.card-link[data-selected="true"]').length;
+      const countElement = document.getElementById('selectionCount');
+      if (countElement) {
+        countElement.textContent = `${selectedCount} selected`;
+      }
+    }
+
+    function selectAllCards() {
+      const visibleCards = document.querySelectorAll('.card-link:not([style*="display: none"])');
+      visibleCards.forEach(card => {
+        card.setAttribute('data-selected', 'true');
+      });
+      updateSelectionCount();
+    }
+
+    function archiveSelected() {
+      const selectedCards = document.querySelectorAll('.card-link[data-selected="true"]');
+      if (selectedCards.length === 0) return;
+      
+      // For mockup: just show an alert
+      alert(`Archiving ${selectedCards.length} film(s)...`);
+      
+      // In real implementation:
+      // - Add data-is-archived="true" to cards
+      // - Animate cards out
+      // - Save to localStorage/backend
+      // - Exit select mode
+      
+      cancelSelectMode();
+    }
+  </script>
+</body>
+</html>
