@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterZilla - Olympus OM-2N (Option 3: Icon Navigation)</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Option 3: Icon navigation in topbar */
+    .topbar-option3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--topbar-height);
+      padding: 0 var(--spacing-md);
+      background-color: var(--color-white);
+      border-bottom: 2px solid var(--color-teal);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      gap: var(--spacing-md);
+    }
+
+    .topbar-option3__left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar-option3__logo img {
+      height: 40px;
+      width: auto;
+      max-width: 140px;
+    }
+
+    .topbar-option3__divider {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-left: var(--spacing-xs);
+      padding-left: var(--spacing-sm);
+      border-left: 1px solid var(--color-gray-300);
+      position: relative;
+      height: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__divider {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__app-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-name:hover {
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-option3__app-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .topbar-option3__app-dropdown {
+      position: absolute;
+      top: calc(100% + var(--spacing-xs));
+      left: 0;
+      background: var(--color-white);
+      padding: var(--spacing-xs) 0;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .topbar-option3__app-dropdown.open {
+      display: flex;
+    }
+
+    .topbar-option3__app-dropdown-item {
+      padding: var(--spacing-sm) var(--spacing-md);
+      color: var(--color-slate);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .topbar-option3__app-dropdown-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .topbar-option3__app-dropdown-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      vertical-align: middle;
+    }
+
+    .topbar-option3__app-dropdown-item:hover,
+    .topbar-option3__app-dropdown-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__app-dropdown-item--current {
+      color: var(--color-teal);
+      font-weight: 500;
+    }
+
+    .topbar-option3__nav {
+      display: none; /* Hidden on mobile */
+      align-items: center;
+      gap: var(--spacing-xs);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 768px) {
+      .topbar-option3__nav {
+        display: flex;
+      }
+    }
+
+    .topbar-option3__nav-item {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--color-slate-light);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .topbar-option3__nav-item:hover,
+    .topbar-option3__nav-item:active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item--active {
+      background-color: var(--color-gray-100);
+      color: var(--color-teal);
+    }
+
+    .topbar-option3__nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .topbar-option3__nav-item[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-slate-dark);
+      color: var(--color-white);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .topbar-option3__right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .topbar-option3__user-icon {
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      border-radius: var(--radius-full);
+      background-color: var(--color-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-slate);
+      text-decoration: none;
+    }
+
+    .detail-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .image-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .main-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--color-gray-100);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-gray-200);
+    }
+    
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .thumbnail-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--spacing-xs);
+    }
+    
+    .thumbnail {
+      width: 60px;
+      height: 45px;
+      min-width: 60px;
+      background: var(--color-gray-100);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    
+    .thumbnail--active {
+      border-color: var(--color-teal);
+    }
+    
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+    
+    .camera-title {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      color: var(--color-slate-dark);
+      line-height: 1.3;
+    }
+    
+    .price-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    
+    .price {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--color-teal);
+    }
+    
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+    }
+    
+    .source-badge--buyee {
+      background: #f59e0b;
+    }
+    
+    .source-badge--ebay {
+      background: #3b82f6;
+    }
+    
+    .condition-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background: #d1fae5;
+      color: #059669;
+      border-radius: 6px;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+    }
+    
+    .condition-badge--excellent {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    
+    .section-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-slate-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .description {
+      font-size: var(--font-size-base);
+      color: var(--color-slate);
+      line-height: 1.6;
+    }
+    
+    .specs-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-base);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    
+    .spec-item:last-child {
+      border-bottom: none;
+    }
+    
+    .spec-label {
+      color: var(--color-slate-light);
+      font-size: var(--font-size-sm);
+    }
+    
+    .spec-value {
+      color: var(--color-slate-dark);
+      font-weight: 500;
+    }
+    
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+    }
+    
+    .action-buttons .btn {
+      width: 100%;
+      padding: var(--spacing-md);
+      font-size: var(--font-size-base);
+    }
+    
+    .listing-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: var(--color-gray-100);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      color: var(--color-slate-light);
+    }
+    
+    .listing-info span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: 0;
+      padding-left: var(--spacing-sm);
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      color: var(--color-slate-dark);
+      text-decoration: none;
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      min-height: var(--touch-target-min);
+    }
+    
+    .back-link:active,
+    .back-link:hover {
+      color: var(--color-teal);
+    }
+    
+    .back-link svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    @media (min-width: 768px) {
+      .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+        padding: var(--spacing-xl);
+      }
+      
+      .camera-title {
+        font-size: 28px;
+      }
+      
+      .price {
+        font-size: 32px;
+      }
+      
+      .thumbnail {
+        width: 80px;
+        height: 60px;
+      }
+      
+      .spec-item {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+      }
+      
+      .spec-label {
+        min-width: 120px;
+        font-size: var(--font-size-base);
+      }
+      
+      .action-buttons {
+        flex-direction: row;
+        gap: var(--spacing-md);
+      }
+      
+      .action-buttons .btn {
+        flex: 1;
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+      
+      .listing-info {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+      }
+      
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar-option3">
+    <div class="topbar-option3__left">
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a href="../../app-switcher.html" class="topbar-option3__logo">
+        <img src="../../assets/logo-topbar.png" alt="ShutterZilla">
+      </a>
+      <div class="topbar-option3__divider">
+        <span class="topbar-option3__app-name" id="appName">
+          <span class="topbar-option3__app-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </span>
+          Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
+        </span>
+        <div class="topbar-option3__app-dropdown" id="appDropdown">
+          <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </span>
+            Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+          <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
+            <span class="topbar-option3__app-dropdown-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </span>
+            Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Icon Navigation (hidden on mobile, shown on desktop) -->
+    <nav class="topbar-option3__nav">
+      <a href="scraper-feed.html" class="topbar-option3__nav-item" title="Feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </a>
+      <a href="scraper-search.html" class="topbar-option3__nav-item" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </a>
+      <a href="scraper-saved.html" class="topbar-option3__nav-item" title="Saved Searches">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </a>
+    </nav>
+    
+    <div class="topbar-option3__right">
+      <a href="../../admin_dashboard.html" class="topbar-option3__user-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__nav">
+      <a href="../../app-switcher.html" class="mobile-menu__link">Home</a>
+      <a href="scraper-feed.html" class="mobile-menu__link">Feed</a>
+      <a href="scraper-search.html" class="mobile-menu__link">Search</a>
+      <a href="scraper-saved.html" class="mobile-menu__link">Saved Searches</a>
+      <a href="../../collection_home.html" class="mobile-menu__link">Collection App</a>
+      <a href="../../admin_dashboard.html" class="mobile-menu__link">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <a href="scraper-feed.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Feed
+      </a>
+    </div>
+    
+    <div class="detail-container">
+      <!-- Image Section -->
+      <div class="image-section">
+        <div class="main-image">
+          <img src="../../assets/cameras/olympus-om-2n.jpg" alt="Olympus OM-2N">
+        </div>
+        <div class="thumbnail-row">
+          <div class="thumbnail thumbnail--active">
+            <img src="../../assets/cameras/olympus-om-2n.jpg" alt="Olympus OM-2N - Front">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/olympus-om-2n-1.jpg" alt="Olympus OM-2N - View 1">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/olympus-om-2n-2.jpg" alt="Olympus OM-2N - View 2">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/olympus-om-2n-3.jpg" alt="Olympus OM-2N - View 3">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/olympus-om-2n-4.jpg" alt="Olympus OM-2N - View 4">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Info Section -->
+      <div class="info-section">
+        <h1 class="camera-title">Olympus OM-2N</h1>
+        
+        <div class="price-row">
+          <span class="price">$420</span>
+          <span class="source-badge source-badge--buyee">B</span>
+          <span class="condition-badge condition-badge--excellent">★ Excellent</span>
+        </div>
+        
+        <div class="listing-info">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Listed 3 hours ago
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            29 views
+          </span>
+        </div>
+        
+        <div>
+          <h2 class="section-title">Description</h2>
+          <p class="description">The Olympus OM-2N, featuring revolutionary off-the-film (OTF) metering that measures light during exposure for perfect automatic exposure control. This camera combines the compact OM system design with advanced electronic features. In excellent condition with minimal wear. The OTF metering system works flawlessly, providing accurate exposures even in challenging lighting conditions. Viewfinder is bright and clear, shutter speeds are accurate, and all electronic functions operate perfectly. A sophisticated camera that represents the pinnacle of the OM-2 series.</p>
+        </div>
+        
+        <div>
+          <h2 class="section-title">Specifications</h2>
+          <div class="specs-list">
+            <div class="spec-item">
+              <span class="spec-label">Brand</span>
+              <span class="spec-value">Olympus</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Model</span>
+              <span class="spec-value">OM-2N</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Year</span>
+              <span class="spec-value">1979-1984</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Type</span>
+              <span class="spec-value">35mm SLR</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Lens Mount</span>
+              <span class="spec-value">Olympus OM</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Condition</span>
+              <span class="spec-value">Excellent</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <a href="#" class="btn btn--primary">View on Buyee</a>
+          <button class="btn btn--outline">Add to Collection</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="../../assets/logo-footer.png" alt="ShutterZilla" class="footer__logo">
+        <p class="footer__tagline">Modern apps for your vintage cameras. Discover, collect, and manage your film camera collection with powerful tools designed for enthusiasts.</p>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Quick Links</h4>
+        <div class="footer__links">
+          <a href="../../about.html" class="footer__link">About</a>
+          <a href="../../privacy.html" class="footer__link">Privacy Policy</a>
+          <a href="../../terms.html" class="footer__link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__section">
+        <h4 class="footer__title">Apps</h4>
+        <div class="footer__links">
+          <a href="scraper-feed.html" class="footer__link">Scraper</a>
+          <a href="../../collection_home.html" class="footer__link">Collection</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 ShutterZilla. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/mobile-menu.js"></script>
+  <script>
+    // App name dropdown toggle
+    const appName = document.getElementById('appName');
+    const appDropdown = document.getElementById('appDropdown');
+    
+    if (appName && appDropdown) {
+      appName.addEventListener('click', (e) => {
+        e.stopPropagation();
+        appDropdown.classList.toggle('open');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!appName.contains(e.target) && !appDropdown.contains(e.target)) {
+          appDropdown.classList.remove('open');
+        }
+      });
+    }
+    
+    // Thumbnail image switcher
+    const mainImage = document.querySelector('.main-image img');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    if (mainImage && thumbnails.length > 0) {
+      thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => {
+          const thumbnailImg = thumbnail.querySelector('img');
+          if (thumbnailImg) {
+            // Update main image
+            mainImage.src = thumbnailImg.src;
+            mainImage.alt = thumbnailImg.alt;
+            
+            // Update active thumbnail
+            thumbnails.forEach((thumb) => thumb.classList.remove('thumbnail--active'));
+            thumbnail.classList.add('thumbnail--active');
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -171,13 +171,13 @@ def scrape_search_results(page):
                             const storeNameText = fontElem.textContent.trim();
                             // Map store name text to shop names
                             if (storeNameText === 'JDirectItems Auction') {
-                                listing.shopName = 'Yahoo';
+                                listing.shopName = 'Yahoo Japan Auctions';
                             } else if (storeNameText === 'Mercari') {
                                 listing.shopName = 'Mercari';
                             } else if (storeNameText === 'Rakuten Rakuma') {
                                 listing.shopName = 'Rakuma';
                             } else if (storeNameText === 'JDirectItems Fleamarket') {
-                                listing.shopName = 'Yahoo Shopping';
+                                listing.shopName = 'Yahoo Japan Fleamarket';
                             } else {
                                 listing.shopName = storeNameText; // Fallback: use as-is
                             }
@@ -185,22 +185,22 @@ def scrape_search_results(page):
                             // Fallback: get text directly from storeName element
                             const storeNameText = storeNameElem.textContent.trim();
                             if (storeNameText === 'JDirectItems Auction') {
-                                listing.shopName = 'Yahoo';
+                                listing.shopName = 'Yahoo Japan Auctions';
                             } else if (storeNameText === 'Mercari') {
                                 listing.shopName = 'Mercari';
                             } else if (storeNameText === 'Rakuten Rakuma') {
                                 listing.shopName = 'Rakuma';
                             } else if (storeNameText === 'JDirectItems Fleamarket') {
-                                listing.shopName = 'Yahoo Shopping';
+                                listing.shopName = 'Yahoo Japan Fleamarket';
                             } else if (storeNameText) {
                                 listing.shopName = storeNameText;
                             }
                         }
                     }
                     
-                    // Extract price - different logic for Yahoo vs other shops
-                    if (listing.shopName === 'Yahoo') {
-                        // For Yahoo (Auction), try to extract Buyout Price and Current Price separately
+                    // Extract price - different logic for Yahoo Japan Auctions vs other shops
+                    if (listing.shopName === 'Yahoo Japan Auctions') {
+                        // For Yahoo Japan Auctions, try to extract Buyout Price and Current Price separately
                         // Strategy: Look for text patterns and price elements
                         
                         // Get all text content from the item card
@@ -467,11 +467,11 @@ def scrape_search_results(page):
             shop_name = item.get('shopName', '')
             # Map shop names if needed (fallback in case JavaScript didn't map)
             if shop_name == 'JDirectItems Auction':
-                shop_name = 'Yahoo'
+                shop_name = 'Yahoo Japan Auctions'
             elif shop_name == 'Rakuten Rakuma':
                 shop_name = 'Rakuma'
             elif shop_name == 'JDirectItems Fleamarket':
-                shop_name = 'Yahoo Shopping'
+                shop_name = 'Yahoo Japan Fleamarket'
             
             # Extract listing ID from URL
             listing_id = extract_listing_id(href)
@@ -486,7 +486,7 @@ def scrape_search_results(page):
             }
             
             # Add price fields based on shop
-            if shop_name == 'Yahoo':
+            if shop_name == 'Yahoo Japan Auctions':
                 listing_data['buyout_price'] = item.get('buyoutPrice', '')
                 listing_data['current_price'] = item.get('currentPrice', '')
             else:

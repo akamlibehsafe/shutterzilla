@@ -250,6 +250,46 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--color-gray-200);
+      position: relative;
+    }
+    
+    .main-image__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      z-index: 10;
+    }
+    
+    .main-image__arrow:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    
+    .main-image__arrow--prev {
+      left: var(--spacing-sm);
+    }
+    
+    .main-image__arrow--next {
+      right: var(--spacing-sm);
+    }
+    
+    .main-image__arrow.hidden {
+      display: none;
+    }
+    
+    .main-image__arrow svg {
+      width: 24px;
+      height: 24px;
     }
     
     .main-image img {
@@ -424,19 +464,33 @@
       gap: 6px;
     }
     
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: 0;
+      padding-left: var(--spacing-sm);
+    }
+    
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: var(--spacing-xs);
-      color: var(--color-slate);
+      color: var(--color-slate-dark);
       text-decoration: none;
-      font-size: var(--font-size-sm);
-      margin-bottom: var(--spacing-md);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
       min-height: var(--touch-target-min);
     }
     
-    .back-link:active {
+    .back-link:active,
+    .back-link:hover {
       color: var(--color-teal);
+    }
+    
+    .back-link svg {
+      width: 18px;
+      height: 18px;
     }
     
     @media (min-width: 768px) {
@@ -486,9 +540,6 @@
         gap: var(--spacing-lg);
       }
       
-      .back-link:hover {
-        color: var(--color-teal);
-      }
     }
   </style>
 </head>
@@ -584,27 +635,46 @@
 
   <!-- Page Content -->
   <main class="page-content">
+    <div class="page-header">
+      <a href="scraper-feed.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Feed
+      </a>
+    </div>
+    
     <div class="detail-container">
       <!-- Image Section -->
       <div class="image-section">
-        <a href="scraper-feed.html" class="back-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Feed
-        </a>
         <div class="main-image">
-          <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+          <button class="main-image__arrow main-image__arrow--prev hidden" id="prevArrow" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <img src="../../assets/cameras/nikon-fm2-titanium.jpg" alt="Nikon FM2">
+          <button class="main-image__arrow main-image__arrow--next" id="nextArrow" aria-label="Next image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
         <div class="thumbnail-row">
           <div class="thumbnail thumbnail--active">
-            <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2 - Front">
+            <img src="../../assets/cameras/nikon-fm2-titanium.jpg" alt="Nikon FM2 - Front">
           </div>
           <div class="thumbnail">
-            <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2 - Top">
+            <img src="../../assets/cameras/nikon-fm2-titanium-1.jpg" alt="Nikon FM2 - View 1">
           </div>
           <div class="thumbnail">
-            <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2 - Back">
+            <img src="../../assets/cameras/nikon-fm2-titanium-2.jpg" alt="Nikon FM2 - View 2">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/nikon-fm2-titanium-3.jpg" alt="Nikon FM2 - View 3">
+          </div>
+          <div class="thumbnail">
+            <img src="../../assets/cameras/nikon-fm2-titanium-4.jpg" alt="Nikon FM2 - View 4">
           </div>
         </div>
       </div>
@@ -725,6 +795,75 @@
           appDropdown.classList.remove('open');
         }
       });
+    }
+    
+    // Image gallery navigation
+    const mainImage = document.querySelector('.main-image img');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const prevArrow = document.getElementById('prevArrow');
+    const nextArrow = document.getElementById('nextArrow');
+    
+    if (mainImage && thumbnails.length > 0) {
+      // Get all image sources
+      const imageSources = Array.from(thumbnails).map(thumb => ({
+        src: thumb.querySelector('img').src,
+        alt: thumb.querySelector('img').alt
+      }));
+      
+      let currentIndex = 0;
+      
+      // Function to update main image
+      function updateMainImage(index) {
+        if (index >= 0 && index < imageSources.length) {
+          currentIndex = index;
+          mainImage.src = imageSources[index].src;
+          mainImage.alt = imageSources[index].alt;
+          
+          // Update active thumbnail
+          thumbnails.forEach((thumb, i) => {
+            thumb.classList.toggle('thumbnail--active', i === index);
+          });
+          
+          // Show/hide arrows
+          if (prevArrow) {
+            prevArrow.classList.toggle('hidden', currentIndex === 0);
+          }
+          if (nextArrow) {
+            nextArrow.classList.toggle('hidden', currentIndex === imageSources.length - 1);
+          }
+        }
+      }
+      
+      // Thumbnail click handler
+      thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', () => {
+          updateMainImage(index);
+        });
+      });
+      
+      // Arrow navigation
+      if (prevArrow) {
+        prevArrow.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (currentIndex > 0) {
+            updateMainImage(currentIndex - 1);
+          }
+        });
+      }
+      
+      if (nextArrow) {
+        nextArrow.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (currentIndex < imageSources.length - 1) {
+            updateMainImage(currentIndex + 1);
+          }
+        });
+      }
+      
+      // Initialize: hide prev arrow on first image
+      if (prevArrow) {
+        prevArrow.classList.add('hidden');
+      }
     }
   </script>
 </body>

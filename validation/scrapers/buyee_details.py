@@ -50,7 +50,7 @@ def scrape_listing_details(page, listing_url):
     - Status (sold/available)
     - All product images
     
-    Yahoo-specific fields:
+    Yahoo Japan Auctions-specific fields:
     - Buyout Price (more accurate than search results)
     - Current Price (more accurate than search results)
     - Item Condition
@@ -129,7 +129,7 @@ def scrape_listing_details(page, listing_url):
                 
                 # Map classes to shop names
                 if 'yauc' in class_str and 'jdiaution' in class_str:
-                    shop_name = 'Yahoo'
+                    shop_name = 'Yahoo Japan Auctions'
                     break
                 elif 'mercari' in class_str:
                     shop_name = 'Mercari'
@@ -138,7 +138,7 @@ def scrape_listing_details(page, listing_url):
                     shop_name = 'Rakuma'
                     break
                 elif 'jdifleamarket' in class_str:
-                    shop_name = 'Yahoo Shopping'
+                    shop_name = 'Yahoo Japan Fleamarket'
                     break
         
         # Fallback: Try JavaScript extraction if not found in HTML
@@ -149,13 +149,13 @@ def scrape_listing_details(page, listing_url):
                     if (shopDiv) {
                         const classes = shopDiv.className;
                         if (classes.includes('yauc') && classes.includes('jdiaution')) {
-                            return 'Yahoo';
+                            return 'Yahoo Japan Auctions';
                         } else if (classes.includes('mercari')) {
                             return 'Mercari';
                         } else if (classes.includes('rakuma')) {
                             return 'Rakuma';
                         } else if (classes.includes('jdifleamarket')) {
-                            return 'Yahoo Shopping';
+                            return 'Yahoo Japan Fleamarket';
                         }
                     }
                     return null;
@@ -377,8 +377,8 @@ def scrape_listing_details(page, listing_url):
             else:
                 detail['description'] = description_text
         
-        # Extract shop-specific fields only for Yahoo (Auction)
-        if shop_name == 'Yahoo':
+        # Extract shop-specific fields only for Yahoo Japan Auctions
+        if shop_name == 'Yahoo Japan Auctions':
             # Extract Buyout Price (即決価格)
             buyout_price = None
             # Prioritize JPY (¥, 円) prices - try JPY patterns first

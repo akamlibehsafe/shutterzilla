@@ -49,6 +49,7 @@
       padding-left: var(--spacing-sm);
       border-left: 1px solid var(--color-gray-300);
       position: relative;
+      height: 30px;
     }
 
     @media (min-width: 768px) {
@@ -61,12 +62,25 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-lg);
       font-weight: 600;
       color: var(--color-slate);
       cursor: pointer;
       transition: color 0.2s ease;
       user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -75,8 +89,8 @@
     }
 
     .topbar-option3__app-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       color: inherit;
       display: flex;
@@ -117,6 +131,19 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -447,6 +474,7 @@
             </svg>
           </span>
           Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
         </span>
         <div class="topbar-option3__app-dropdown" id="appDropdown">
           <a href="../option3/scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
@@ -457,6 +485,7 @@
               </svg>
             </span>
             Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
           <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
             <span class="topbar-option3__app-dropdown-icon">
@@ -466,6 +495,7 @@
               </svg>
             </span>
             Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
         </div>
       </div>
@@ -590,7 +620,7 @@
             <div class="card">
               <div class="card__image-container">
                 <div class="source-icon source-icon--buyee">B</div>
-                <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+                <img src="../../assets/cameras/nikon-fm2-titanium.jpg" alt="Nikon FM2">
               </div>
               <div class="card__body">
                 <h3 class="card__title">Nikon FM2 Titanium</h3>
@@ -607,7 +637,7 @@
             <div class="card">
               <div class="card__image-container">
                 <div class="source-icon source-icon--ebay">eB</div>
-                <img src="../../assets/cameras/leica-m3.png" alt="Leica M3">
+                <img src="../../assets/cameras/leica-m3.jpg" alt="Leica M3">
               </div>
               <div class="card__body">
                 <h3 class="card__title">Leica M3 Double Stroke</h3>
@@ -625,7 +655,7 @@
               <div class="card__image-container">
                 <div class="ribbon">Sold</div>
                 <div class="source-icon source-icon--ebay">eB</div>
-                <img src="../../assets/cameras/canon-ae1.png" alt="Canon AE-1">
+                <img src="../../assets/cameras/canon-ae1.jpg" alt="Canon AE-1">
               </div>
               <div class="card__body">
                 <h3 class="card__title">Canon AE-1 Black</h3>

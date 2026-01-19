@@ -49,6 +49,7 @@
       padding-left: var(--spacing-sm);
       border-left: 1px solid var(--color-gray-300);
       position: relative;
+      height: 30px;
     }
 
     @media (min-width: 768px) {
@@ -61,12 +62,25 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-lg);
       font-weight: 600;
       color: var(--color-slate);
       cursor: pointer;
       transition: color 0.2s ease;
       user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -75,8 +89,8 @@
     }
 
     .topbar-option3__app-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       color: inherit;
       display: flex;
@@ -117,6 +131,19 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -254,7 +281,7 @@
     }
     
     .card__image-container img {
-      max-width: 90%;
+      max-width: 75%;
       max-height: 90%;
       object-fit: contain;
     }
@@ -282,21 +309,23 @@
         <span class="topbar-option3__app-name" id="appName">
           <span class="topbar-option3__app-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
+              <circle cx="12" cy="12" r="8"></circle>
               <path d="m21 21-4.35-4.35"></path>
             </svg>
           </span>
           Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
         </span>
         <div class="topbar-option3__app-dropdown" id="appDropdown">
           <a href="scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
             <span class="topbar-option3__app-dropdown-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
+                <circle cx="12" cy="12" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
             </span>
             Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
           <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
             <span class="topbar-option3__app-dropdown-icon">
@@ -306,6 +335,7 @@
               </svg>
             </span>
             Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
         </div>
       </div>
@@ -323,7 +353,7 @@
       </a>
       <a href="scraper-search.html" class="topbar-option3__nav-item" title="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
+          <circle cx="12" cy="12" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </a>
@@ -365,9 +395,9 @@
     <!-- Header Row -->
     <div class="header-row">
       <div class="pills">
-        <a href="#" class="pill pill--primary">All</a>
-        <a href="#" class="pill pill--outline">Buyee</a>
-        <a href="#" class="pill pill--outline">eBay</a>
+        <a href="#" class="pill pill--primary" data-filter="all">All</a>
+        <a href="#" class="pill pill--outline" data-filter="buyee">Buyee</a>
+        <a href="#" class="pill pill--outline" data-filter="ebay">eBay</a>
       </div>
       <div class="controls">
         <select class="select">
@@ -375,95 +405,489 @@
           <option>Sort: Price: Low to High</option>
           <option>Sort: Price: High to Low</option>
         </select>
-        <div class="view-toggle">
-          <a href="scraper-feed.html" class="view-toggle__btn view-toggle__btn--active" aria-label="Grid view">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-          </a>
-          <a href="scraper-feed-list.html" class="view-toggle__btn" aria-label="List view">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="8" y1="6" x2="21" y2="6"></line>
-              <line x1="8" y1="12" x2="21" y2="12"></line>
-              <line x1="8" y1="18" x2="21" y2="18"></line>
-              <line x1="3" y1="6" x2="3.01" y2="6"></line>
-              <line x1="3" y1="12" x2="3.01" y2="12"></line>
-              <line x1="3" y1="18" x2="3.01" y2="18"></line>
-            </svg>
-          </a>
-        </div>
       </div>
     </div>
 
     <!-- Camera Grid -->
-    <div class="grid grid--3">
+    <div class="grid grid--6">
       <!-- Card 1 -->
-      <a href="scraper-detail-nikon-fm2.html" class="card-link">
+      <a href="scraper-detail-nikon-fm2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari">
         <div class="card">
           <div class="card__image-container">
-            <div class="source-icon source-icon--buyee">B</div>
-            <img src="../../assets/cameras/nikon-fm2.png" alt="Nikon FM2">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/nikon-fm2-titanium.jpg" alt="Nikon FM2">
           </div>
           <div class="card__body">
             <h3 class="card__title">Nikon FM2 Titanium</h3>
             <div class="card__meta">
-              <span class="card__price">$599</span>
-              <span class="badge badge--success">✓ Mint</span>
+              <span class="card__price">¥89,850</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
             </div>
           </div>
         </div>
       </a>
       
       <!-- Card 2 -->
-      <a href="scraper-detail-leica-m3.html" class="card-link">
+      <a href="scraper-detail-leica-m3.html" class="card-link" data-source="ebay" data-availability="available">
         <div class="card">
           <div class="card__image-container">
-            <div class="source-icon source-icon--ebay">eB</div>
-            <img src="../../assets/cameras/leica-m3.png" alt="Leica M3">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/leica-m3.jpg" alt="Leica M3">
           </div>
           <div class="card__body">
             <h3 class="card__title">Leica M3 Double Stroke</h3>
             <div class="card__meta">
-              <span class="card__price">$1,850</span>
-              <span class="badge badge--success">✓ Excellent</span>
+              <span class="card__price">¥277,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
             </div>
           </div>
         </div>
       </a>
       
       <!-- Card 3 -->
-      <a href="scraper-detail-canon-ae1.html" class="card-link">
+      <a href="scraper-detail-canon-ae1.html" class="card-link" data-source="ebay" data-availability="sold">
         <div class="card">
           <div class="card__image-container">
             <div class="ribbon">Sold</div>
-            <div class="source-icon source-icon--ebay">eB</div>
-            <img src="../../assets/cameras/canon-ae1.png" alt="Canon AE-1">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/canon-ae1.jpg" alt="Canon AE-1">
           </div>
           <div class="card__body">
             <h3 class="card__title">Canon AE-1 Black</h3>
             <div class="card__meta">
-              <span class="card__price">$150</span>
-              <span class="badge badge--success">✓ Good</span>
+              <span class="card__price">¥22,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
             </div>
           </div>
         </div>
       </a>
       
       <!-- Card 4 -->
-      <a href="scraper-detail-olympus-om1n.html" class="card-link">
+      <a href="scraper-detail-olympus-om1n.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma">
         <div class="card">
           <div class="card__image-container">
-            <div class="source-icon source-icon--buyee">B</div>
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
             <img src="../../assets/cameras/olympus-om1n.png" alt="Olympus OM-1N">
           </div>
           <div class="card__body">
             <h3 class="card__title">Olympus OM-1N + Zuiko 50mm f/1.8</h3>
             <div class="card__meta">
-              <span class="card__price">$349</span>
-              <span class="badge badge--success">✓ Excellent</span>
+              <span class="card__price">¥52,350</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 5 -->
+      <a href="scraper-detail-nikon-f.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/nikon-f.jpg" alt="Nikon F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Nikon F</h3>
+            <div class="card__meta">
+              <span class="card__price">¥63,750</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 6 -->
+      <a href="scraper-detail-pentax-spotmatic-f.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-spotmatic-f.jpg" alt="Pentax Spotmatic F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax Spotmatic F</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <span class="card__price">¥41,250</span>
+                <span class="card__price card__price--buyout">¥47,438</span>
+              </div>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 7 -->
+      <a href="scraper-detail-olympus-om20.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/olympus-OM-20.jpg" alt="Olympus OM-20">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Olympus OM-20</h3>
+            <div class="card__meta">
+              <span class="card__price">¥28,350</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 8 -->
+      <a href="scraper-detail-pentax-es2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-es-II.jpg" alt="Pentax ES-II">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax ES-II</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <span class="card__price">¥48,000</span>
+                <span class="card__price card__price--buyout">¥55,200</span>
+              </div>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 9 -->
+      <a href="scraper-detail-konica-iiia.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/konica-III-A.jpg" alt="Konica IIIA">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Konica IIIA</h3>
+            <div class="card__meta">
+              <span class="card__price">¥67,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 10 -->
+      <a href="scraper-detail-pentax-mx.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/pentax-mx.jpg" alt="Pentax MX">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Pentax MX</h3>
+            <div class="card__meta">
+              <span class="card__price">¥57,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 11 -->
+      <a href="scraper-detail-nikon-d700.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/nikon-D700.jpg" alt="Nikon D700">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Nikon D700</h3>
+            <div class="card__meta">
+              <span class="card__price">¥97,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 12 -->
+      <a href="scraper-detail-olympus-om2n.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
+            <img src="../../assets/cameras/olympus-om-2n.jpg" alt="Olympus OM-2N">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Olympus OM-2N</h3>
+            <div class="card__meta">
+              <span class="card__price">¥63,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 13 -->
+      <a href="scraper-detail-yashica-mat-124g.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/yashica-mat-124g.jpg" alt="Yashica Mat-124G">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Yashica Mat-124G</h3>
+            <div class="card__meta">
+              <span class="card__price">¥82,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 14 -->
+      <a href="scraper-detail-bronica-s2.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-auctions">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-auctions" title="Yahoo Japan Auctions badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Auctions">
+              </span>
+            </div>
+            <img src="../../assets/cameras/bronica-s2.jpg" alt="Bronica S2">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Bronica S2</h3>
+            <div class="card__meta">
+              <div class="card__prices">
+                <span class="card__price">¥180,000</span>
+                <span class="card__price card__price--buyout">¥207,000</span>
+              </div>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 15 -->
+      <a href="scraper-detail-rolleiflex-35f.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/rolleiflex-3.5f.jpg" alt="Rolleiflex 3.5F">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Rolleiflex 3.5F</h3>
+            <div class="card__meta">
+              <span class="card__price">¥277,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 16 -->
+      <a href="scraper-detail-hasselblad-500cm.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-fleamarket">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-fleamarket" title="Yahoo Japan Fleamarket badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Fleamarket">
+              </span>
+            </div>
+            <img src="../../assets/cameras/hasselblad-500-cm.jpg" alt="Hasselblad 500C/M">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Hasselblad 500C/M</h3>
+            <div class="card__meta">
+              <span class="card__price">¥360,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 17 -->
+      <a href="scraper-detail-leica-m6.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/leica-m6.jpg" alt="Leica M6">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Leica M6</h3>
+            <div class="card__meta">
+              <span class="card__price">¥480,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 18 -->
+      <a href="scraper-detail-canon-a1.html" class="card-link" data-source="buyee" data-availability="available" data-shop="mercari">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--mercari" title="Mercari badge">
+                <img src="../../assets/mercari-favicon.ico" alt="Mercari">
+              </span>
+            </div>
+            <img src="../../assets/cameras/canon-f-1.jpg" alt="Canon F-1">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Canon F-1</h3>
+            <div class="card__meta">
+              <span class="card__price">¥97,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 19 -->
+      <a href="scraper-detail-mamiya-rb67.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/mamiya-rb67.jpg" alt="Mamiya RB67">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Mamiya RB67</h3>
+            <div class="card__meta">
+              <span class="card__price">¥127,500</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 20 -->
+      <a href="scraper-detail-minolta-x700.html" class="card-link" data-source="buyee" data-availability="available" data-shop="rakuma">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--rakuma" title="Rakuma Badge">
+                <img src="../../assets/rakuma-favicon.ico" alt="Rakuma">
+              </span>
+            </div>
+            <img src="../../assets/cameras/minolta-x-700.jpg" alt="Minolta X-700">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Minolta X-700</h3>
+            <div class="card__meta">
+              <span class="card__price">¥33,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 21 -->
+      <a href="scraper-detail-contax-g2.html" class="card-link" data-source="ebay" data-availability="available">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon source-icon--ebay" title="eBay">
+              <img src="../../assets/ebay-badge.png" alt="eBay">
+            </div>
+            <img src="../../assets/cameras/conta-g2.jpg" alt="Contax G2">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Contax G2</h3>
+            <div class="card__meta">
+              <span class="card__price">¥165,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Card 22 -->
+      <a href="scraper-detail-fujica-st801.html" class="card-link" data-source="buyee" data-availability="available" data-shop="yahoo-japan-fleamarket">
+        <div class="card">
+          <div class="card__image-container">
+            <div class="source-icon-wrapper">
+              <div class="source-icon source-icon--buyee" title="Buyee">
+                <img src="../../assets/buyee-favicon.ico" alt="Buyee">
+              </div>
+              <span class="subtype-badge subtype-badge--yahoo-japan-fleamarket" title="Yahoo Japan Fleamarket badge">
+                <img src="../../assets/yahoo-favicon.ico" alt="Yahoo Japan Fleamarket">
+              </span>
+            </div>
+            <img src="../../assets/cameras/fujica-st-801.jpg" alt="Fujica ST801">
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Fujica ST801</h3>
+            <div class="card__meta">
+              <span class="card__price">¥27,000</span>
+              <button class="card__dismiss" onclick="event.preventDefault(); event.stopPropagation();">×</button>
             </div>
           </div>
         </div>
@@ -518,6 +942,39 @@
         }
       });
     }
+    
+    // Filter functionality
+    const filterPills = document.querySelectorAll('.pills .pill');
+    const cards = document.querySelectorAll('.card-link');
+    
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const filterType = pill.getAttribute('data-filter');
+        
+        // Update pill active states
+        filterPills.forEach(p => {
+          p.classList.remove('pill--primary');
+          p.classList.add('pill--outline');
+        });
+        pill.classList.remove('pill--outline');
+        pill.classList.add('pill--primary');
+        
+        // Filter cards
+        cards.forEach(card => {
+          if (filterType === 'all') {
+            card.style.display = '';
+          } else {
+            const cardSource = card.getAttribute('data-source');
+            if (cardSource === filterType) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>

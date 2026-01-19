@@ -114,8 +114,8 @@ def extract_listing_id(listing_url):
     """Extract unique Listing ID from Buyee listing URL
     
     URL patterns for all shops:
-    - Yahoo: https://buyee.jp/item/jdirectitems/auction/{ID}
-    - Yahoo Shopping: https://buyee.jp/paypayfleamarket/item/{ID}
+    - Yahoo Japan Auctions: https://buyee.jp/item/jdirectitems/auction/{ID}
+    - Yahoo Japan Fleamarket: https://buyee.jp/paypayfleamarket/item/{ID}
     - Mercari: https://buyee.jp/mercari/item/{ID}
     - Rakuma: https://buyee.jp/rakuma/item/{ID}
     
@@ -164,11 +164,11 @@ def validate_listing_details(detail, shop_name):
     if not detail.get('description') or len(detail.get('description', '').strip()) < 10:
         errors.append("Warning: Missing or very short description")
     
-    # Shop-specific validation for Yahoo
-    if shop_name == 'Yahoo':
-        # Yahoo should have at least one price in detail page (more accurate than search results)
+    # Shop-specific validation for Yahoo Japan Auctions
+    if shop_name == 'Yahoo Japan Auctions':
+        # Yahoo Japan Auctions should have at least one price in detail page (more accurate than search results)
         if not detail.get('buyout_price') and not detail.get('current_price'):
-            errors.append("Warning: Yahoo listing missing both buyout_price and current_price in detail page")
+            errors.append("Warning: Yahoo Japan Auctions listing missing both buyout_price and current_price in detail page")
     
     # Images validation
     all_images = detail.get('all_images', [])
@@ -454,15 +454,15 @@ def validate_search_result(listing):
     
     if not listing.get('shop_name'):
         errors.append("Missing shop name")
-    elif listing['shop_name'] not in ['Yahoo', 'Yahoo Shopping', 'Mercari', 'Rakuma']:
+    elif listing['shop_name'] not in ['Yahoo Japan Auctions', 'Yahoo Japan Fleamarket', 'Mercari', 'Rakuma']:
         errors.append(f"Unknown shop name: {listing.get('shop_name')}")
     
     # Shop-specific price validation
     shop_name = listing.get('shop_name')
-    if shop_name == 'Yahoo':
-        # Yahoo should have at least one price (buyout or current)
+    if shop_name == 'Yahoo Japan Auctions':
+        # Yahoo Japan Auctions should have at least one price (buyout or current)
         if not listing.get('buyout_price') and not listing.get('current_price'):
-            errors.append("Yahoo listing missing both buyout_price and current_price")
+            errors.append("Yahoo Japan Auctions listing missing both buyout_price and current_price")
     else:
         # Other shops should have price
         if not listing.get('price'):

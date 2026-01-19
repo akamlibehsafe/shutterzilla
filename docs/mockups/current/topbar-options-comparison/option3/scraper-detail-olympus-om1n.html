@@ -424,19 +424,33 @@
       gap: 6px;
     }
     
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: 0;
+      padding-left: var(--spacing-sm);
+    }
+    
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: var(--spacing-xs);
-      color: var(--color-slate);
+      color: var(--color-slate-dark);
       text-decoration: none;
-      font-size: var(--font-size-sm);
-      margin-bottom: var(--spacing-md);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
       min-height: var(--touch-target-min);
     }
     
-    .back-link:active {
+    .back-link:active,
+    .back-link:hover {
       color: var(--color-teal);
+    }
+    
+    .back-link svg {
+      width: 18px;
+      height: 18px;
     }
     
     @media (min-width: 768px) {
@@ -486,9 +500,6 @@
         gap: var(--spacing-lg);
       }
       
-      .back-link:hover {
-        color: var(--color-teal);
-      }
     }
   </style>
 </head>
@@ -584,30 +595,33 @@
 
   <!-- Page Content -->
   <main class="page-content">
+    <div class="page-header">
+      <a href="scraper-feed.html" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Feed
+      </a>
+    </div>
+    
     <div class="detail-container">
       <!-- Image Section -->
       <div class="image-section">
-        <a href="scraper-feed.html" class="back-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Feed
-        </a>
         <div class="main-image">
-          <img src="../../assets/cameras/olympus-om1n.png" alt="Olympus OM-1N">
+          <img src="../../assets/cameras/olympus-om1n.jpg" alt="Olympus OM-1N">
         </div>
         <div class="thumbnail-row">
           <div class="thumbnail thumbnail--active">
-            <img src="../../assets/cameras/olympus-om1n.png" alt="Olympus OM-1N - Front">
+            <img src="../../assets/cameras/olympus-om1n.jpg" alt="Olympus OM-1N - Front">
           </div>
           <div class="thumbnail">
-            <img src="../../assets/cameras/olympus-om1n-1.png" alt="Olympus OM-1N - Top">
+            <img src="../../assets/cameras/olympus-om1n-1.jpg" alt="Olympus OM-1N - Top">
           </div>
           <div class="thumbnail">
-            <img src="../../assets/cameras/olympus-om1n-2.png" alt="Olympus OM-1N - Back">
+            <img src="../../assets/cameras/olympus-om1n-2.jpg" alt="Olympus OM-1N - Back">
           </div>
           <div class="thumbnail">
-            <img src="../../assets/cameras/olympus-om1n-3.png" alt="Olympus OM-1N - Side">
+            <img src="../../assets/cameras/olympus-om1n-3.jpg" alt="Olympus OM-1N - Side">
           </div>
         </div>
       </div>
@@ -727,6 +741,27 @@
         if (!appName.contains(e.target) && !appDropdown.contains(e.target)) {
           appDropdown.classList.remove('open');
         }
+      });
+    }
+    
+    // Thumbnail image switcher
+    const mainImage = document.querySelector('.main-image img');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    if (mainImage && thumbnails.length > 0) {
+      thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => {
+          const thumbnailImg = thumbnail.querySelector('img');
+          if (thumbnailImg) {
+            // Update main image
+            mainImage.src = thumbnailImg.src;
+            mainImage.alt = thumbnailImg.alt;
+            
+            // Update active thumbnail
+            thumbnails.forEach((thumb) => thumb.classList.remove('thumbnail--active'));
+            thumbnail.classList.add('thumbnail--active');
+          }
+        });
       });
     }
   </script>

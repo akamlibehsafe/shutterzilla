@@ -138,8 +138,8 @@ def extract_listing_id(listing_url):
     """Extract unique Listing ID from Buyee listing URL
     
     URL patterns for all shops:
-    - Yahoo: https://buyee.jp/item/jdirectitems/auction/{ID}
-    - Yahoo Shopping: https://buyee.jp/paypayfleamarket/item/{ID}
+    - Yahoo Japan Auctions: https://buyee.jp/item/jdirectitems/auction/{ID}
+    - Yahoo Japan Fleamarket: https://buyee.jp/paypayfleamarket/item/{ID}
     - Mercari: https://buyee.jp/mercari/item/{ID}
     - Rakuma: https://buyee.jp/rakuma/item/{ID}
     
@@ -188,11 +188,11 @@ def validate_listing_details(detail, shop_name):
     if not detail.get('description') or len(detail.get('description', '').strip()) < 10:
         errors.append("Warning: Missing or very short description")
     
-    # Shop-specific validation for Yahoo
-    if shop_name == 'Yahoo':
-        # Yahoo should have at least one price in detail page (more accurate than search results)
+    # Shop-specific validation for Yahoo Japan Auctions
+    if shop_name == 'Yahoo Japan Auctions':
+        # Yahoo Japan Auctions should have at least one price in detail page (more accurate than search results)
         if not detail.get('buyout_price') and not detail.get('current_price'):
-            errors.append("Warning: Yahoo listing missing both buyout_price and current_price in detail page")
+            errors.append("Warning: Yahoo Japan Auctions listing missing both buyout_price and current_price in detail page")
     
     # Images validation
     all_images = detail.get('all_images', [])
@@ -478,15 +478,15 @@ def validate_search_result(listing):
     
     if not listing.get('shop_name'):
         errors.append("Missing shop name")
-    elif listing['shop_name'] not in ['Yahoo', 'Yahoo Shopping', 'Mercari', 'Rakuma']:
+    elif listing['shop_name'] not in ['Yahoo Japan Auctions', 'Yahoo Japan Fleamarket', 'Mercari', 'Rakuma']:
         errors.append(f"Unknown shop name: {listing.get('shop_name')}")
     
     # Shop-specific price validation
     shop_name = listing.get('shop_name')
-    if shop_name == 'Yahoo':
-        # Yahoo should have at least one price (buyout or current)
+    if shop_name == 'Yahoo Japan Auctions':
+        # Yahoo Japan Auctions should have at least one price (buyout or current)
         if not listing.get('buyout_price') and not listing.get('current_price'):
-            errors.append("Yahoo listing missing both buyout_price and current_price")
+            errors.append("Yahoo Japan Auctions listing missing both buyout_price and current_price")
     else:
         # Other shops should have price
         if not listing.get('price'):
@@ -659,13 +659,13 @@ def scrape_search_results(page):
                             const storeNameText = fontElem.textContent.trim();
                             // Map store name text to shop names
                             if (storeNameText === 'JDirectItems Auction') {
-                                listing.shopName = 'Yahoo';
+                                listing.shopName = 'Yahoo Japan Auctions';
                             } else if (storeNameText === 'Mercari') {
                                 listing.shopName = 'Mercari';
                             } else if (storeNameText === 'Rakuten Rakuma') {
                                 listing.shopName = 'Rakuma';
                             } else if (storeNameText === 'JDirectItems Fleamarket') {
-                                listing.shopName = 'Yahoo Shopping';
+                                listing.shopName = 'Yahoo Japan Fleamarket';
                             } else {
                                 listing.shopName = storeNameText; // Fallback: use as-is
                             }
@@ -673,22 +673,22 @@ def scrape_search_results(page):
                             // Fallback: get text directly from storeName element
                             const storeNameText = storeNameElem.textContent.trim();
                             if (storeNameText === 'JDirectItems Auction') {
-                                listing.shopName = 'Yahoo';
+                                listing.shopName = 'Yahoo Japan Auctions';
                             } else if (storeNameText === 'Mercari') {
                                 listing.shopName = 'Mercari';
                             } else if (storeNameText === 'Rakuten Rakuma') {
                                 listing.shopName = 'Rakuma';
                             } else if (storeNameText === 'JDirectItems Fleamarket') {
-                                listing.shopName = 'Yahoo Shopping';
+                                listing.shopName = 'Yahoo Japan Fleamarket';
                             } else if (storeNameText) {
                                 listing.shopName = storeNameText;
                             }
                         }
                     }
                     
-                    // Extract price - different logic for Yahoo vs other shops
-                    if (listing.shopName === 'Yahoo') {
-                        // For Yahoo (Auction), try to extract Buyout Price and Current Price separately
+                    // Extract price - different logic for Yahoo Japan Auctions vs other shops
+                    if (listing.shopName === 'Yahoo Japan Auctions') {
+                        // For Yahoo Japan Auctions, try to extract Buyout Price and Current Price separately
                         // Strategy: Look for text patterns and price elements
                         
                         // Get all text content from the item card
@@ -955,11 +955,11 @@ def scrape_search_results(page):
             shop_name = item.get('shopName', '')
             # Map shop names if needed (fallback in case JavaScript didn't map)
             if shop_name == 'JDirectItems Auction':
-                shop_name = 'Yahoo'
+                shop_name = 'Yahoo Japan Auctions'
             elif shop_name == 'Rakuten Rakuma':
                 shop_name = 'Rakuma'
             elif shop_name == 'JDirectItems Fleamarket':
-                shop_name = 'Yahoo Shopping'
+                shop_name = 'Yahoo Japan Fleamarket'
             
             # Extract listing ID from URL
             listing_id = extract_listing_id(href)
@@ -974,7 +974,7 @@ def scrape_search_results(page):
             }
             
             # Add price fields based on shop
-            if shop_name == 'Yahoo':
+            if shop_name == 'Yahoo Japan Auctions':
                 listing_data['buyout_price'] = item.get('buyoutPrice', '')
                 listing_data['current_price'] = item.get('currentPrice', '')
             else:
@@ -1146,7 +1146,7 @@ def scrape_listing_details(page, listing_url):
     - Status (sold/available)
     - All product images
     
-    Yahoo-specific fields:
+    Yahoo Japan Auctions-specific fields:
     - Buyout Price (more accurate than search results)
     - Current Price (more accurate than search results)
     - Item Condition
@@ -1225,7 +1225,7 @@ def scrape_listing_details(page, listing_url):
                 
                 # Map classes to shop names
                 if 'yauc' in class_str and 'jdiaution' in class_str:
-                    shop_name = 'Yahoo'
+                    shop_name = 'Yahoo Japan Auctions'
                     break
                 elif 'mercari' in class_str:
                     shop_name = 'Mercari'
@@ -1234,7 +1234,7 @@ def scrape_listing_details(page, listing_url):
                     shop_name = 'Rakuma'
                     break
                 elif 'jdifleamarket' in class_str:
-                    shop_name = 'Yahoo Shopping'
+                    shop_name = 'Yahoo Japan Fleamarket'
                     break
         
         # Fallback: Try JavaScript extraction if not found in HTML
@@ -1245,13 +1245,13 @@ def scrape_listing_details(page, listing_url):
                     if (shopDiv) {
                         const classes = shopDiv.className;
                         if (classes.includes('yauc') && classes.includes('jdiaution')) {
-                            return 'Yahoo';
+                            return 'Yahoo Japan Auctions';
                         } else if (classes.includes('mercari')) {
                             return 'Mercari';
                         } else if (classes.includes('rakuma')) {
                             return 'Rakuma';
                         } else if (classes.includes('jdifleamarket')) {
-                            return 'Yahoo Shopping';
+                            return 'Yahoo Japan Fleamarket';
                         }
                     }
                     return null;
@@ -1473,8 +1473,8 @@ def scrape_listing_details(page, listing_url):
             else:
                 detail['description'] = description_text
         
-        # Extract shop-specific fields only for Yahoo (Auction)
-        if shop_name == 'Yahoo':
+        # Extract shop-specific fields only for Yahoo Japan Auctions
+        if shop_name == 'Yahoo Japan Auctions':
             # Extract Buyout Price (即決価格)
             buyout_price = None
             # Prioritize JPY (¥, 円) prices - try JPY patterns first
@@ -1722,7 +1722,7 @@ def scrape_listing_details(page, listing_url):
             detail['all_images'] = image_urls
         
             # Number of bids and closing time are already extracted above from itemDetail_sec
-            # Just store them if found (only for Yahoo)
+            # Just store them if found (only for Yahoo Japan Auctions)
             if bids_text:
                 detail['number_of_bids'] = bids_text.strip()
             else:
@@ -2339,8 +2339,8 @@ def main(search_term=None):
                 
                 f.write(f"**Title:** {listing.get('title', 'N/A')}\n\n")
                 
-                # Only show shop-specific fields for Yahoo (Auction)
-                if shop_name == 'Yahoo':
+                # Only show shop-specific fields for Yahoo Japan Auctions
+                if shop_name == 'Yahoo Japan Auctions':
                     buyout_price = listing.get('buyout_price', '')
                     f.write(f"**Buyout Price:** {buyout_price if buyout_price else 'N/A'}\n\n")
                     
@@ -2350,8 +2350,8 @@ def main(search_term=None):
                 description = listing.get('description', '')
                 f.write(f"**Description (Item Explanation):** {description if description else 'N/A'}\n\n")
                 
-                # Only show shop-specific fields for Yahoo (Auction)
-                if shop_name == 'Yahoo':
+                # Only show shop-specific fields for Yahoo Japan Auctions
+                if shop_name == 'Yahoo Japan Auctions':
                     condition = listing.get('condition', '')
                     f.write(f"**Item Condition:** {condition if condition else 'N/A'}\n\n")
                     

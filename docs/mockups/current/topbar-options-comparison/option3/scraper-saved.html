@@ -49,6 +49,7 @@
       padding-left: var(--spacing-sm);
       border-left: 1px solid var(--color-gray-300);
       position: relative;
+      height: 30px;
     }
 
     @media (min-width: 768px) {
@@ -61,12 +62,25 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-lg);
       font-weight: 600;
       color: var(--color-slate);
       cursor: pointer;
       transition: color 0.2s ease;
       user-select: none;
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__beta-badge {
+      position: absolute;
+      top: -6px;
+      right: -30px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -75,8 +89,8 @@
     }
 
     .topbar-option3__app-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       color: inherit;
       display: flex;
@@ -117,6 +131,19 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
+      line-height: 1;
+      position: relative;
+    }
+    
+    .topbar-option3__app-dropdown-beta {
+      position: absolute;
+      top: 6px;
+      right: var(--spacing-md);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       line-height: 1;
     }
 
@@ -472,6 +499,7 @@
             </svg>
           </span>
           Scraper
+          <span class="topbar-option3__beta-badge">Beta</span>
         </span>
         <div class="topbar-option3__app-dropdown" id="appDropdown">
           <a href="../option3/scraper-feed.html" class="topbar-option3__app-dropdown-item topbar-option3__app-dropdown-item--current">
@@ -482,6 +510,7 @@
               </svg>
             </span>
             Scraper
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
           <a href="../../collection_home.html" class="topbar-option3__app-dropdown-item">
             <span class="topbar-option3__app-dropdown-icon">
@@ -491,6 +520,7 @@
               </svg>
             </span>
             Collection
+            <span class="topbar-option3__app-dropdown-beta">Beta</span>
           </a>
         </div>
       </div>
